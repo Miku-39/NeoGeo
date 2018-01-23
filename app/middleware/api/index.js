@@ -43,10 +43,10 @@ const authorize = () => instance.get('/vNext/v1/users/current')
 const setAuthHeader = (token) => instance.defaults.headers.authorization = `Bearer ${token}`
 
 const fetchTickets = (userId) => instance.get(`/vnext/v1/requests?orderBy=carNumber&filters=RequestsForCheckpoint,CurrentDayRequests&pageSize=500&pageNumber=1`)
-//const updateBillStatus = (bill) => instance.patch(`/vnext/v1/bills/${bill.id}`, {status: bill.status, whoAgreed: bill.whoAgreed})
+const updateTicketStatus = (ticket) => instance.patch(`/vnext/v1/requests/${ticket.id}`, {status: ticket.status})
 
 
-export default { login, authorize, setAuthHeader, fetchTickets }
+export default { login, authorize, setAuthHeader, fetchTickets, updateTicketStatus }
 
 
 

@@ -11,14 +11,19 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { SwipeListView } from 'react-native-swipe-list-view'
   
 import { Images, Colors } from '../theme'
-import Loader from './Loader'
 
 const extractKey = ({id}) => id
 
 export default class TicketsList extends Component {
-    _handleCloseItem = (rowData) => {
+
+    _handleGotIn = (rowData) => {
         const { item } = rowData
-        this.props.handleCloseItem(item)
+        this.props.handleGotIn(item)
+    }
+
+    _handleGotOut = (rowData) => {
+        const { item } = rowData
+        this.props.handleGotOut(item)
     }
 
     _handleSwipeBack = (rowKey, rowMap) => {
@@ -50,6 +55,25 @@ export default class TicketsList extends Component {
         )
     }
 
+    _renderHeddenItem = (rowData, rowMap) => {
+        return (
+            <View style={styles.rowBack}>
+                <TouchableOpacity style={{backgroundColor: 'green', width: 70, margin: 1, justifyContent: 'center', alignItems: 'center'}}
+                    onPress={() => this._handleGotIn(rowData)}
+                >
+                    <MaterialIcons name='arrow-downward' size={25} color='white' />
+                    <Text style={{color: 'white'}} >Прибыл</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{backgroundColor: 'red', width: 70, margin: 1, justifyContent: 'center', alignItems: 'center'}}
+                    onPress={() => this._handleGotOut(rowData)}
+                >
+                    <MaterialIcons name='arrow-upward' size={25} color='white' />
+                    <Text style={{color: 'white'}} >Убыл</Text>
+                </TouchableOpacity>   
+            </View>
+        )
+    }
+
     render() {
         return (
             <SwipeListView
@@ -57,22 +81,7 @@ export default class TicketsList extends Component {
                 useFlatList={true}
                 data={this.props.items}
                 renderItem={this._renderItem}
-                renderHiddenItem={ (rowData, rowMap) => (
-                    <View style={styles.rowBack}>
-                        <TouchableOpacity style={{backgroundColor: 'green', width: 70, margin: 1, justifyContent: 'center', alignItems: 'center'}}
-                            onPress={() => this._handleCloseItem(rowData)}
-                        >
-                            <MaterialIcons name='arrow-downward' size={25} color='white' />
-                            <Text style={{color: 'white'}} >Прибыл</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{backgroundColor: 'red', width: 70, margin: 1, justifyContent: 'center', alignItems: 'center'}}
-                            onPress={() => this._handleCloseItem(rowData)}
-                        >
-                            <MaterialIcons name='arrow-upward' size={25} color='white' />
-                            <Text style={{color: 'white'}} >Убыл</Text>
-                        </TouchableOpacity>   
-                    </View>
-                )}
+                renderHiddenItem={this._renderHeddenItem}
                 leftOpenValue={0}
                 rightOpenValue={-150}
                 onRowOpen={this._handleSwipeBack}

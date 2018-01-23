@@ -6,7 +6,7 @@ import api from '../../api'
 
 function * loginSaga(action) {
     const { user, password } = action.payload
-    yield put(isLogging(true)) 
+    yield put(isLogging()) 
 
     try {
         const loginResponse = yield call(api.login, user, password)
@@ -27,11 +27,11 @@ function * loginSaga(action) {
             roles: roles
         }
 
-        yield put(isLogging(false))
+        //yield put(isLogging(false))
         yield put(logged(session))
     }
     catch (error) {
-        yield put(isLogging(false)) 
+        //yield put(isLogging(false)) 
         yield put(loginFailed(error.message))
     }
 }

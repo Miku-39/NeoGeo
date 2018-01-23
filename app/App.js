@@ -29,7 +29,7 @@ const Navigation = StackNavigator({
   //Bill: { screen: BillScreen },
   //Document: { screen: DocumentScreen }
 }, {
-  initialRouteName: 'Checkpoint',
+  initialRouteName: 'Login',
   navigationOptions: {
     headerStyle: styles.back,
     headerTitleStyle: styles.title,

@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux'
 import session from './Session'
-import data from './DataReducer'
+import tickets from './Tickets'
+import ticket from './Ticket'
 
 const root = combineReducers({
   session,
-  data
+  tickets,
+  ticket
 })
 
 export default root

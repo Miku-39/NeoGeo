@@ -2,17 +2,28 @@ import React, { Component } from 'react'
 import { View, StatusBar, Alert, TouchableOpacity, Keyboard } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { SearchBar } from 'react-native-elements'
+import { connect } from 'react-redux'
 
 import TicketsList from '../components/TicketsList'
 import { Metrics } from '../theme'
+import { fetch } from '../middleware/redux/actions/Tickets'
+import { update, dismiss } from '../middleware/redux/actions/Ticket'
+import { getTickets, getTicket } from '../middleware/redux/selectors'
+import Loader from '../components/Loader'
 
-const data = require('../middleware/api/fixtures/Tickets.json')
 const headerButtonsHandler = { 
     search: () => null
 }
+const CAME_STATUS_ID = '421575460000'
+const WENT_STATUS_ID = '421575453000'
 
-
-
+@connect(
+    store => ({
+        tickets: getTickets(store),
+        ticket: getTicket(store)
+    }),
+    { fetch, update, dismiss }
+)
 export default class CheckpointScreen extends Component {
     static navigationOptions = ({navigation}) => {
         return ({ 
@@ -26,15 +37,27 @@ export default class CheckpointScreen extends Component {
     }
 
     state = {
-        items: data,
+        items: [],
         filter: null,
         searchBarIsShown: false
       }
 
     componentDidMount () {
         headerButtonsHandler.search = this._handleShowSearchBarClick
-        //this.props.fetch()
+        this.props.fetch()
         //this.swipeButtons = [{ text: 'first', text: 'second' }]
+    }
+
+    componentWillReceiveProps (nextProps) {
+        const { items } = nextProps.tickets
+        this.setState({items})
+
+        const { updated } = nextProps.ticket
+        if (updated) {
+            Alert.alert( 'Внимание', 'Статус заявки успешно изменен', [ 
+                {text: 'Закрыть', onPress: () => { this.props.dismiss() }} 
+            ])
+        }
     }
 
     _handleShowSearchBarClick = () => {
@@ -49,26 +72,33 @@ export default class CheckpointScreen extends Component {
     }
     
     _handleSearchTextChanged = (text) => {
-        this.setState({filter: text.toLowerCase()})
-    }
+        const { items } = this.props.tickets 
+        const filter = text.toLowerCase()
 
-    _handleCloseItem = item => {
-        
-        console.log('item', item)
-    }
-    
-    
-    //_ => rowMap[rowData.item.key].closeRow() 
-
-    render() {
-        const { items, filter, searchBarIsShown } = this.state
-        fltrd = filter ? 
+        const filtered = filter ? 
             items.filter((item) => { 
                 return item.carModelText && item.carModelText.toLowerCase().includes(filter) || 
                     item.carNumber && item.carNumber.toLowerCase().includes(filter) ||
                     item.visitorFullName && item.visitorFullName.toLowerCase().includes(filter)
             })
             : items
+
+        this.setState({items: filtered, filter})
+    }
+
+    _handleGotIn = (item) => {
+        item.status = { id: CAME_STATUS_ID }
+        this.props.update(item)
+    }
+
+    _handleGotOut = (item) => {
+        item.status = { id: WENT_STATUS_ID }
+        this.props.update(item)
+    }
+
+    render() {
+        const { items, searchBarIsShown } = this.state
+        const { isFetching } = this.props.tickets
         
         return (
             <View>
@@ -84,10 +114,12 @@ export default class CheckpointScreen extends Component {
                         placeholder='Введите что-нибудь...' />
                 }
             
-                <TicketsList 
-                    isLoading={false} 
-                    items={fltrd}
-                    handleCloseItem={this._handleCloseItem} />
+                <Loader isLoading={isFetching}>
+                    <TicketsList 
+                        items={items}
+                        handleGotIn={this._handleGotIn}
+                        handleGotOut={this._handleGotOut} />
+                </Loader>
             </View>
         )
     }
