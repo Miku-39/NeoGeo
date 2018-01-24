@@ -12,6 +12,7 @@ import { getTickets, getTicket } from '../middleware/redux/selectors'
 import Loader from '../components/Loader'
 
 const headerButtonsHandler = { 
+    refresh: () => null,
     search: () => null
 }
 const CAME_STATUS_ID = '421575460000'
@@ -29,9 +30,14 @@ export default class CheckpointScreen extends Component {
         return ({ 
             title: 'КПП',
             headerRight: (
-                <TouchableOpacity style={{marginRight: 10}} onPress={() => headerButtonsHandler.search()}>
-                    <MaterialIcons name='search' size={25} color='white' />
-                </TouchableOpacity>
+                <View style={{flexDirection: 'row', paddingRight: 7}}>
+                    <TouchableOpacity onPress={() => headerButtonsHandler.refresh()}>
+                        <MaterialIcons name='autorenew' size={25} color='white' />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{marginLeft: 7, marginRight: 10}} onPress={() => headerButtonsHandler.search()}>
+                        <MaterialIcons name='search' size={25} color='white' />
+                    </TouchableOpacity>
+                </View>
             )
         })
     }
@@ -40,12 +46,17 @@ export default class CheckpointScreen extends Component {
         items: [],
         filter: null,
         searchBarIsShown: false
-      }
+    }
 
     componentDidMount () {
         headerButtonsHandler.search = this._handleShowSearchBarClick
+        headerButtonsHandler.refresh = this._handleRefreshClick
         this.props.fetch()
-        //this.swipeButtons = [{ text: 'first', text: 'second' }]
+        //setInterval(this._handleRefreshClick, 60000)
+    }
+
+    componentWillUnmount () {
+        clearImmediate()
     }
 
     componentWillReceiveProps (nextProps) {
@@ -58,6 +69,10 @@ export default class CheckpointScreen extends Component {
                 {text: 'Закрыть', onPress: () => { this.props.dismiss() }} 
             ])
         }
+    }
+
+    _handleRefreshClick = () => {
+        this.props.fetch()
     }
 
     _handleShowSearchBarClick = () => {

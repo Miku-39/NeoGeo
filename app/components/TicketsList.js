@@ -28,7 +28,8 @@ export default class TicketsList extends Component {
 
     _handleSwipeBack = (rowKey, rowMap) => {
         setTimeout(() => {
-            rowMap[rowKey].closeRow()
+            if (rowMap[rowKey])
+                rowMap[rowKey].closeRow()
         }, 2000)
     }
 

@@ -12,17 +12,17 @@ const initialState = Map({
 export default ticketsReducer = (state = initialState, action) => {
     switch (action.type){
         case FETCH_REQUEST:
-            return initialState
+            return state.merge({isFetching: false, fetched: false, error: null})
 
-    case IS_FETCHING:
-        return state.merge({isFetching: true})
+        case IS_FETCHING:
+            return state.merge({isFetching: true})
 
-    case FETCHED:
-        return state.merge({isFetching: false, fetched: true, items: [...action.payload]})
+        case FETCHED:
+            return state.merge({isFetching: false, fetched: true, items: [...action.payload]})
 
-    case FETCH_FAILED:
-        return state.merge({isFetching: false, error: action.payload})
-    
-    default: return state
-  }
+        case FETCH_FAILED:
+            return state.merge({isFetching: false, error: action.payload})
+        
+        default: return state
+    }
 }
