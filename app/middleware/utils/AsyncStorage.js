@@ -15,13 +15,12 @@ export const storeCredentials = async (user, password) => {
 export const loadCredentials = async () => {
     try {
         const r = await AsyncStorage.getItem('@bcmobileapp:remember')
-
-        if (r !== true)
+        if (r !== 'true')
             return {}
 
         const user = await AsyncStorage.getItem('@bcmobileapp:user')
         const password = await AsyncStorage.getItem('@bcmobileapp:password')
-
+console.log('user', user)
         return { remember: true, user, password }
     } catch (error) {
         console.warn('error occured while retrieving user info', error)

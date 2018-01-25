@@ -52,11 +52,6 @@ export default class CheckpointScreen extends Component {
         headerButtonsHandler.search = this._handleShowSearchBarClick
         headerButtonsHandler.refresh = this._handleRefreshClick
         this.props.fetch()
-        //setInterval(this._handleRefreshClick, 60000)
-    }
-
-    componentWillUnmount () {
-        clearImmediate()
     }
 
     componentWillReceiveProps (nextProps) {
@@ -66,12 +61,16 @@ export default class CheckpointScreen extends Component {
         const { updated } = nextProps.ticket
         if (updated) {
             Alert.alert( 'Внимание', 'Статус заявки успешно изменен', [ 
-                {text: 'Закрыть', onPress: () => { this.props.dismiss() }} 
+                {text: 'Закрыть', onPress: () => { 
+                    this.props.dismiss() 
+                    this.props.fetch()
+                }} 
             ])
         }
     }
 
     _handleRefreshClick = () => {
+        this._handleHideSearchBarClick()
         this.props.fetch()
     }
 
@@ -87,36 +86,29 @@ export default class CheckpointScreen extends Component {
     }
     
     _handleSearchTextChanged = (text) => {
-        const { items } = this.props.tickets 
         const filter = text.toLowerCase()
-
-        const filtered = filter ? 
-            items.filter((item) => { 
-                return item.carModelText && item.carModelText.toLowerCase().includes(filter) || 
-                    item.carNumber && item.carNumber.toLowerCase().includes(filter) ||
-                    item.visitorFullName && item.visitorFullName.toLowerCase().includes(filter)
-            })
-            : items
-
-        this.setState({items: filtered, filter})
+        this.setState({filter})
     }
 
-    _handleGotIn = (item) => {
-        item.status = { id: CAME_STATUS_ID }
-        this.props.update(item)
-    }
+    handleChangeStatus = (item) => {
+        if (item.status.id === '421575460000')
+            item.status = { id: WENT_STATUS_ID }
+        else item.status = { id: CAME_STATUS_ID }
 
-    _handleGotOut = (item) => {
-        item.status = { id: WENT_STATUS_ID }
         this.props.update(item)
     }
 
     render() {
-        const { items, searchBarIsShown } = this.state
+        const { items, searchBarIsShown, filter } = this.state
         const { isFetching } = this.props.tickets
         
+
+        const filtered = filter ? 
+            items.filter((item) => item.carNumber && item.carNumber.toLowerCase().includes(filter))
+            : items
+
         return (
-            <View>
+            <View style={{flex: 1}}>
                 {
                     searchBarIsShown && 
                     <SearchBar
@@ -126,14 +118,14 @@ export default class CheckpointScreen extends Component {
                         containerStyle={{backgroundColor: '#627ab4', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
                         onChangeText={this._handleSearchTextChanged}
                         onClearText={this._handleHideSearchBarClick}
+                        keyboardType='numeric'
                         placeholder='Введите что-нибудь...' />
                 }
             
                 <Loader isLoading={isFetching}>
                     <TicketsList 
-                        items={items}
-                        handleGotIn={this._handleGotIn}
-                        handleGotOut={this._handleGotOut} />
+                        items={filtered}
+                        handleSwipeoutAction={this.handleChangeStatus} />
                 </Loader>
             </View>
         )

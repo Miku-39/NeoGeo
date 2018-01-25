@@ -8,44 +8,40 @@ import {
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
-import { SwipeListView } from 'react-native-swipe-list-view'
-  
+import { LargeList } from 'react-native-largelist'
+
 import { Images, Colors } from '../theme'
+
 
 const extractKey = ({id}) => id
 
 export default class TicketsList extends Component {
-
-    _handleGotIn = (rowData) => {
-        const { item } = rowData
-        this.props.handleGotIn(item)
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.items !== this.props.items)
+            this.list.reloadData()
     }
 
-    _handleGotOut = (rowData) => {
-        const { item } = rowData
-        this.props.handleGotOut(item)
+    renderElement = (section, row) => {
+        const item = this.props.items[row]
+        return (
+            <View style={{width: '100%', height: '100%', marginTop: 1}}>
+                <Button
+                    buttonStyle={{backgroundColor: '#627ab4'}}
+                    color={'white'}
+                    onPress={() => this.props.handleSwipeoutAction(item)}
+                    title={item.status.id === '421575460000' ? 'Убыл' : 'Прибыл'} />
+            </View>
+        )
     }
 
-    _handleSwipeBack = (rowKey, rowMap) => {
-        setTimeout(() => {
-            if (rowMap[rowKey])
-                rowMap[rowKey].closeRow()
-        }, 2000)
-    }
-
-    _renderItem = (rowData, rowMap) => {
-        const { item } = rowData
+    renderCell = (section, row) => {
+        const item = this.props.items[row]
         return (
             <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', margin: 1, borderRadius: 5}}>
                 <View style={{width: 5, marginTop: 8, marginBottom: 10, backgroundColor: 'green', borderRadius: 5}}></View>
                 <View style={{flexDirection: 'column', marginLeft: 8, marginTop: 2, marginBottom: 8}}>
-                    <Text style={{fontSize: 16, color: 'black'}}>{ item.visitorFullName }</Text>
-                    {
-                        item.carModelText || item.carNumber ?
-                            <Text style={{fontSize: 12, color: '#767878'}}>{ `${item.carModelText}   ${item.carNumber}` }</Text> :
-                            null
-                    }
-                    <View style={{flexDirection: 'row'}}>
+                    <Text style={{fontSize: 16, color: 'black', marginTop: 5}}>{ `${item.carModelText}   ${item.carNumber}` }</Text>
+                    <View style={{flexDirection: 'row', marginTop: 5, marginBottom: 5}}>
                         <Text style={{fontSize: 10, color: 'green', fontStyle: 'italic', marginRight: 5}}>{ item.status ? item.status.name : '' }</Text>
                         <Text style={{fontSize: 10, color: '#767878', fontStyle: 'italic'}}>
                             { `№ ${item.number} ${item.visitDate ? 'от' + item.visitDate.split('T')[0] : ''}` }
@@ -56,37 +52,18 @@ export default class TicketsList extends Component {
         )
     }
 
-    _renderHeddenItem = (rowData, rowMap) => {
-        return (
-            <View style={styles.rowBack}>
-                <TouchableOpacity style={{backgroundColor: 'green', width: 70, margin: 1, justifyContent: 'center', alignItems: 'center'}}
-                    onPress={() => this._handleGotIn(rowData)}
-                >
-                    <MaterialIcons name='arrow-downward' size={25} color='white' />
-                    <Text style={{color: 'white'}} >Прибыл</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{backgroundColor: 'red', width: 70, margin: 1, justifyContent: 'center', alignItems: 'center'}}
-                    onPress={() => this._handleGotOut(rowData)}
-                >
-                    <MaterialIcons name='arrow-upward' size={25} color='white' />
-                    <Text style={{color: 'white'}} >Убыл</Text>
-                </TouchableOpacity>   
-            </View>
-        )
-    }
-
     render() {
         return (
-            <SwipeListView
-                initialListSize={10}
-                useFlatList={true}
-                data={this.props.items}
-                renderItem={this._renderItem}
-                renderHiddenItem={this._renderHeddenItem}
-                leftOpenValue={0}
-                rightOpenValue={-150}
-                onRowOpen={this._handleSwipeBack}
-                keyExtractor={extractKey}
+            <LargeList
+                style={{flex: 1}}
+                bounces={true}
+                ref={list => this.list = list}
+                numberOfRowsInSection={() => this.props.items.length}
+                renderCell={this.renderCell}
+                heightForCell={() => 50}
+                renderRightWhenSwipeOut={this.renderElement}
+                widthForRightWhenSwipeOut={() => 150}
+                colorForSwipeOutBgColor={() => 'white'}
             />
         )
     }

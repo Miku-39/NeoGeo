@@ -11,7 +11,6 @@ import { storeCredentials, loadCredentials } from '../middleware/utils/AsyncStor
 import LoginComponent from '../components/LoginComponent'
 
 
-
 @connect(
     (store) => ({ session: getSession(store)}),
     (dispatch) => ({ login: (user, password) => dispatch(login(user, password)) })
@@ -55,8 +54,6 @@ export default class LoginScreen extends Component {
         }
     }
 
-
-
     _handleUserChange = (user) => this.setState({user})
 
     _handlePasswordChange = (password) => this.setState({password})
@@ -75,13 +72,13 @@ export default class LoginScreen extends Component {
 
     render = () => {
         const { user, password, remember } = this.state
-        const { inProgress } = this.props.session
+        const { isLogging } = this.props.session
 
         return (
             <LoginComponent
                 user={user}
                 password={password}
-                disabled={inProgress}
+                disabled={isLogging}
                 remember={remember}
                 changeUser={this._handleUserChange}
                 changePassword={this._handlePasswordChange}

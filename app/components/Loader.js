@@ -6,7 +6,7 @@ import { Metrics } from '../theme'
 export default class Loader extends Component {
     render () {
         return (
-            <View>
+            <View style={{flex: 1}}>
                 { this.props.children }
                 {
                     this.props.isLoading &&
