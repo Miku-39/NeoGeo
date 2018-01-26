@@ -20,7 +20,6 @@ export const loadCredentials = async () => {
 
         const user = await AsyncStorage.getItem('@bcmobileapp:user')
         const password = await AsyncStorage.getItem('@bcmobileapp:password')
-console.log('user', user)
         return { remember: true, user, password }
     } catch (error) {
         console.warn('error occured while retrieving user info', error)

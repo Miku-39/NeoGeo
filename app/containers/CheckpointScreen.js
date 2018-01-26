@@ -32,10 +32,10 @@ export default class CheckpointScreen extends Component {
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
                     <TouchableOpacity onPress={() => headerButtonsHandler.refresh()}>
-                        <MaterialIcons name='autorenew' size={25} color='white' />
+                        <MaterialIcons name='autorenew' size={28} color='white' />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{marginLeft: 7, marginRight: 10}} onPress={() => headerButtonsHandler.search()}>
-                        <MaterialIcons name='search' size={25} color='white' />
+                    <TouchableOpacity style={{marginLeft: 14, marginRight: 10}} onPress={() => headerButtonsHandler.search()}>
+                        <MaterialIcons name='search' size={28} color='white' />
                     </TouchableOpacity>
                 </View>
             )
@@ -56,7 +56,7 @@ export default class CheckpointScreen extends Component {
 
     componentWillReceiveProps (nextProps) {
         const { items } = nextProps.tickets
-        this.setState({items})
+        this.setState({ items: items.slice(0, 50) })
 
         const { updated } = nextProps.ticket
         if (updated) {
@@ -114,12 +114,12 @@ export default class CheckpointScreen extends Component {
                     <SearchBar
                         lightTheme
                         clearIcon={{color: '#86939e', name: 'close'}}
-                        inputStyle={{backgroundColor: 'white', fontSize: 16}}
+                        inputStyle={{backgroundColor: 'white', fontSize: 20}}
                         containerStyle={{backgroundColor: '#627ab4', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
                         onChangeText={this._handleSearchTextChanged}
                         onClearText={this._handleHideSearchBarClick}
                         keyboardType='numeric'
-                        placeholder='Введите что-нибудь...' />
+                        placeholder='Поиск...' />
                 }
             
                 <Loader isLoading={isFetching}>
