@@ -84,12 +84,14 @@ export default class CheckpointScreen extends Component {
     
     _handleHideSearchBarClick = () => {
         this.setState({searchBarIsShown: false})
+        this.handleSearch()
         Keyboard.dismiss()    
     }
     
-    _handleSearchTextChanged = (event) => {
+    handleSubmitEditing = (event) => this.handleSearch(event.nativeEvent.text)
+
+    handleSearch = text => {
         const { items } = this.props.tickets
-        const text = event.nativeEvent.text
         
         let data
         if (text) {
@@ -102,6 +104,7 @@ export default class CheckpointScreen extends Component {
     }
 
     handleChangeStatus = (item) => {
+        console.log('item', item)
         if (item.status.id === '421575460000')
             item.status = { id: WENT_STATUS_ID }
         else item.status = { id: CAME_STATUS_ID }
@@ -122,7 +125,7 @@ export default class CheckpointScreen extends Component {
                         clearIcon={{color: '#86939e', name: 'close'}}
                         inputStyle={{backgroundColor: 'white', fontSize: 20}}
                         containerStyle={{backgroundColor: '#627ab4', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
-                        onSubmitEditing={this._handleSearchTextChanged}
+                        onSubmitEditing={this.handleSubmitEditing}
                         onClearText={this._handleHideSearchBarClick}
                         keyboardType='numeric'
                         placeholder='Поиск...' />
@@ -132,7 +135,7 @@ export default class CheckpointScreen extends Component {
                     <TicketsList 
                         ref={list => this.list = list}
                         items={items}
-                        handleSwipeoutAction={this.handleChangeStatus} />
+                        handleAction={this.handleChangeStatus} />
                 </Loader>
             </View>
         )
