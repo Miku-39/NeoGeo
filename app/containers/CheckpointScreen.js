@@ -44,7 +44,6 @@ export default class CheckpointScreen extends Component {
 
     state = {
         items: [],
-        filter: null,
         searchBarIsShown: false
     }
 
@@ -55,8 +54,11 @@ export default class CheckpointScreen extends Component {
     }
 
     componentWillReceiveProps (nextProps) {
-        const { items } = nextProps.tickets
+        const { items, fetched } = nextProps.tickets
         this.setState({ items: items.slice(0, 50) })
+
+        if (fetched)
+            this.list.reloadData()
 
         const { updated } = nextProps.ticket
         if (updated) {
@@ -85,9 +87,18 @@ export default class CheckpointScreen extends Component {
         Keyboard.dismiss()    
     }
     
-    _handleSearchTextChanged = (text) => {
-        const filter = text.toLowerCase()
-        this.setState({filter})
+    _handleSearchTextChanged = (event) => {
+        const { items } = this.props.tickets
+        const text = event.nativeEvent.text
+        
+        let data
+        if (text) {
+            data = items.filter(item => item.carNumber && item.carNumber.includes(text))
+        } else {
+            data = items.slice(0, 50)
+        }
+
+        this.setState({items: data}, this.list.reloadData)
     }
 
     handleChangeStatus = (item) => {
@@ -99,13 +110,8 @@ export default class CheckpointScreen extends Component {
     }
 
     render() {
-        const { items, searchBarIsShown, filter } = this.state
+        const { items, searchBarIsShown } = this.state
         const { isFetching } = this.props.tickets
-        
-
-        const filtered = filter ? 
-            items.filter((item) => item.carNumber && item.carNumber.toLowerCase().includes(filter))
-            : items
 
         return (
             <View style={{flex: 1}}>
@@ -116,7 +122,7 @@ export default class CheckpointScreen extends Component {
                         clearIcon={{color: '#86939e', name: 'close'}}
                         inputStyle={{backgroundColor: 'white', fontSize: 20}}
                         containerStyle={{backgroundColor: '#627ab4', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
-                        onChangeText={this._handleSearchTextChanged}
+                        onSubmitEditing={this._handleSearchTextChanged}
                         onClearText={this._handleHideSearchBarClick}
                         keyboardType='numeric'
                         placeholder='Поиск...' />
@@ -124,7 +130,8 @@ export default class CheckpointScreen extends Component {
             
                 <Loader isLoading={isFetching}>
                     <TicketsList 
-                        items={filtered}
+                        ref={list => this.list = list}
+                        items={items}
                         handleSwipeoutAction={this.handleChangeStatus} />
                 </Loader>
             </View>

@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import { Provider } from 'react-redux'
 import { StackNavigator } from 'react-navigation'
+import { SafeAreaView } from 'react-navigation';
 
 import store from './middleware/redux'
 import LoginScreen from './containers/LoginScreen'
@@ -16,34 +17,38 @@ import api from './middleware/api'
 import { Metrics } from './theme'
 
 
+if (Platform.OS === 'android') {
+    SafeAreaView.setStatusBarHeight(0);
+}
+
 const styles = StyleSheet.create({
-  back: { 
-    backgroundColor: '#627ab4'
-  }, 
-  title: { color: 'white' }
+    back: { 
+        backgroundColor: '#627ab4'
+    }, 
+    title: { color: 'white' }
 })
 
 const Navigation = StackNavigator({
-  Login: { screen: LoginScreen, navigationOptions: { header: null } }, 
-  Checkpoint: { screen: CheckpointScreen },
-  //Bill: { screen: BillScreen },
-  //Document: { screen: DocumentScreen }
+    Login: { screen: LoginScreen, navigationOptions: { header: null } }, 
+    Checkpoint: { screen: CheckpointScreen },
+    //Bill: { screen: BillScreen },
+    //Document: { screen: DocumentScreen }
 }, {
-  initialRouteName: 'Login',
-  navigationOptions: {
-    headerStyle: styles.back,
-    headerTitleStyle: styles.title,
-    headerTintColor: 'white'
-  }
+    initialRouteName: 'Login',
+    navigationOptions: {
+        headerStyle: styles.back,
+        headerTitleStyle: styles.title,
+        headerTintColor: 'white'
+    }
 })
 
 export default class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Navigation />
-      </Provider>
-    )
-  }
+    render() {
+        return (
+            <Provider store={store}>
+                <Navigation />
+            </Provider>
+        )
+    }
 }
 

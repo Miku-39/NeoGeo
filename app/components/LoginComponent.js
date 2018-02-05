@@ -8,7 +8,8 @@ import {
   Image,
   Button,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
+  KeyboardAvoidingView
 } from 'react-native'
 
 import { CheckBox } from 'react-native-elements'
@@ -18,95 +19,97 @@ import { Colors, Images, Metrics } from '../theme'
 
 
 class LoginComponent extends Component {
-  render() {
-    return (
-      <View style={styles.screenContainer}>
-        <View style={styles.logoContainer}>
-          <Image source={Images.logo} resizeMode='contain' style={styles.logo} />
-        </View>
+    render() {
+        return (
+            <View style={styles.screenContainer}>
+                <View style={styles.logoContainer}>
+                    <Image source={Images.logo} resizeMode='contain' style={styles.logo} />
+                </View>
 
-        <View style={styles.contentContainer}>
-          <View style={styles.inputsContainer}>
-            <View style={styles.inputFieldContainer}>
+                <View style={styles.contentContainer}>
+                    <KeyboardAvoidingView behavior='padding' style={styles.inputsContainer}>
+                        <View style={styles.inputFieldContainer}>
 
-              <View style={styles.iconContainer}>
-                <MaterialIcons name='person' size={28} color='gray' />
-              </View>
+                            <View style={styles.iconContainer}>
+                                <MaterialIcons name='person' size={28} color='gray' />
+                            </View>
 
-              <View style={styles.verticalDivider}></View>
+                            <View style={styles.verticalDivider}></View>
 
-              <TextInput
-                style={styles.input}
-                onChange={ (e) => this.props.changeUser(e.nativeEvent.text) }
-                autoCapitalize='none'
-                placeholder='Введите имя пользователя'
-                value={this.props.user}
-                disabled={this.props.disabled}
-                autoCorrect={false}
-                underlineColorAndroid='transparent' />
+                            <TextInput
+                                style={styles.input}
+                                onChange={ (e) => this.props.changeUser(e.nativeEvent.text) }
+                                autoCapitalize='none'
+                                autoCorrect={false}
+                                spellCheck={false}
+                                placeholder='Введите имя пользователя'
+                                value={this.props.user}
+                                disabled={this.props.disabled}
+                                autoCorrect={false}
+                                underlineColorAndroid='transparent' />
 
+                        </View>
+
+                        <View style={styles.horizontalDivider}></View>
+
+                        <View style={styles.inputFieldContainer}>
+
+                            <View style={styles.iconContainer}>
+                                <MaterialIcons name='lock' size={26} color='gray' />
+                            </View>
+
+                            <View style={styles.verticalDivider}></View>
+
+                            <TextInput
+                                style={styles.input}
+                                onChange={ (e) => this.props.changePassword(e.nativeEvent.text) }
+                                autoCapitalize="none"
+                                placeholder="Введите пароль"
+                                autoCorrect={false}
+                                value={this.props.password}
+                                disabled={this.props.disabled}
+                                secureTextEntry={true}
+                                underlineColorAndroid='transparent' />
+
+                        </View>
+
+                        <TouchableOpacity style={styles.forgotContainer}>
+                            <Text style={styles.forgotText}>Забыли пароль?</Text>
+                        </TouchableOpacity>
+                    </KeyboardAvoidingView>
+
+                    {
+                        this.props.disabled ? 
+                        <View style={{alignSelf: 'center'}}>
+                            <ActivityIndicator size="large" color='#627ab4' />
+                        </View> : null
+                    }
+
+                    <View style={styles.enterContainer}>
+                        <TouchableOpacity onPress={() => {
+                            Keyboard.dismiss()
+                            this.props.logIn()
+                        }}>
+                            <View style={styles.enterButton}>
+                                <Text style={styles.enterText}>Войти</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <CheckBox
+                            title='Запомнить меня'
+                            onPress={this.props.changeRemember}
+                            containerStyle={styles.checkboxContainer}
+                            textStyle={styles.checkboxText}
+                            checkedColor='black'
+                            checked={this.props.remember}
+                        />
+
+                    </View>
+
+                </View>
             </View>
-
-            <View style={styles.horizontalDivider}></View>
-
-            <View style={styles.inputFieldContainer}>
-
-              <View style={styles.iconContainer}>
-                <MaterialIcons name='lock' size={26} color='gray' />
-              </View>
-
-              <View style={styles.verticalDivider}></View>
-
-              <TextInput
-                style={styles.input}
-                onChange={ (e) => this.props.changePassword(e.nativeEvent.text) }
-                autoCapitalize="none"
-                placeholder="Введите пароль"
-                autoCorrect={false}
-                value={this.props.password}
-                disabled={this.props.disabled}
-                secureTextEntry={true}
-                underlineColorAndroid='transparent' />
-
-            </View>
-
-            <TouchableOpacity style={styles.forgotContainer}>
-              <Text style={styles.forgotText}>Забыли пароль?</Text>
-            </TouchableOpacity>
-          </View>
-
-          {
-            this.props.disabled ? 
-              <View style={{alignSelf: 'center'}}>
-                <ActivityIndicator size="large" color='#627ab4' />
-              </View> : null
-          }
-
-          <View style={styles.enterContainer}>
-            <TouchableOpacity onPress={() => {
-              Keyboard.dismiss()
-              this.props.logIn()
-            }}>
-              <View style={styles.enterButton}>
-                <Text style={styles.enterText}>Войти</Text>
-              </View>
-            </TouchableOpacity>
-
-            <CheckBox
-              title='Запомнить меня'
-              onPress={this.props.changeRemember}
-              containerStyle={styles.checkboxContainer}
-              textStyle={styles.checkboxText}
-              checkedColor='black'
-              checked={this.props.remember}
-            />
-
-          </View>
-
-        </View>
-      </View>
-    )
-  }
+        )
+    }
 }
 
 export default LoginComponent

@@ -12,8 +12,8 @@ export default class Loader extends Component {
                     this.props.isLoading &&
                     <View style={styles.dialogContainer}>
                         <View style={styles.dialog}>
-                            <ActivityIndicator size='large' />
-                            <Text style={{marginRight: 10}}>Обновление заявок</Text>
+                            <ActivityIndicator color='white' size='large' />
+                            <Text style={{marginRight: 10, color: 'white'}}>Обновление заявок</Text>
                         </View>
                     </View>
                 }
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: 210, 
         height: 50, 
-        backgroundColor: 'rgba(0,0,0,0.1)', 
+        backgroundColor: '#627ab4', 
         borderRadius: 30,
     }
 })
