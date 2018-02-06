@@ -5,21 +5,18 @@ import {
 } from 'react-native'
 import { Provider } from 'react-redux'
 import { StackNavigator } from 'react-navigation'
-import { SafeAreaView } from 'react-navigation';
 
 import store from './middleware/redux'
 import LoginScreen from './containers/LoginScreen'
 import CheckpointScreen from './containers/CheckpointScreen'
-//import BillScreen from './containers/BillScreen'
-//import DocumentScreen from './containers/DocumentScreen'
+import MainScreen from './containers/MainScreen'
+import TicketScreen from './containers/TicketScreen'
+import TicketsScreen from './containers/TicketsScreen'
+
 
 import api from './middleware/api'
 import { Metrics } from './theme'
 
-
-if (Platform.OS === 'android') {
-    SafeAreaView.setStatusBarHeight(0);
-}
 
 const styles = StyleSheet.create({
     back: { 
@@ -31,8 +28,9 @@ const styles = StyleSheet.create({
 const Navigation = StackNavigator({
     Login: { screen: LoginScreen, navigationOptions: { header: null } }, 
     Checkpoint: { screen: CheckpointScreen },
-    //Bill: { screen: BillScreen },
-    //Document: { screen: DocumentScreen }
+    Main: { screen: MainScreen },
+    Ticket: { screen: TicketScreen },
+    Tickets: { screen: TicketsScreen },
 }, {
     initialRouteName: 'Login',
     navigationOptions: {

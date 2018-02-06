@@ -2,50 +2,66 @@ import React from 'react'
 import { 
     View,
     Text,
-    TouchableOpacity,
     FlatList,
     StyleSheet
 } from 'react-native'
 import { Button } from 'react-native-elements'
-import { LargeList } from 'react-native-largelist'
+import { MaterialIcons } from '@expo/vector-icons'
 
-import { Colors } from '../theme'
-import TicketsListRow from './TicketsListRow'
-import SwipeoutElement from './SwipeoutElement'
+import { Images, Colors } from '../theme'
 
+
+const extractKey = ({id}) => id
+const status2colors = {
+    null: 'gray',
+    '12884953000': '#00FFFF',//Принята
+    '421575460000': '#FF99CC',//На территор...
+    '421575453000': '#008000',//Выполнена
+    '421575459000': '#993366',//Отклонена
+    '4285215000': '#CCFFFF',//Создана
+    '2804833189000': '#FF0000',//Повторная
+    '4285216000': '#808080',//Закрыта
+}
 
 export default class TicketsList extends React.PureComponent {
-    reloadData = () => this.list.reloadData()
-
-    handleAction = (item) => this.props.handleAction(item)
-
-    renderElement = (section, row) => {
-        const item = this.props.items[row]
+    renderItem = ({item}) => {
         return (
-            <SwipeoutElement item={item} handleAction={this.handleAction} />
-        )
-    }
+            <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', margin: 1, borderRadius: 5}}>
+                <View style={{width: 5, marginTop: 8, marginBottom: 10, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
+                <View style={{flexDirection: 'column', marginLeft: 8, marginTop: 4, marginBottom: 10}}>
+                    <Text style={{fontSize: 18, color: 'black'}}>
+                        { item.visitorFullName || 'ФИО не указано' }
+                    </Text>
+                    
+                    {
+                        (item.carModelText || item.carNumber) ?
+                            <Text style={{fontSize: 14, color: '#767878'}}>
+                                { `${item.carNumber}   ${item.carModelText}` }
+                            </Text>
+                            : null
+                    }
 
-    renderCell = (section, row) => {
-        const item = this.props.items[row]
-        return (
-            <TicketsListRow item={item} />
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{fontSize: 10, color: status2colors[item.status && item.status.id], fontStyle: 'italic', marginRight: 5}}>
+                            { item.status ? item.status.name : '' }
+                        </Text>
+                        <Text style={{fontSize: 10, color: '#767878', fontStyle: 'italic'}}>
+                            { `№ ${item.number} ${item.visitDate ? 'от' + item.visitDate.split('T')[0] : ''}` }
+                        </Text>
+                    </View>
+                </View>
+            </View>
         )
     }
 
     render() {
         return (
-            <LargeList
-                style={{flex: 1}}
-                bounces={true}
-                ref={list => this.list = list}
-                numberOfRowsInSection={() => this.props.items.length}
-                renderCell={this.renderCell}
-                heightForCell={() => 58}
-                renderRightWhenSwipeOut={this.renderElement}
-                widthForRightWhenSwipeOut={() => 80}
-                colorForSwipeOutBgColor={() => 'white'}
-            />
+            <FlatList
+                style={{flex: 1, backgroundColor: Colors.backgroundColor}}
+                data={this.props.items}
+                renderItem={this.renderItem}
+                keyExtractor={extractKey} />
+            
         )
     }
 }

@@ -37,12 +37,12 @@ export default class LoginScreen extends Component {
             //OneSignal.configure({})
             //OneSignal.sendTag('userId', userId)
 
-            const route = roles.includes('checkpoint') ? 'Checkpoint' : 'Main' 
+            const route = roles.includes('mobileCheckpoint') ? 'Checkpoint' : 'Main' 
             
             const resetAction = NavigationActions.reset({
                 index: 0,
                 actions: [
-                    NavigationActions.navigate({ routeName: route})
+                    NavigationActions.navigate({ routeName: route })
                 ],
                 key: null
             })

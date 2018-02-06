@@ -13,7 +13,7 @@ export default class Loader extends Component {
                     <View style={styles.dialogContainer}>
                         <View style={styles.dialog}>
                             <ActivityIndicator color='white' size='large' />
-                            <Text style={{marginRight: 10, color: 'white'}}>Обновление заявок</Text>
+                            <Text style={{marginRight: 10, color: 'white'}}>{this.props.message}</Text>
                         </View>
                     </View>
                 }

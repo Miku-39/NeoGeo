@@ -42,11 +42,27 @@ const login = (user, password) =>  {
 const authorize = () => instance.get('/vNext/v1/users/current')
 const setAuthHeader = (token) => instance.defaults.headers.authorization = `Bearer ${token}`
 
-const fetchTickets = (userId) => instance.get(`/vnext/v1/requests?orderBy=carNumber&filters=RequestsForCheckpoint,CurrentDayRequests&pageSize=500&pageNumber=1`)
+const fetchTicketsForCheckpoint = userId => instance.get(`/vnext/v1/requests?orderBy=carNumber&filters=RequestsForCheckpoint,CurrentDayRequests&pageSize=500&pageNumber=1`)
+
+const fetchAllTickets = companyId => {
+    const conf = {
+        params: {
+            OrderBy: 'ActualCreationDate desc',
+            filterBy: `company.Id="${companyId}"`,
+            pageSize: 500,
+            pageNumber: 1
+        }
+    }
+
+    return instance.get('/vNext/v1/requests', conf).catch(onError)
+}
+
 const updateTicketStatus = (ticket) => instance.patch(`/vnext/v1/requests/${ticket.id}`, {status: ticket.status})
 
+const addTicket = (ticket) => instance.post('/vNext/v1/requests', ticket).catch(onError)
 
-export default { login, authorize, setAuthHeader, fetchTickets, updateTicketStatus }
+
+export default { login, authorize, setAuthHeader, fetchTicketsForCheckpoint, fetchAllTickets, updateTicketStatus, addTicket }
 
 
 

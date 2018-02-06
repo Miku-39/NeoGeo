@@ -7,7 +7,7 @@
       "backgroundColor": "#627AB4",
       "barStyle": "light-content"
     },
-    "version": "1.3.0",
+    "version": "1.4.0",
     "slug": "claris-business-centers-kpp",
     "ios": {
       "bundleIdentifier": "ru.altsoft.saas.cpp"

@@ -9,7 +9,8 @@ import {
   Button,
   TouchableOpacity,
   Keyboard,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native'
 
 import { CheckBox } from 'react-native-elements'
@@ -20,6 +21,7 @@ import { Colors, Images, Metrics } from '../theme'
 
 class LoginComponent extends Component {
     render() {
+        const keyboardVerticalOffset = Platform.OS === 'ios' ? 50 : 0
         return (
             <View style={styles.screenContainer}>
                 <View style={styles.logoContainer}>
@@ -27,7 +29,7 @@ class LoginComponent extends Component {
                 </View>
 
                 <View style={styles.contentContainer}>
-                    <KeyboardAvoidingView behavior='padding' style={styles.inputsContainer}>
+                    <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={keyboardVerticalOffset} style={styles.inputsContainer}>
                         <View style={styles.inputFieldContainer}>
 
                             <View style={styles.iconContainer}>

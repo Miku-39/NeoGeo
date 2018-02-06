@@ -27,7 +27,7 @@ const logger = createLogger({
 
 const sagaMiddleware = createSagaMiddleware()
 //const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)))
-const middlewares = [sagaMiddleware]//, logger]
+const middlewares = [sagaMiddleware, logger]
 const store = createStore(rootReducer, applyMiddleware(...middlewares))
 
 sagaMiddleware.run(saga)
