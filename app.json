@@ -7,16 +7,16 @@
       "backgroundColor": "#627AB4",
       "barStyle": "light-content"
     },
-    "version": "2.0.3",
+    "version": "2.0.4",
     "slug": "claris-business-centers",
     "ios": {
       "bundleIdentifier": "ru.altsoft.saas.bcm",
       "icon": "./app/theme/images/appstorelogo.png",
-      "buildNumber": "2.0.3"
+      "buildNumber": "2.0.4"
     },
     "android": {
       "package": "ru.altsoft.saas.bcm",
-      "versionCode": 2
+      "versionCode": 3
     }
   }
 }
