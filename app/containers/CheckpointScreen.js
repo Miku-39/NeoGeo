@@ -132,7 +132,7 @@ export default class CheckpointScreen extends Component {
                         placeholder='Поиск...' />
                 }
             
-                <Loader isLoading={isFetching}>
+                <Loader message='Обновление заявок' isLoading={isFetching}>
                     <TicketsList 
                         ref={list => this.list = list}
                         items={items}

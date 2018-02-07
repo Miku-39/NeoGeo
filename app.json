@@ -2,18 +2,21 @@
   "expo": {
     "sdkVersion": "23.0.0",
     "name": "Claris. Бизнес-центры",
+    "icon": "./app/theme/images/claris_service_desk-logo.png",
     "androidStatusBar": {
       "backgroundColor": "#627AB4",
       "barStyle": "light-content"
     },
-    "version": "2.0.1",
+    "version": "2.0.3",
     "slug": "claris-business-centers",
     "ios": {
       "bundleIdentifier": "ru.altsoft.saas.bcm",
-      "icon": "./app/theme/images/appstorelogo.png"
+      "icon": "./app/theme/images/appstorelogo.png",
+      "buildNumber": "2.0.3"
     },
     "android": {
-      "package": "ru.altsoft.saas.bcm"
+      "package": "ru.altsoft.saas.bcm",
+      "versionCode": 2
     }
   }
 }
