@@ -11,7 +11,7 @@ export default TicketScreen = props => {
     const { ticket, showCarFields } = props
 
     return (
-        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', backgroundColor: 'white'}}>
+        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
                 <Fumi
                     label={'ФИО посетителя'}

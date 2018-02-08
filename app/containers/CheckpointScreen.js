@@ -104,7 +104,6 @@ export default class CheckpointScreen extends Component {
     }
 
     handleChangeStatus = (item) => {
-        console.log('item', item)
         if (item.status.id === '421575460000')
             item.status = { id: WENT_STATUS_ID }
         else item.status = { id: CAME_STATUS_ID }

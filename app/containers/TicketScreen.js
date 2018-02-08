@@ -96,7 +96,6 @@ export default class TicketScreen extends Component {
 
     save = () => {
         const { ticket } = this.state
-        console.log('ticket', ticket)
         this.props.addTicket(ticket)
     }
 
