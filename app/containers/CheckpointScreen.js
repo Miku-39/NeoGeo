@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StatusBar, Alert, TouchableOpacity, Keyboard } from 'react-native'
+import { View, StatusBar, Alert, TouchableOpacity, Keyboard, Platform } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { SearchBar } from 'react-native-elements'
 import { connect } from 'react-redux'
@@ -88,7 +88,7 @@ export default class CheckpointScreen extends Component {
         Keyboard.dismiss()    
     }
     
-    handleSubmitEditing = (event) => this.handleSearch(event.nativeEvent.text)
+    handleSubmitEditing = event => this.handleSearch(event.nativeEvent.text)
 
     handleSearch = text => {
         const { items } = this.props.tickets
@@ -125,10 +125,12 @@ export default class CheckpointScreen extends Component {
                         clearIcon={{color: '#86939e', name: 'close'}}
                         inputStyle={{backgroundColor: 'white', fontSize: 20}}
                         containerStyle={{backgroundColor: '#627ab4', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
-                        onSubmitEditing={this.handleSubmitEditing}
+                        onSubmitEditing={this.handleSubmitEditing}                       
                         onClearText={this._handleHideSearchBarClick}
                         keyboardType='numeric'
-                        placeholder='Поиск...' />
+                        placeholder='Поиск...' 
+                        returnKeyType='done'
+                    />
                 }
             
                 <Loader message='Обновление заявок' isLoading={isFetching}>
