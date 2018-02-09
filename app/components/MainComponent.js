@@ -58,8 +58,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         width: '100%',
         height: '100%',
-        backgroundColor: Colors.backgroundColor,
-        paddingTop: Metrics.statusBarHeight
+        backgroundColor: Colors.backgroundColor
     },
     headerContainer: {
         height: 240, 
