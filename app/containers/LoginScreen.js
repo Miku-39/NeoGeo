@@ -27,18 +27,18 @@ export default class LoginScreen extends Component {
     componentWillReceiveProps = async (nextProps) => {
         const { logged, error, userId, roles } = nextProps.session
         const { dispatch } = this.props.navigation
-    
+
         if (logged) {
             const { remember, user, password } = this.state
-            
+
             if (remember)
-                await storeCredentials(user, password)      
-        
+                await storeCredentials(user, password)
+
             //OneSignal.configure({})
             //OneSignal.sendTag('userId', userId)
+            const checkpoint = roles.includes('mobileCheckpoint') || roles.includes('bolshevikSecurityChief');
+            const route =  checkpoint ? 'Checkpoint' : 'Main'
 
-            const route = roles.includes('mobileCheckpoint') ? 'Checkpoint' : 'Main' 
-            
             const resetAction = NavigationActions.reset({
                 index: 0,
                 actions: [

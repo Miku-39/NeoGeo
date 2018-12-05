@@ -10,7 +10,8 @@ import {
   TouchableOpacity,
   Keyboard,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  ImageBackground
 } from 'react-native'
 
 import { CheckBox } from 'react-native-elements'
@@ -23,6 +24,7 @@ class LoginComponent extends Component {
     render() {
         const keyboardVerticalOffset = Platform.OS === 'ios' ? 50 : 0
         return (
+          <ImageBackground source={Images.Background} style={styles.backgroundImage}>
             <View style={styles.screenContainer}>
                 <View style={styles.logoContainer}>
                     <Image source={Images.logo} resizeMode='contain' style={styles.logo} />
@@ -81,9 +83,9 @@ class LoginComponent extends Component {
                     </KeyboardAvoidingView>
 
                     {
-                        this.props.disabled ? 
+                        this.props.disabled ?
                         <View style={{alignSelf: 'center'}}>
-                            <ActivityIndicator size="large" color='#627ab4' />
+                            <ActivityIndicator size="large" color='#941b1b' />
                         </View> : null
                     }
 
@@ -102,7 +104,7 @@ class LoginComponent extends Component {
                             onPress={this.props.changeRemember}
                             containerStyle={styles.checkboxContainer}
                             textStyle={styles.checkboxText}
-                            checkedColor='black'
+                            checkedColor='white'
                             checked={this.props.remember}
                         />
 
@@ -110,6 +112,8 @@ class LoginComponent extends Component {
 
                 </View>
             </View>
+            </ImageBackground>
+
         )
     }
 }
@@ -117,23 +121,28 @@ class LoginComponent extends Component {
 export default LoginComponent
 
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ // стили всех элементов
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
+    // resizeMode: 'cover', // or 'stretch'
+  },
   screenContainer: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    height: '100%',
-    backgroundColor: Colors.backgroundColor
+    height: '100%'
   },
-  logoContainer: {
+  logoContainer: { //расположение логотипа
     width: '100%',
     height: '50%',
     justifyContent: 'center',
     alignItems: 'center'
   },
-  logo: {
-    width: 250,
+  logo: { //логотип
+    width: 200,
   },
   contentContainer: {
     height: '50%',
@@ -142,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch'
   },
 
-  inputsContainer: {
+  inputsContainer: { // заполняемое окно
     flexDirection: 'column',
     alignItems: 'center',
     width: Metrics.screenWidth
@@ -153,7 +162,8 @@ const styles = StyleSheet.create({
     width: '94%',
     height: 50,
     backgroundColor:'white',
-    borderRadius: 7
+    borderRadius: 7,
+    opacity: 0.9
   },
 
   iconContainer: {
@@ -188,20 +198,20 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     textAlign: 'right',
     paddingRight: 15,
-    color: 'gray'
+    color: 'white'
   },
 
   enterContainer: {
     alignItems: 'center'
   },
-  enterButton: {
+  enterButton: { // кнопка
     justifyContent: 'center',
-    backgroundColor: '#627ab4',
+    backgroundColor: '#941b1b',
     minWidth: 245,
     minHeight: 45,
     borderRadius: 30
   },
-  enterText: {
+  enterText: { // вводимый текст
     fontSize: 24,
     textAlign: 'center',
     color: 'white',
@@ -213,6 +223,7 @@ const styles = StyleSheet.create({
   },
   checkboxText: {
     fontSize: 14,
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    color: 'white'
   }
 });

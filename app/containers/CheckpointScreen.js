@@ -11,7 +11,7 @@ import { update, dismiss } from '../middleware/redux/actions/Ticket'
 import { getTickets, getTicket } from '../middleware/redux/selectors'
 import Loader from '../components/Loader'
 
-const headerButtonsHandler = { 
+const headerButtonsHandler = {
     refresh: () => null,
     search: () => null
 }
@@ -27,7 +27,7 @@ const WENT_STATUS_ID = '421575453000'
 )
 export default class CheckpointScreen extends Component {
     static navigationOptions = ({navigation}) => {
-        return ({ 
+        return ({
             title: 'КПП',
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
@@ -62,11 +62,11 @@ export default class CheckpointScreen extends Component {
 
         const { updated } = nextProps.ticket
         if (updated) {
-            Alert.alert( 'Внимание', 'Статус заявки успешно изменен', [ 
-                {text: 'Закрыть', onPress: () => { 
-                    this.props.dismiss() 
+            Alert.alert( 'Внимание', 'Статус заявки успешно изменен', [
+                {text: 'Закрыть', onPress: () => {
+                    this.props.dismiss()
                     this.props.fetch()
-                }} 
+                }}
             ])
         }
     }
@@ -81,21 +81,25 @@ export default class CheckpointScreen extends Component {
         if (!searchBarIsShown)
           this.setState({searchBarIsShown: true})
     }
-    
+
     _handleHideSearchBarClick = () => {
         this.setState({searchBarIsShown: false})
         this.handleSearch()
-        Keyboard.dismiss()    
+        Keyboard.dismiss()
     }
-    
+
     handleSubmitEditing = event => this.handleSearch(event.nativeEvent.text)
 
     handleSearch = text => {
         const { items } = this.props.tickets
-        
+
         let data
         if (text) {
-            data = items.filter(item => item.carNumber && item.carNumber.includes(text))
+            data = items.filter(item => item.carNumber && item.carNumber.toLowerCase().includes(text.toLowerCase())
+            || item.carModelText && item.carModelText.toLowerCase().includes(text.toLowerCase())
+            || item.visitorFullName && item.visitorFullName.toLowerCase().includes(text.toLowerCase())
+            || (item.number && item.number + '').toLowerCase().includes(text.toLowerCase())
+            || item.type.shortName && item.type.shortName.toLowerCase().includes(text.toLowerCase()))
         } else {
             data = items.slice(0, 50)
         }
@@ -119,22 +123,22 @@ export default class CheckpointScreen extends Component {
             <View style={{flex: 1}}>
                 <StatusBar barStyle='light-content' />
                 {
-                    searchBarIsShown && 
+                    searchBarIsShown &&
                     <SearchBar
                         lightTheme
                         clearIcon={{color: '#86939e', name: 'close'}}
                         inputStyle={{backgroundColor: 'white', fontSize: 20}}
-                        containerStyle={{backgroundColor: '#627ab4', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
-                        onSubmitEditing={this.handleSubmitEditing}                       
+                        containerStyle={{backgroundColor: '#941b1b', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
+                        onSubmitEditing={this.handleSubmitEditing}
                         onClearText={this._handleHideSearchBarClick}
-                        keyboardType='numeric'
-                        placeholder='Поиск...' 
+                        keyboardType='default'
+                        placeholder='Поиск...'
                         returnKeyType='done'
                     />
                 }
-            
+
                 <Loader message='Обновление заявок' isLoading={isFetching}>
-                    <TicketsList 
+                    <TicketsList
                         ref={list => this.list = list}
                         items={items}
                         handleAction={this.handleChangeStatus} />

@@ -99,7 +99,7 @@ export default class TicketsScreen extends Component {
                         lightTheme
                         clearIcon={{color: '#53565A', name: 'close'}}
                         inputStyle={{backgroundColor: 'white', fontSize: 20}}
-                        containerStyle={{backgroundColor: '#627ab4', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
+                        containerStyle={{backgroundColor: '#941b1b', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
                         onChangeText={this._handleSearchTextChanged}
                         onClearText={this._handleHideSearchBarClick}
                         placeholder='Поиск...' 

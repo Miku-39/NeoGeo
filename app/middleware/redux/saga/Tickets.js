@@ -9,11 +9,16 @@ function * fetchTicketsSaga() {
     yield put(isFetching())
     const store = yield select()
     const session = getSession(store)
-
+    var response
     try {
-        const response = session.roles.includes('mobileCheckpoint') ?
-            yield call(api.fetchTicketsForCheckpoint)
-            : yield call(api.fetchAllTickets, session.companyId)
+
+        if(session.roles.includes('bolshevikSecurityChief')){
+              response = yield call(api.fetchTicketsForSecurityChief)
+        } else {
+              response = session.roles.includes('mobileCheckpoint') ?
+              yield call(api.fetchTicketsForCheckpoint)
+              : yield call(api.fetchAllTickets, session.companyId)
+        }
 
         yield put(fetched(response.data))
     }

@@ -16,6 +16,7 @@ export default MainComponent = (props) => {
 
             <View style={styles.contentContainer}>
                 <View style={styles.topButtonsContainer}>
+
                     <TouchableOpacity onPress={() => { props.addVisitTicket() }}>
                         <View style={styles.leftButton}>
                             <Image resizeMode='contain' source={Images.businessman} style={styles.buttonImage} />
@@ -31,7 +32,9 @@ export default MainComponent = (props) => {
                             <Text style={styles.buttonLabel}>на въезд авто</Text>
                         </View>
                     </TouchableOpacity>
+
                 </View>
+
 
                 <View style={styles.bottomButtonsContainer}>
                     <TouchableOpacity onPress={() => { props.openTickets() }}>
@@ -48,6 +51,7 @@ export default MainComponent = (props) => {
                         </View>
                     </TouchableOpacity>
                 </View>
+                
             </View>
         </View>
     )
@@ -61,14 +65,14 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.backgroundColor
     },
     headerContainer: {
-        height: 240, 
-        width: '100%', 
-        flexDirection: 'column', 
+        height: 240,
+        width: '100%',
+        flexDirection: 'column',
         justifyContent: 'flex-end',
         overflow: 'hidden'
     },
     headerImage: {
-        width: '100%', 
+        width: '100%',
         resizeMode: 'stretch'
     },
     contentContainer: {
@@ -81,7 +85,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: 59,
-        backgroundColor: '#627ab4'
+        backgroundColor: '#941b1b'
     },
     menuIcon: {
         paddingLeft: 14,
@@ -147,4 +151,3 @@ const styles = StyleSheet.create({
         color: Colors.text,
     }
 })
-

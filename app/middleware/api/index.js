@@ -2,13 +2,13 @@ import axios from 'axios'
 import querystring from 'querystring'
 
 
-export const API_SERVER_URL = 'https://api.claris.su/main/'
+export const API_SERVER_URL = 'http://213.251.249.30:8090'
 //export const FILE_SERVER_URL = 'https://saas.claris.su/UserSettings/9323/Docs/'
 
 const conf = {
     baseURL: API_SERVER_URL,
     headers: { 'Cache-Control': 'no-cache' },
-    timeout: 15000 
+    timeout: 15000
 }
 
 const instance = axios.create(conf)
@@ -35,7 +35,7 @@ const onError = (error) => {
 const login = (user, password) =>  {
   const body = `grant_type=password&username=${user}&password=${password}`
   const conf = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }}
-  
+
   return instance.post('/token', body, conf).catch(onError)
 }
 
@@ -43,6 +43,7 @@ const authorize = () => instance.get('/vNext/v1/users/current')
 const setAuthHeader = (token) => instance.defaults.headers.authorization = `Bearer ${token}`
 
 const fetchTicketsForCheckpoint = userId => instance.get(`/vnext/v1/requests?orderBy=carNumber&filters=RequestsForCheckpoint,CurrentDayRequests&pageSize=500&pageNumber=1`)
+const fetchTicketsForSecurityChief = userId => instance.get(`/vNext/v1/requests?filters=RequestsForBolshevikSecurityChief,CurrentDayRequests&pageSize=500&pageNumber=1&orderBy=Number*-1`)
 
 const fetchAllTickets = companyId => {
     const conf = {
@@ -62,26 +63,4 @@ const updateTicketStatus = (ticket) => instance.patch(`/vnext/v1/requests/${tick
 const addTicket = (ticket) => instance.post('/vNext/v1/requests', ticket).catch(onError)
 
 
-export default { login, authorize, setAuthHeader, fetchTicketsForCheckpoint, fetchAllTickets, updateTicketStatus, addTicket }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default { login, authorize, setAuthHeader, fetchTicketsForCheckpoint, fetchTicketsForSecurityChief, fetchAllTickets, updateTicketStatus, addTicket }

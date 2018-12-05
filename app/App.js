@@ -19,14 +19,14 @@ import { Metrics } from './theme'
 
 
 const styles = StyleSheet.create({
-    back: { 
-        backgroundColor: '#627ab4'
-    }, 
+    back: {
+        backgroundColor: '#941b1b'
+    },
     title: { color: 'white' }
 })
 
 const Navigation = StackNavigator({
-    Login: { screen: LoginScreen, navigationOptions: { header: null } }, 
+    Login: { screen: LoginScreen, navigationOptions: { header: null } },
     Checkpoint: { screen: CheckpointScreen },
     Main: { screen: MainScreen },
     Ticket: { screen: TicketScreen },
@@ -49,4 +49,3 @@ export default class App extends Component {
         )
     }
 }
-

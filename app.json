@@ -1,18 +1,19 @@
 {
   "expo": {
-    "sdkVersion": "25.0.0",
-    "name": "Claris. Бизнес-центры",
+    "sdkVersion": "28.0.0",
+    "name": "Claris. Neo Geo",
     "icon": "./app/theme/images/claris_service_desk-logo.png",
-    "version": "2.0.7",
-    "slug": "claris-business-centers",
+    "version": "2.2",
+    "slug": "claris-neo-geo",
     "ios": {
       "bundleIdentifier": "ru.altsoft.saas.bcm",
       "icon": "./app/theme/images/appstorelogo2.png",
-      "buildNumber": "2.0.7"
+      "buildNumber": "2.2"
     },
     "android": {
       "package": "ru.altsoft.saas.bcm",
-      "versionCode": 6
-    }
+      "versionCode": 8
+    },
+    "description": ""
   }
 }

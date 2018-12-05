@@ -1,5 +1,5 @@
 import React from 'react'
-import { 
+import {
     View,
     Text,
     TouchableOpacity,
@@ -41,7 +41,7 @@ export default class TicketsList extends React.PureComponent {
                 ref={list => this.list = list}
                 numberOfRowsInSection={() => this.props.items.length}
                 renderCell={this.renderCell}
-                heightForCell={() => 71}
+                heightForCell={() => 83}
                 renderRightWhenSwipeOut={this.renderElement}
                 widthForRightWhenSwipeOut={() => 80}
                 colorForSwipeOutBgColor={() => 'white'}
@@ -52,11 +52,11 @@ export default class TicketsList extends React.PureComponent {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row', 
-        justifyContent: 'center', 
-        alignItems: 'stretch', 
-        width: '100%', 
-        height: '100%', 
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        width: '100%',
+        height: '100%',
         backgroundColor: Colors.backgroundColor
     },
     rowBack: {
