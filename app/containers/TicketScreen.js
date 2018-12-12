@@ -35,7 +35,7 @@ const headerButtonsHandler = { save: () => null }
 )
 export default class TicketScreen extends Component {
     static navigationOptions = ({navigation}) => {
-        return ({ 
+        return ({
             title: 'Новая заявка',
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
@@ -69,7 +69,7 @@ export default class TicketScreen extends Component {
 
         this.setState({ticket: ticket, showCarFields: showCarFields})
     }
-    
+
     componentDidMount() {
         headerButtonsHandler.save = this.save
     }
