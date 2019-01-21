@@ -1,5 +1,5 @@
 import React from 'react'
-import { 
+import {
     View,
     Text,
     FlatList,
@@ -20,7 +20,7 @@ const status2colors = {
     '421575459000': '#d12424',//Отклонена
     '4285215000': '#fd9419',//Создана
     '2804833189000': '#d12424',//Повторная
-    '4285216000': '#808080',//Закрыта 
+    '4285216000': '#808080',//Закрыта
 }
 
 export default class TicketsList extends React.PureComponent {
@@ -29,24 +29,24 @@ export default class TicketsList extends React.PureComponent {
             <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', margin: 1, borderRadius: 5}}>
                 <View style={{width: 5, marginTop: 8, marginBottom: 10, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
                 <View style={{flexDirection: 'column', marginLeft: 8, marginTop: 4, marginBottom: 10}}>
-                    <Text style={{fontSize: 18, color: 'black'}}>
+                    <Text style={{fontSize: 22, color: 'black', marginBottom: 5}}>
                         { item.visitorFullName || 'ФИО не указано' }
                     </Text>
-                    
+
                     {
                         (item.carModelText || item.carNumber) ?
-                            <Text style={{fontSize: 14, color: '#767878'}}>
+                            <Text style={{fontSize: 20, color: '#767878', marginBottom: 5}}>
                                 { `${item.carNumber}   ${item.carModelText}` }
                             </Text>
                             : null
                     }
 
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{fontSize: 10, color: status2colors[item.status && item.status.id], fontStyle: 'italic', marginRight: 5}}>
+                        <Text style={{fontSize: 16, color: status2colors[item.status && item.status.id], fontStyle: 'italic', marginRight: 5}}>
                             { item.status ? item.status.name : '' }
                         </Text>
-                        <Text style={{fontSize: 10, color: '#767878', fontStyle: 'italic'}}>
-                            { `№ ${item.number} ${item.visitDate ? 'от' + item.visitDate.split('T')[0] : ''}` }
+                        <Text style={{fontSize: 16, color: '#767878', fontStyle: 'italic'}}>
+                            { `№ ${item.number} ${item.visitDate ? 'от ' + item.visitDate.split('T')[0] : ''}` }
                         </Text>
                     </View>
                 </View>
@@ -61,18 +61,18 @@ export default class TicketsList extends React.PureComponent {
                 data={this.props.items}
                 renderItem={this.renderItem}
                 keyExtractor={extractKey} />
-            
+
         )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row', 
-        justifyContent: 'center', 
-        alignItems: 'stretch', 
-        width: '100%', 
-        height: '100%', 
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        width: '100%',
+        height: '100%',
         backgroundColor: Colors.backgroundColor
     },
     rowBack: {

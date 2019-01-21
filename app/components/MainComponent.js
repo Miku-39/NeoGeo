@@ -51,7 +51,7 @@ export default MainComponent = (props) => {
                         </View>
                     </TouchableOpacity>
                 </View>
-                
+
             </View>
         </View>
     )
@@ -102,13 +102,13 @@ const styles = StyleSheet.create({
     topButtonsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        margin: 14
+        margin: 10,
+        marginTop: 20
     },
     bottomButtonsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginLeft: 14,
-        marginRight: 14
+        margin: 10
     },
     leftButton: {
         flexDirection: 'column',
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: 158,
         height: 158,
-        marginRight: 14,
+        margin: 10,
         borderRadius: 15,
         backgroundColor: 'white'
     },
@@ -127,12 +127,13 @@ const styles = StyleSheet.create({
         width: 158,
         height: 158,
         borderRadius: 15,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        margin: 10
     },
     buttonImage: {
         width: 90,
         height: 90,
-        marginTop: 10
+        margin: 10
     },
     buttonLabel: {
         fontSize: 14
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingLeft: 10,
-        paddingRight: 7
+        paddingRight: 10
     },
     touchableLabel: {
         textAlign: 'center',

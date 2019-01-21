@@ -76,11 +76,16 @@ class LoginComponent extends Component {
                                 underlineColorAndroid='transparent' />
 
                         </View>
-
-                        <TouchableOpacity style={styles.forgotContainer}>
-                            <Text style={styles.forgotText}>Забыли пароль?</Text>
-                        </TouchableOpacity>
                     </KeyboardAvoidingView>
+
+                    <CheckBox
+                        title='Запомнить меня'
+                        onPress={this.props.changeRemember}
+                        containerStyle={styles.checkboxContainer}
+                        textStyle={styles.checkboxText}
+                        checkedColor='white'
+                        checked={this.props.remember}
+                    />
 
                     {
                         this.props.disabled ?
@@ -99,17 +104,7 @@ class LoginComponent extends Component {
                             </View>
                         </TouchableOpacity>
 
-                        <CheckBox
-                            title='Запомнить меня'
-                            onPress={this.props.changeRemember}
-                            containerStyle={styles.checkboxContainer}
-                            textStyle={styles.checkboxText}
-                            checkedColor='white'
-                            checked={this.props.remember}
-                        />
-
                     </View>
-
                 </View>
             </View>
             </ImageBackground>
@@ -133,19 +128,20 @@ const styles = StyleSheet.create({ // стили всех элементов
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    height: '100%'
+    height: '70%'
   },
   logoContainer: { //расположение логотипа
     width: '100%',
     height: '50%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    margin: 40
   },
   logo: { //логотип
     width: 200,
   },
   contentContainer: {
-    height: '50%',
+    height: '25%',
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'stretch'
@@ -189,20 +185,9 @@ const styles = StyleSheet.create({ // стили всех элементов
   horizontalDivider: {
     height: 5
   },
-
-  forgotContainer:{
-    alignSelf: 'flex-end'
-  },
-  forgotText: {
-    fontSize: 12,
-    fontStyle: 'italic',
-    textAlign: 'right',
-    paddingRight: 15,
-    color: 'white'
-  },
-
   enterContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 50
   },
   enterButton: { // кнопка
     justifyContent: 'center',
