@@ -35,7 +35,7 @@ const headerButtonsHandler = { save: () => null }
 )
 export default class TicketScreen extends Component {
     static navigationOptions = ({navigation}) => {
-        return ({ 
+        return ({
             title: 'Новая заявка',
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
@@ -47,14 +47,14 @@ export default class TicketScreen extends Component {
         })
     }
 
-    state = { ticket: null, showCarFields: false }
+    state = { ticket: null, showCarFields: false, showGoodsFields: false,
+       showServiceFields: false,ticketType: 'VISITOR'}
 
 
 
     componentWillMount() {
-        const { showCarFields } = this.props.navigation.state.params
+        const { showCarFields, showGoodsFields, showServiceFields, ticketType } = this.props.navigation.state.params
         const { employeeId, companyId } = this.props
-
         const ticket = {
             visitorFullName: '',
             carModelText: '',
@@ -63,13 +63,17 @@ export default class TicketScreen extends Component {
             visitDate: new Date(),
             author: employeeId,
             status: NEW_TICKET_STATUS_ID,
-            type: showCarFields ? CAR_TICKET_TYPE : VISITOR_TICKET_TYPE,
-            client: companyId
+            type: ticketType,
+            client: companyId,
+            goods: '',
+            measurementUnit: ''
         }
 
-        this.setState({ticket: ticket, showCarFields: showCarFields})
+        this.setState({ticket: ticket, showCarFields: showCarFields,
+           showGoodsFields: showGoodsFields, showServiceFields: showServiceFields,
+           ticketType: ticketType})
     }
-    
+
     componentDidMount() {
         headerButtonsHandler.save = this.save
     }
@@ -123,9 +127,24 @@ export default class TicketScreen extends Component {
         this.setState({ticket})
     }
 
+    updateGoodsName = text => {
+      const { ticket } = this.state
+      ticket.goods = text
+      this.setState({ticket})
+    }
+
+    updateMeasurementUnit = text => {
+      const { ticket } = this.state
+      ticket.measurementUnit = text
+      this.setState({ticket})
+    }
+
+    updateServiceReason = text => {
+
+    }
 
     render = () => {
-        const { ticket, showCarFields } = this.state
+        const { ticket, showCarFields, showGoodsFields, showServiceFields, ticketType } = this.state
         const { isAdding } = this.props
 
         return (
@@ -136,7 +155,13 @@ export default class TicketScreen extends Component {
                     updateCarModel={this.updateCarModel}
                     updateCarNumber={this.updateCarNumber}
                     updateVisitDate={this.updateVisitDate}
+                    updateGoodsName={this.updateGoodsName}
+                    updateMeasurementUnit={this.updateMeasurementUnit}
+                    updateServiceReason={this.updateServiceReason}
                     showCarFields={showCarFields}
+                    showGoodsFields={showGoodsFields}
+                    showServiceFields={showServiceFields}
+                    ticketType={ticketType}
                 />
             </Loader>
         )

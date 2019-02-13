@@ -15,43 +15,62 @@ export default MainComponent = (props) => {
             }
 
             <View style={styles.contentContainer}>
-                <View style={styles.topButtonsContainer}>
+                <View style={styles.ButtonsContainer}>
+                    <TouchableOpacity onPress={() => { props.openTickets() }}>
+                        <View style={styles.Button}>
+                            <Image resizeMode='contain' source={Images.list} style={styles.buttonImage}/>
+                            <Text style={styles.buttonLabel}>Наши заявки</Text>
+                        </View>
+                    </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { props.addVisitTicket() }}>
-                        <View style={styles.leftButton}>
+                        <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.businessman} style={styles.buttonImage} />
                             <Text style={styles.buttonLabel}>Новая заявка</Text>
                             <Text style={styles.buttonLabel}>на посещение</Text>
                         </View>
                     </TouchableOpacity>
 
+                </View>
+
+                <View style={styles.ButtonsContainer}>
                     <TouchableOpacity onPress={() => { props.addCarTicket() }}>
-                        <View style={styles.rightButton}>
+                        <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.car} style={styles.buttonImage} />
                             <Text style={styles.buttonLabel}>Новая заявка</Text>
                             <Text style={styles.buttonLabel}>на въезд авто</Text>
                         </View>
                     </TouchableOpacity>
 
-                </View>
-
-
-                <View style={styles.bottomButtonsContainer}>
-                    <TouchableOpacity onPress={() => { props.openTickets() }}>
-                        <View style={styles.leftButton}>
-                            <Image resizeMode='contain' source={Images.list} style={styles.buttonImage}/>
-                            <Text style={styles.buttonLabel}>Наши заявки</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => { props.openEvents() }}>
-                        <View style={styles.rightButton}>
-                            <Image resizeMode='contain' source={Images.ring} style={styles.buttonImage}/>
-                            <Text style={styles.buttonLabel}>События</Text>
+                    <TouchableOpacity onPress={() => { props.addServiceTicket() }}>
+                        <View style={styles.Button}>
+                            <Image resizeMode='contain' source={Images.wrench} style={styles.buttonImage} />
+                            <Text style={styles.buttonLabel}>Новая заявка</Text>
+                            <Text style={styles.buttonLabel}>в сервис</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
-                
+
+                <View style={styles.ButtonsContainer}>
+
+                    <TouchableOpacity onPress={() => { props.addGoodsArriveTicket() }}>
+                        <View style={styles.Button}>
+                            <Image resizeMode='contain' source={Images.box} style={styles.buttonImage} />
+                            <Text style={styles.buttonLabel}>Новая заявка</Text>
+                            <Text style={styles.buttonLabel}>на внос имущества</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => { props.addGoodsLeaveTicket() }}>
+                        <View style={styles.Button}>
+                            <Image resizeMode='contain' source={Images.box} style={styles.buttonImage} />
+                            <Text style={styles.buttonLabel}>Новая заявка</Text>
+                            <Text style={styles.buttonLabel}>на вынос имущества</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
+
             </View>
         </View>
     )
@@ -85,7 +104,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: 59,
-        backgroundColor: '#627ab4'
+        backgroundColor: '#941b1b'
     },
     menuIcon: {
         paddingLeft: 14,
@@ -99,40 +118,25 @@ const styles = StyleSheet.create({
         paddingRight: 4,
         color: 'white'
     },
-    topButtonsContainer: {
+    ButtonsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        margin: 14
+        margin: 10
     },
-    bottomButtonsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginLeft: 14,
-        marginRight: 14
-    },
-    leftButton: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 158,
-        height: 158,
-        marginRight: 14,
-        borderRadius: 15,
-        backgroundColor: 'white'
-    },
-    rightButton: {
+    Button: {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         width: 158,
         height: 158,
         borderRadius: 15,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        margin: 10
     },
     buttonImage: {
         width: 90,
         height: 90,
-        marginTop: 10
+        margin: 10
     },
     buttonLabel: {
         fontSize: 14
@@ -143,7 +147,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingLeft: 10,
-        paddingRight: 7
+        paddingRight: 10
     },
     touchableLabel: {
         textAlign: 'center',

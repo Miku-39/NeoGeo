@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Picker } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Fumi } from 'react-native-textinput-effects'
 import DatePicker from 'react-native-datepicker'
@@ -8,8 +8,11 @@ import { Images, Colors } from '../theme'
 
 
 export default TicketScreen = props => {
-    const { ticket, showCarFields } = props
-
+    const { ticket, showCarFields, showGoodsFields, showServiceFields, ticketType } = props
+    state = {user: ''}
+     updateUser = (user) => {
+        props.updateServiceReason
+     }
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
@@ -24,7 +27,7 @@ export default TicketScreen = props => {
                 />
 
                 {
-                    showCarFields && 
+                    showCarFields &&
                     <Fumi
                         label={'Марка автомобиля'}
                         iconClass={Icon}
@@ -48,8 +51,33 @@ export default TicketScreen = props => {
                         onChangeText={props.updateCarNumber}
                     />
                 }
+                {
+                    showGoodsFields &&
+                    <Fumi
+                        label={'Информация о грузе'}
+                        iconClass={Icon}
+                        iconName={'mode-edit'}
+                        iconColor={'#53565A'}
+                        iconSize={20}
+                        inputStyle={{ color: '#53565A' }}
+                        onChangeText={props.updateGoodsName}
+                    />
+                }
+                {
+                    showServiceFields &&
+                    <View>
+                        <Picker selectedValue = {this.state.user} onValueChange = {this.updateUser}>
+                           <Picker.Item label = "Steve" value = "steve" />
+                           <Picker.Item label = "Ellen" value = "ellen" />
+                           <Picker.Item label = "Maria" value = "maria" />
+                        </Picker>
+                        <Text style = {styles.text}>{this.state.user}</Text>
+                     </View>
 
-                
+                }
+
+
+
                 <View style={{marginTop: 10}}>
                     <Text style={{fontWeight: 'bold', color: '#53565A', fontSize: 16, alignSelf: 'center'}}>Дата посещения</Text>
 
@@ -81,3 +109,11 @@ export default TicketScreen = props => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+   text: {
+      fontSize: 30,
+      alignSelf: 'center',
+      color: 'red'
+   }
+})
