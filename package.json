@@ -1,5 +1,5 @@
 {
-  "name": "Claris.NeoGeo",
+  "name": "Claris.BusinessCenters",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
@@ -25,7 +25,7 @@
     "immutable": "^3.8.2",
     "querystring": "^0.2.0",
     "react": "16.2.0",
-    "react-native": "0.52.0",
+    "react-native": "^0.55.4",
     "react-native-awesome-alerts": "^1.0.8",
     "react-native-datepicker": "^1.6.0",
     "react-native-elements": "^0.19.0",

@@ -10,7 +10,7 @@ import { fetch } from '../middleware/redux/actions/Tickets'
 import { getTickets, getTicket } from '../middleware/redux/selectors'
 import Loader from '../components/Loader'
 
-const headerButtonsHandler = {
+const headerButtonsHandler = { 
     refresh: () => null,
     search: () => null
 }
@@ -26,7 +26,7 @@ const WENT_STATUS_ID = '421575453000'
 )
 export default class TicketsScreen extends Component {
     static navigationOptions = ({navigation}) => {
-        return ({
+        return ({ 
             title: 'Заявки',
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
@@ -67,12 +67,12 @@ export default class TicketsScreen extends Component {
         if (!searchBarIsShown)
           this.setState({searchBarIsShown: true})
     }
-
+    
     _handleHideSearchBarClick = () => {
         this.setState({searchBarIsShown: false})
-        Keyboard.dismiss()
+        Keyboard.dismiss()    
     }
-
+    
     _handleSearchTextChanged = (text) => {
         const filter = text.toLowerCase()
         const { items } = this.props.tickets
@@ -83,7 +83,7 @@ export default class TicketsScreen extends Component {
         } else {
             data = items
         }
-
+        
         this.setState({items: data})
     }
 
@@ -94,18 +94,18 @@ export default class TicketsScreen extends Component {
         return (
             <View style={{flex: 1}}>
                 {
-                    searchBarIsShown &&
+                    searchBarIsShown && 
                     <SearchBar
                         lightTheme
                         clearIcon={{color: '#53565A', name: 'close'}}
                         inputStyle={{backgroundColor: 'white', fontSize: 20}}
-                        containerStyle={{backgroundColor: '#941b1b', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
+                        containerStyle={{backgroundColor: '#627ab4', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
                         onChangeText={this._handleSearchTextChanged}
                         onClearText={this._handleHideSearchBarClick}
-                        placeholder='Поиск...'
+                        placeholder='Поиск...' 
                     />
                 }
-
+            
                 <Loader message='Обновление заявок' isLoading={isFetching}>
                     <TicketsList items={items} />
                 </Loader>

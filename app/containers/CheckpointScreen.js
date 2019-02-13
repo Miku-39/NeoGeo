@@ -128,7 +128,7 @@ export default class CheckpointScreen extends Component {
                         lightTheme
                         clearIcon={{color: '#86939e', name: 'close'}}
                         inputStyle={{backgroundColor: 'white', fontSize: 20}}
-                        containerStyle={{backgroundColor: '#941b1b', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
+                        containerStyle={{backgroundColor: '#627ab4', height: Metrics.navBarHeight, width: '100%', marginTop: -1}}
                         onSubmitEditing={this.handleSubmitEditing}
                         onClearText={this._handleHideSearchBarClick}
                         keyboardType='default'

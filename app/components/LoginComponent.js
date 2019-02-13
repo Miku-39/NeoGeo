@@ -10,8 +10,7 @@ import {
   TouchableOpacity,
   Keyboard,
   KeyboardAvoidingView,
-  Platform,
-  ImageBackground
+  Platform
 } from 'react-native'
 
 import { CheckBox } from 'react-native-elements'
@@ -24,7 +23,6 @@ class LoginComponent extends Component {
     render() {
         const keyboardVerticalOffset = Platform.OS === 'ios' ? 50 : 0
         return (
-          <ImageBackground source={Images.Background} style={styles.backgroundImage}>
             <View style={styles.screenContainer}>
                 <View style={styles.logoContainer}>
                     <Image source={Images.logo} resizeMode='contain' style={styles.logo} />
@@ -76,21 +74,16 @@ class LoginComponent extends Component {
                                 underlineColorAndroid='transparent' />
 
                         </View>
-                    </KeyboardAvoidingView>
 
-                    <CheckBox
-                        title='Запомнить меня'
-                        onPress={this.props.changeRemember}
-                        containerStyle={styles.checkboxContainer}
-                        textStyle={styles.checkboxText}
-                        checkedColor='white'
-                        checked={this.props.remember}
-                    />
+                        <TouchableOpacity style={styles.forgotContainer}>
+                            <Text style={styles.forgotText}>Забыли пароль?</Text>
+                        </TouchableOpacity>
+                    </KeyboardAvoidingView>
 
                     {
                         this.props.disabled ?
                         <View style={{alignSelf: 'center'}}>
-                            <ActivityIndicator size="large" color='#941b1b' />
+                            <ActivityIndicator size="large" color='#627ab4' />
                         </View> : null
                     }
 
@@ -104,11 +97,19 @@ class LoginComponent extends Component {
                             </View>
                         </TouchableOpacity>
 
+                        <CheckBox
+                            title='Запомнить меня'
+                            onPress={this.props.changeRemember}
+                            containerStyle={styles.checkboxContainer}
+                            textStyle={styles.checkboxText}
+                            checkedColor='black'
+                            checked={this.props.remember}
+                        />
+
                     </View>
+
                 </View>
             </View>
-            </ImageBackground>
-
         )
     }
 }
@@ -117,31 +118,25 @@ export default LoginComponent
 
 
 const styles = StyleSheet.create({ // стили всех элементов
-  backgroundImage: {
-    flex: 1,
-    width: null,
-    height: null
-    // resizeMode: 'cover', // or 'stretch'
-  },
   screenContainer: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    height: '70%'
+    height: '100%',
+    backgroundColor: Colors.backgroundColor
   },
   logoContainer: { //расположение логотипа
     width: '100%',
     height: '50%',
     justifyContent: 'center',
-    alignItems: 'center',
-    margin: 40
+    alignItems: 'center'
   },
   logo: { //логотип
-    width: 200,
+    width: 250,
   },
   contentContainer: {
-    height: '25%',
+    height: '50%',
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'stretch'
@@ -158,8 +153,7 @@ const styles = StyleSheet.create({ // стили всех элементов
     width: '94%',
     height: 50,
     backgroundColor:'white',
-    borderRadius: 7,
-    opacity: 0.9
+    borderRadius: 7
   },
 
   iconContainer: {
@@ -185,13 +179,24 @@ const styles = StyleSheet.create({ // стили всех элементов
   horizontalDivider: {
     height: 5
   },
+
+  forgotContainer:{
+    alignSelf: 'flex-end'
+  },
+  forgotText: {
+    fontSize: 12,
+    fontStyle: 'italic',
+    textAlign: 'right',
+    paddingRight: 15,
+    color: 'gray'
+  },
+
   enterContainer: {
-    alignItems: 'center',
-    marginBottom: 50
+    alignItems: 'center'
   },
   enterButton: { // кнопка
     justifyContent: 'center',
-    backgroundColor: '#941b1b',
+    backgroundColor: '#627ab4',
     minWidth: 245,
     minHeight: 45,
     borderRadius: 30
@@ -208,7 +213,6 @@ const styles = StyleSheet.create({ // стили всех элементов
   },
   checkboxText: {
     fontSize: 14,
-    fontWeight: 'normal',
-    color: 'white'
+    fontWeight: 'normal'
   }
 });

@@ -2,7 +2,7 @@ import axios from 'axios'
 import querystring from 'querystring'
 
 
-export const API_SERVER_URL = 'http://213.251.249.30:8090'
+export const API_SERVER_URL = 'https://api.claris.su/main/'
 //export const FILE_SERVER_URL = 'https://saas.claris.su/UserSettings/9323/Docs/'
 
 const conf = {
