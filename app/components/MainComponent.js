@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScrollView, View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { Images, Colors, Metrics } from '../theme'
@@ -7,7 +7,7 @@ import { Images, Colors, Metrics } from '../theme'
 
 export default MainComponent = (props) => {
     return (
-        <View style={styles.mainContainer}>
+        <ScrollView style={styles.mainContainer}>
             {
                 /*<View style={styles.headerContainer}>
                     <Image source={Images.zhukovHeader} style={styles.headerImage} />
@@ -72,7 +72,7 @@ export default MainComponent = (props) => {
                 </View>
 
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -103,8 +103,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        height: 59,
-        backgroundColor: '#941b1b'
+        height: 59
     },
     menuIcon: {
         paddingLeft: 14,

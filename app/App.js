@@ -20,7 +20,7 @@ import { Metrics } from './theme'
 
 const styles = StyleSheet.create({
     back: { 
-        backgroundColor: '#627ab4'
+        backgroundColor: '#941b1b'
     }, 
     title: { color: 'white' }
 })

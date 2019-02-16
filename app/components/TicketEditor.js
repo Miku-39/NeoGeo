@@ -9,10 +9,6 @@ import { Images, Colors } from '../theme'
 
 export default TicketScreen = props => {
     const { ticket, showCarFields, showGoodsFields, showServiceFields, ticketType } = props
-    state = {user: ''}
-     updateUser = (user) => {
-        props.updateServiceReason
-     }
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
@@ -44,7 +40,7 @@ export default TicketScreen = props => {
                     <Fumi
                         label={'Номер автомобиля'}
                         iconClass={Icon}
-                        iconName={'mode-edit'}
+                        iconName={'directions-car'}
                         iconColor={'#53565A'}
                         iconSize={20}
                         inputStyle={{ color: '#53565A' }}
@@ -52,27 +48,9 @@ export default TicketScreen = props => {
                     />
                 }
                 {
-                    showGoodsFields &&
-                    <Fumi
-                        label={'Информация о грузе'}
-                        iconClass={Icon}
-                        iconName={'mode-edit'}
-                        iconColor={'#53565A'}
-                        iconSize={20}
-                        inputStyle={{ color: '#53565A' }}
-                        onChangeText={props.updateGoodsName}
-                    />
-                }
-                {
                     showServiceFields &&
                     <View>
-                        <Picker selectedValue = {this.state.user} onValueChange = {this.updateUser}>
-                           <Picker.Item label = "Steve" value = "steve" />
-                           <Picker.Item label = "Ellen" value = "ellen" />
-                           <Picker.Item label = "Maria" value = "maria" />
-                        </Picker>
-                        <Text style = {styles.text}>{this.state.user}</Text>
-                     </View>
+                    </View>
 
                 }
 
@@ -84,11 +62,12 @@ export default TicketScreen = props => {
                     <DatePicker
                         style={{width: 200, alignSelf: 'center', marginTop: 5}}
                         date={ticket.visitDate}
-                        mode="date"
+                        mode={showCarFields ? "datetime" : "date"}
                         placeholder="Выберите дату"
-                        format="YYYY-MM-DD"
-                        minDate="2018-01-01"
-                        maxDate="2020-12-31"
+                        format={showCarFields ? "DD-MM HH:mm" : "DD-MM-YY"}
+                        minDate="2019-01-01"
+                        locale="ru-RU"
+                        maxDate="2025-12-31"
                         confirmBtnText="Подтвердить"
                         cancelBtnText="Отмена"
                         placeholder='Выберите дату посещения'
