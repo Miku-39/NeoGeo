@@ -1,14 +1,27 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Text, StyleSheet, Picker } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Fumi } from 'react-native-textinput-effects'
 import DatePicker from 'react-native-datepicker'
+import ReactNativePickerModule from 'react-native-picker-module'
 
 import { Images, Colors } from '../theme'
 
+export default class TicketScreen extends Component {
+  constructor(props) {
+     super(props);
+     this.state = {
+       selectedValue: null,
+       selectedParking: 'Парковка'
+     }
+  }
+  render () {
+    //const parkingsById = {this.props.carParkings.map(parking => {return parking.name})}
 
-export default TicketScreen = props => {
-    const { ticket, showCarFields, showGoodsFields, showServiceFields, ticketType } = props
+    const minDate = new Date()
+    const maxDate = new Date()
+    maxDate.setFullYear(minDate.getFullYear()+1)
+
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
@@ -19,11 +32,12 @@ export default TicketScreen = props => {
                     iconColor={'#53565A'}
                     iconSize={20}
                     inputStyle={{ color: '#53565A' }}
-                    onChangeText={props.updateVisitor}
+                    onChangeText={this.props.updateVisitor}
                 />
 
                 {
-                    showCarFields &&
+                    this.props.showCarFields &&
+                    <View>
                     <Fumi
                         label={'Марка автомобиля'}
                         iconClass={Icon}
@@ -31,12 +45,9 @@ export default TicketScreen = props => {
                         iconColor={'#53565A'}
                         iconSize={20}
                         inputStyle={{ color: '#53565A' }}
-                        onChangeText={props.updateCarModel}
+                        onChangeText={this.props.updateCarModel}
                     />
-                }
 
-                {
-                    showCarFields &&
                     <Fumi
                         label={'Номер автомобиля'}
                         iconClass={Icon}
@@ -44,14 +55,35 @@ export default TicketScreen = props => {
                         iconColor={'#53565A'}
                         iconSize={20}
                         inputStyle={{ color: '#53565A' }}
-                        onChangeText={props.updateCarNumber}
+                        onChangeText={this.props.updateCarNumber}
                     />
-                }
-                {
-                    showServiceFields &&
-                    <View>
-                    </View>
 
+                    <ReactNativePickerModule
+                        pickerRef={e => pickerRef = e}
+                        value={this.state.selectedValue}
+                        title={this.state.selectedParking}
+                        ios={{duration: 330, overlayColor: 'rgba(0,0,0,0.3)'}}
+                        cancelButton='Отмена'
+                        confirmButton='Выбрать'
+                        items={this.props.carParkings.map(parking => {return parking.name})}
+                        onValueChange={(value) => {
+                             this.setState({selectedValue: value })
+                        }}/>
+
+                    <TouchableOpacity onPress={() => {pickerRef.show()}} style={styles.picker}>
+                      <Text style={styles.pickerLabel}>Выберите парковку</Text>
+                    </TouchableOpacity>
+
+                    <Fumi
+                        label={'Место на парковке'}
+                        iconClass={Icon}
+                        iconName={'directions-car'}
+                        iconColor={'#53565A'}
+                        iconSize={20}
+                        inputStyle={{ color: '#53565A' }}
+                        onChangeText={this.props.updateCarNumber}
+                    />
+                    </View>
                 }
 
 
@@ -61,13 +93,13 @@ export default TicketScreen = props => {
 
                     <DatePicker
                         style={{width: 200, alignSelf: 'center', marginTop: 5}}
-                        date={ticket.visitDate}
-                        mode={showCarFields ? "datetime" : "date"}
+                        date={this.props.ticket.visitDate}
+                        mode={this.props.showCarFields ? "datetime" : "date"}
                         placeholder="Выберите дату"
-                        format={showCarFields ? "DD-MM HH:mm" : "DD-MM-YY"}
-                        minDate="2019-01-01"
+                        format={this.props.showCarFields ? "DD-MM HH:mm" : "DD-MM-YY"}
+                        minDate={minDate}
                         locale="ru-RU"
-                        maxDate="2025-12-31"
+                        maxDate={maxDate}
                         confirmBtnText="Подтвердить"
                         cancelBtnText="Отмена"
                         placeholder='Выберите дату посещения'
@@ -81,12 +113,13 @@ export default TicketScreen = props => {
                                 backgroundColor: '#C9C8C7'
                             }
                         }}
-                        onDateChange={props.updateVisitDate}
+                        onDateChange={this.props.updateVisitDate}
                     />
                 </View>
             </ScrollView>
         </View>
     )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -94,5 +127,18 @@ const styles = StyleSheet.create({
       fontSize: 30,
       alignSelf: 'center',
       color: 'red'
+   },
+   picker: {
+     backgroundColor: '#FFFFFF',
+     height: 60,
+     alignItems: 'center',
+     flexDirection: 'row'
+   },
+   pickerLabel: {
+     alignSelf: 'center',
+     color: '#53565A',
+     fontSize: 15,
+     fontWeight: 'bold',
+     marginLeft: 58
    }
 })

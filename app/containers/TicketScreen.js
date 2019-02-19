@@ -13,6 +13,9 @@ import Loader from '../components/Loader'
 import * as selectors from '../middleware/redux/selectors'
 import { add, dismiss } from '../middleware/redux/actions/Ticket'
 
+import { getSession } from '../middleware/redux/selectors'
+import { storeCredentials, loadCredentials } from '../middleware/utils/AsyncStorage'
+
 const NEW_TICKET_STATUS_ID = '4285215000';
 const VISITOR_TICKET_TYPE = '393629542000';
 const CAR_TICKET_TYPE = '393629546000';
@@ -26,7 +29,8 @@ const headerButtonsHandler = { save: () => null }
         companyId: selectors.getCompanyId(store),
         isAdding: selectors.getIsTicketAdding(store),
         added: selectors.getIsTicketAdded(store),
-        error: selectors.getIsTicketAddingFailed(store)
+        error: selectors.getIsTicketAddingFailed(store),
+        session: getSession(store)
     }),
     dispatch => ({
         addTicket: (ticket) => dispatch(add(ticket)),
@@ -46,15 +50,14 @@ export default class TicketScreen extends Component {
             )
         })
     }
-
     state = { ticket: null, showCarFields: false, showGoodsFields: false,
-       showServiceFields: false,ticketType: 'VISITOR'}
+       showServiceFields: false, ticketType: 'VISITOR', parking: "" }
 
 
 
     componentWillMount() {
         const { showCarFields, showGoodsFields, showServiceFields, ticketType } = this.props.navigation.state.params
-        const { employeeId, companyId } = this.props
+        const { employeeId, companyId, session } = this.props
         const ticket = {
             visitorFullName: '',
             carModelText: '',
@@ -65,13 +68,11 @@ export default class TicketScreen extends Component {
             status: NEW_TICKET_STATUS_ID,
             type: ticketType,
             client: companyId,
-            goods: '',
-            measurementUnit: ''
+            parking: { name: '', id: '' }
         }
-
         this.setState({ticket: ticket, showCarFields: showCarFields,
            showGoodsFields: showGoodsFields, showServiceFields: showServiceFields,
-           ticketType: ticketType})
+           ticketType: ticketType, session: session})
     }
 
     componentDidMount() {
@@ -127,24 +128,17 @@ export default class TicketScreen extends Component {
         this.setState({ticket})
     }
 
-    updateGoodsName = text => {
+    updateParking = value => {
       const { ticket } = this.state
-      ticket.goods = text
+      ticket.parking.id = value
+      this.setState({parking: value})
+      console.log(value)
       this.setState({ticket})
-    }
-
-    updateMeasurementUnit = text => {
-      const { ticket } = this.state
-      ticket.measurementUnit = text
-      this.setState({ticket})
-    }
-
-    updateServiceReason = text => {
-
     }
 
     render = () => {
-        const { ticket, showCarFields, showGoodsFields, showServiceFields, ticketType } = this.state
+        const { ticket, showCarFields, showGoodsFields, showServiceFields,
+           ticketType, session, selectedValue, selectedParking} = this.state
         const { isAdding } = this.props
 
         return (
@@ -155,13 +149,14 @@ export default class TicketScreen extends Component {
                     updateCarModel={this.updateCarModel}
                     updateCarNumber={this.updateCarNumber}
                     updateVisitDate={this.updateVisitDate}
-                    updateGoodsName={this.updateGoodsName}
-                    updateMeasurementUnit={this.updateMeasurementUnit}
-                    updateServiceReason={this.updateServiceReason}
+                    updateParking={this.updateParking}
                     showCarFields={showCarFields}
                     showGoodsFields={showGoodsFields}
                     showServiceFields={showServiceFields}
                     ticketType={ticketType}
+                    carParkings={session.carParkings}
+                    goodsParkings={session.goodsParkings}
+                    services={session.services}
                 />
             </Loader>
         )
