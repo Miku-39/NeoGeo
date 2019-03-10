@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScrollView, View, Image, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { Images, Colors, Metrics } from '../theme'
@@ -42,7 +42,7 @@ export default MainComponent = (props) => {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { props.addServiceTicket() }}>
+                    <TouchableOpacity onPress={() => {Alert.alert('В разработке')}}>
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.wrench} style={styles.buttonImage} />
                             <Text style={styles.buttonLabel}>Новая заявка</Text>
@@ -56,16 +56,16 @@ export default MainComponent = (props) => {
                     <TouchableOpacity onPress={() => { props.addGoodsArriveTicket() }}>
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.box} style={styles.buttonImage} />
-                            <Text style={styles.buttonLabel}>Новая заявка</Text>
-                            <Text style={styles.buttonLabel}>на внос имущества</Text>
+                            <Text style={styles.buttonLabel}>Новая заявка на</Text>
+                            <Text style={styles.buttonLabel}>внос имущества</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { props.addGoodsLeaveTicket() }}>
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.box} style={styles.buttonImage} />
-                            <Text style={styles.buttonLabel}>Новая заявка</Text>
-                            <Text style={styles.buttonLabel}>на вынос имущества</Text>
+                            <Text style={styles.buttonLabel}>Новая заявка на</Text>
+                            <Text style={styles.buttonLabel}>вынос имущества</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -126,8 +126,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: 158,
-        height: 158,
+        width: 165,
+        height: 165,
         borderRadius: 15,
         backgroundColor: 'white',
         margin: 10

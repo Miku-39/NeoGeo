@@ -83,7 +83,6 @@ export default class TicketsScreen extends Component {
         } else {
             data = items
         }
-
         this.setState({items: data})
     }
 

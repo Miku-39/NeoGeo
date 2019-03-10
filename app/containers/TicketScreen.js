@@ -15,10 +15,14 @@ import { add, dismiss } from '../middleware/redux/actions/Ticket'
 
 import { getSession } from '../middleware/redux/selectors'
 import { storeCredentials, loadCredentials } from '../middleware/utils/AsyncStorage'
-
+import { timeId, hourId } from '../containers/timeHour'
 const NEW_TICKET_STATUS_ID = '4285215000';
+
 const VISITOR_TICKET_TYPE = '393629542000';
 const CAR_TICKET_TYPE = '393629546000';
+const GOODS_IN_TICKET_TYPE = '393629549000';
+const GOODS_OUT_TICKET_TYPE = '421534163000';
+const SERVICE_TICKET_TYPE = '3724900074000';
 
 const headerButtonsHandler = { save: () => null }
 
@@ -50,28 +54,61 @@ export default class TicketScreen extends Component {
             )
         })
     }
-    state = { ticket: null, showCarFields: false, showGoodsFields: false,
-       showServiceFields: false, ticketType: 'VISITOR', parking: "" }
-
 
 
     componentWillMount() {
-        const { showCarFields, showGoodsFields, showServiceFields, ticketType } = this.props.navigation.state.params
+        const { showCarFields, showGoodsFields, ticketType } = this.props.navigation.state.params
         const { employeeId, companyId, session } = this.props
+        switch(ticketType) {
+          case 'VISITOR':
+              ticketTypeId = VISITOR_TICKET_TYPE;
+              break;
+          case 'CAR':
+              ticketTypeId = CAR_TICKET_TYPE;
+              break;
+          case 'GOODS_ARRIVE':
+              ticketTypeId = GOODS_IN_TICKET_TYPE;
+              break;
+          case 'GOODS_LEAVE':
+              ticketTypeId = GOODS_OUT_TICKET_TYPE;
+              break;
+          case 'SERVICE':
+              ticketTypeId = SERVICE_TICKET_TYPE;
+              break;
+        }
+        const nowDate = new Date();
+        const minDate = nowDate
+        minDate.setMinutes(minDate.getMinutes() + 5 - minDate.getMinutes() % 5)
+
+        ticketParkingType = ticketType == 'CAR' ? '3590481191000' : '3590077188000'
+        ticketParking = ticketType == 'CAR' ? session.carParkings[0].id : session.goodsParkings[0].id
+        if(ticketType == 'VISITOR' || ticketType == 'SERVICE'){
+          ticketParking = null;
+          ticketParkingType = null;
+        }
+
+        ticketHour = ((minDate.getHours()<10?'0':'') + minDate.getHours())
+        ticketTime = ((minDate.getMinutes()<10?'0':'') + minDate.getMinutes())
+
         const ticket = {
             visitorFullName: '',
             carModelText: '',
             carNumber: '',
-            actualCreationDate: new Date(),
-            visitDate: new Date(),
+            actualCreationDate: nowDate,
+            visitDate: minDate,
+            hour: hourId(ticketHour),
+            time: timeId(ticketTime),
             author: employeeId,
             status: NEW_TICKET_STATUS_ID,
-            type: ticketType,
+            type: ticketTypeId,
             client: companyId,
-            parking: { name: '', id: '' }
+            nonstandardCarNumber: true,
+            parkingType: ticketParkingType,
+            parking: ticketParking
         }
+
         this.setState({ticket: ticket, showCarFields: showCarFields,
-           showGoodsFields: showGoodsFields, showServiceFields: showServiceFields,
+           showGoodsFields: showGoodsFields,
            ticketType: ticketType, session: session})
     }
 
@@ -92,7 +129,7 @@ export default class TicketScreen extends Component {
         }
 
         if (error) {
-            Alert.alert( 'Ошибка', 'При сохранении заявки на сервер возникла ошибка.',
+            Alert.alert( 'Ошибка', 'При сохранении заявки возникла ошибка.',
             [
                 {text: 'Закрыть', onPress: () => { }}
             ])
@@ -108,6 +145,7 @@ export default class TicketScreen extends Component {
         const { ticket } = this.state
         ticket.visitorFullName = text
         this.setState({ticket})
+        console.log(ticket)
     }
 
     updateCarModel = text => {
@@ -122,22 +160,44 @@ export default class TicketScreen extends Component {
         this.setState({ticket})
     }
 
-    updateVisitDate = date => {
+    updateGoods = text => {
         const { ticket } = this.state
-        ticket.visitDate = date
+        ticket.MaterialValuesData = text
         this.setState({ticket})
     }
 
-    updateParking = value => {
+    updateParkingPlace = text => {
+        const { ticket } = this.state
+        ticket.parkingPlace = text
+        if ( ticket.parking == 3588462098000 ) {
+          ticket.parkingPlace = null
+        }
+        this.setState({ticket})
+    }
+
+    updateParking = (name, id) => {
       const { ticket } = this.state
-      ticket.parking.id = value
-      this.setState({parking: value})
-      console.log(value)
+      ticket.parking = id
       this.setState({ticket})
     }
 
+    updateVisitDate = date => {
+        const { ticket } = this.state
+        ticket.visitDate = date
+        if ( ticket.parking == 3588462098000 ) {
+          minutes = date.substr(14,2)
+          hours = date.substr(11,2)
+          ticket.time = timeId(minutes)
+          ticket.hour = hourId(hours)
+        } else {
+          ticket.time = null
+          ticket.hour = null
+        }
+        this.setState({ticket})
+    }
+
     render = () => {
-        const { ticket, showCarFields, showGoodsFields, showServiceFields,
+        const { ticket, showCarFields, showGoodsFields,
            ticketType, session, selectedValue, selectedParking} = this.state
         const { isAdding } = this.props
 
@@ -149,11 +209,16 @@ export default class TicketScreen extends Component {
                     updateCarModel={this.updateCarModel}
                     updateCarNumber={this.updateCarNumber}
                     updateVisitDate={this.updateVisitDate}
+                    updateParkingPlace={this.updateParkingPlace}
                     updateParking={this.updateParking}
+                    updateGoods={this.updateGoods}
+
                     showCarFields={showCarFields}
                     showGoodsFields={showGoodsFields}
-                    showServiceFields={showServiceFields}
+
                     ticketType={ticketType}
+
+                    initialParking={ticketType == 'CAR' ? session.carParkings[0].name : session.goodsParkings[0].name}
                     carParkings={session.carParkings}
                     goodsParkings={session.goodsParkings}
                     services={session.services}

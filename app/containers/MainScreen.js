@@ -15,11 +15,11 @@ export default class MainScreenContainer extends Component {
 
         return (
           <MainComponent
-              addVisitTicket={() => navigate('Ticket', {showCarFields: false, showGoodsFields: false, showServiceFields: false, ticketType: 'VISITOR'})}
-              addCarTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: false, showServiceFields: false, ticketType: 'CAR'})}
-              addGoodsArriveTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: true, showServiceFields: false, ticketType: 'GOODS_ARRIVE'})}
-              addGoodsLeaveTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: true, showServiceFields: false, ticketType: 'GOODS_LEAVE'})}
-              addServiceTicket={() => navigate('Ticket', {showCarFields: false, showGoodsFields: false, showServiceFields: true, ticketType: 'SERVICE'})}
+              addVisitTicket={() => navigate('Ticket', {showCarFields: false, showGoodsFields: false, ticketType: 'VISITOR'})}
+              addCarTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: false, ticketType: 'CAR'})}
+              addGoodsArriveTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: true, ticketType: 'GOODS_ARRIVE'})}
+              addGoodsLeaveTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: true, ticketType: 'GOODS_LEAVE'})}
+              addServiceTicket={() => navigate('Ticket', {showCarFields: false, showGoodsFields: false, ticketType: 'SERVICE'})}
               openTickets={() => navigate('Tickets')}
               openEvents={() => Alert.alert( 'Внимание', 'Функционал событий находится на стадии разработки', [ {text: 'Закрыть', onPress: () => { }} ])}
           />

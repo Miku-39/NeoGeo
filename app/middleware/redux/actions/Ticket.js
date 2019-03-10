@@ -43,6 +43,7 @@ export const dismiss = () => {
 }
 
 export const add = (ticket) => {
+    console.log(ticket)
     return {
         type: ADD_TICKET_REQUEST,
         payload: ticket
@@ -68,4 +69,3 @@ export const addingFailed = (error) => {
         payload: error
     }
 }
-
