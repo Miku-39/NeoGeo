@@ -86,7 +86,7 @@ export default class TicketScreen extends Component {
                         onChangeText={this.props.updateParkingPlace}
                     />
                   }
-                  { this.props.ticketType == 'GOODS_LEAVE' || this.props.ticketType == 'GOODS_ARRIVE' &&
+                  {(this.props.ticketType == 'GOODS_LEAVE' || this.props.ticketType == 'GOODS_ARRIVE') &&
                     <Fumi
                         label={'Информация о грузе'}
                         iconClass={Icon}
@@ -145,7 +145,7 @@ export default class TicketScreen extends Component {
                 }
 
                 <View style={{marginTop: 10}}>
-                    <Text style={styles.pickerLabel}>Дата посещения</Text>
+                    <Text style={styles.pickerLabel}>{this.state.selectedParking == 'Гостевая' ? 'Дата и время посещения' : 'Дата посещения'}</Text>
 
                     <DatePicker
                         style={{width: 200, alignSelf: 'center', marginTop: 5}}

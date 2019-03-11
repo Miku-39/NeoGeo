@@ -10,6 +10,7 @@ import {
 import { Button } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
 
+import TicketsListItem from '../components/TicketsListItem'
 import { Images, Colors } from '../theme'
 
 
@@ -27,100 +28,24 @@ const status2colors = {
 
 export default class TicketsList extends React.PureComponent {
     renderItem = ({item}) => {
-          if(item.unloadingWithoutCar == true){
-            var title = `${item.visitorFullName || ' '}`;
-          }else{
-            if(item.carNumber == null){
-              var title = 'Авто не указано'
-            }else{ var title = `${item.carNumber || ' '}` + ' ' + `${item.carModelText || ' '}`;
-            }}
-
-          let parking = item.parking ? item.parking.name : ' '
-          if (item.parkingPlace)
-              parking = parking + `, ${item.parkingPlace}`
-              var materialSize= item.materialValuesSize == null ? '' : 'Габариты груза: '+ item.materialValuesSize + "/n";
-              var message= 'Машина: ' + title + "\n"
-              + 'Водитель: ' + item.visitorFullName + "\n"
-              + 'Груз: ' + item.materialValuesData + "\n"
-              + materialSize
-              + 'Арендатор: ' + `${item.company && item.company.name || ' '}`;
-
-              const showAlert = () => {
+              const showDeclineReason = () => {
               Alert.alert(
-                "Информация о грузе",
-                message,
+                "Причина отклонения",
+                item.rejectionReason
                )}
-
-
-               if(item.type.shortName == "Внос" || item.type.shortName == "Вынос"){ return (
-                        <View style={{width: '100%'}}>
-                        <TouchableHighlight onPress={showAlert} underlayColor="#909090">
-                        <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', margin: 1, borderRadius: 5}}>
-                        <View style={{width: 6, marginBottom: 4, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
-                        <View style={{flexDirection: 'column', marginLeft: 8, marginBottom: 1 }}>
-
-                        <View style={{flexDirection: 'row'}}>
-                          <Text style={{fontSize: 14, color: 'black', fontStyle: 'italic', marginRight: 5}}>
-                          { item.type ? item.type.shortName : 'тип не указан' }
-                          </Text>
-                        </View>
-
-                        <View style={{flexDirection: 'row'}}>
-                          <Text style={{fontSize: 18, color: 'black'}}>{title}</Text>
-                        </View>
-
-                        <View style={{flexDirection: 'row'}}>
-                          <Text style={{fontSize: 16, color: '#767878', marginTop: -3}}>{parking}</Text>
-                        </View>
-
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontSize: 11, color: status2colors[item.status && item.status.id], fontStyle: 'italic', marginRight: 5}}>
-                            { item.status ? item.status.name : '' }
-                            </Text>
-
-                            <Text style={{fontSize: 11, color: '#767878', fontStyle: 'italic'}}>
-                                { `№ ${item.number} ${item.visitDate ? 'от ' + item.visitDate.split('T')[0] : ''}` }
-                            </Text>
-                        </View>
-                        </View>
-                        </View>
+               if(item.status.name != 'Закрыта'){
+                 if(item.type.shortName != 'Внос' && item.type.shortName != 'Вынос' && item.status.name == 'Отклонена'){
+                   return(
+                        <TouchableHighlight onPress={showDeclineReason} underlayColor="#909090">
+                        <TicketsListItem item={item} />
                         </TouchableHighlight>
-                        </View>
-                    )
-                    }else{
-                      if(item.type.shortName == 'Гость'){var title = item.visitorFullName;}else{var title = item.carNumber + ' ' + item.carModelText;}
-                      return (
-                        <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', margin: 1, borderRadius: 5}}>
-                        <View style={{width: 6, marginBottom: 4, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
-                          <View style={{flexDirection: 'column', marginLeft: 8, marginBottom: 1 }}>
-
-                          <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontSize: 14, color: 'black', fontStyle: 'italic', marginRight: 5}}>
-                            { item.type ? item.type.shortName : 'тип не указан' }
-                            </Text>
-                            <Text style={{fontSize: 14, color: 'red', fontStyle: 'italic'}}>{`   ${item.company && item.company.name || ' '}`}</Text>
-                          </View>
-
-                          <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontSize: 18, color: 'black'}}>{title}</Text>
-                          </View>
-
-                          <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontSize: 16, color: '#767878', marginTop: -3}}>{parking}</Text>
-                          </View>
-
-                          <View style={{flexDirection: 'row'}}>
-                              <Text style={{fontSize: 11, color: status2colors[item.status && item.status.id], fontStyle: 'italic', marginRight: 5}}>
-                              { item.status ? item.status.name : '' }
-                              </Text>
-
-                              <Text style={{fontSize: 11, color: '#767878', fontStyle: 'italic'}}>
-                                  { `№ ${item.number} ${item.visitDate ? 'от ' + item.visitDate.split('T')[0] : ''}` }
-                              </Text>
-                          </View>
-                          </View>
-                        </View>
-                      )}
+                   )
+                 }else{
+                 return(
+                      <TicketsListItem item={item} />
+                 )
+               }
+             }
     }
 
     render() {

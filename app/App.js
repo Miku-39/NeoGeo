@@ -8,7 +8,6 @@ import { StackNavigator } from 'react-navigation'
 
 import store from './middleware/redux'
 import LoginScreen from './containers/LoginScreen'
-import CheckpointScreen from './containers/CheckpointScreen'
 import MainScreen from './containers/MainScreen'
 import TicketScreen from './containers/TicketScreen'
 import TicketsScreen from './containers/TicketsScreen'
@@ -19,15 +18,14 @@ import { Metrics } from './theme'
 
 
 const styles = StyleSheet.create({
-    back: { 
+    back: {
         backgroundColor: '#941b1b'
-    }, 
+    },
     title: { color: 'white' }
 })
 
 const Navigation = StackNavigator({
-    Login: { screen: LoginScreen, navigationOptions: { header: null } }, 
-    Checkpoint: { screen: CheckpointScreen },
+    Login: { screen: LoginScreen, navigationOptions: { header: null } },
     Main: { screen: MainScreen },
     Ticket: { screen: TicketScreen },
     Tickets: { screen: TicketsScreen },
@@ -49,4 +47,3 @@ export default class App extends Component {
         )
     }
 }
-

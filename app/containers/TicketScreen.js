@@ -43,8 +43,25 @@ const headerButtonsHandler = { save: () => null }
 )
 export default class TicketScreen extends Component {
     static navigationOptions = ({navigation}) => {
+        switch(navigation.state.params.ticketType){
+          case 'VISITOR':
+              headerTitle = 'Посетитель'
+              break;
+          case 'CAR':
+              headerTitle = ' Авто'
+              break;
+          case 'GOODS_ARRIVE':
+              headerTitle = 'Внос имущества'
+              break;
+          case 'GOODS_LEAVE':
+              headerTitle = 'Вынос имущества'
+              break;
+          case 'SERVICE':
+              headerTitle = 'Сервис'
+              break;
+        }
         return ({
-            title: 'Новая заявка',
+            title: headerTitle,
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
                     <TouchableOpacity onPress={() => headerButtonsHandler.save()}>
@@ -138,14 +155,23 @@ export default class TicketScreen extends Component {
 
     save = () => {
         const { ticket } = this.state
-        this.props.addTicket(ticket)
+        const { ticketType } = this.props.navigation.state.params
+        if(ticketType == 'CAR' || ticketType == 'GOODS_ARRIVE' || ticketType == 'GOODS_LEAVE'){
+          if(ticket.visitorFullName != '' && ticket.carModelText != '' && ticket.carNumber != ''){
+            this.props.addTicket(ticket)
+          } else {
+            Alert.alert( 'Внимание', 'Не заполнены обязательные поля',[{text: 'Закрыть', onPress: () => { }}])
+          }
+        }else{
+          this.props.addTicket(ticket)
+        }
+
     }
 
     updateVisitor = text => {
         const { ticket } = this.state
         ticket.visitorFullName = text
         this.setState({ticket})
-        console.log(ticket)
     }
 
     updateCarModel = text => {
