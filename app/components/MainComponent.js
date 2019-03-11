@@ -119,18 +119,17 @@ const styles = StyleSheet.create({
     },
     ButtonsContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        margin: 10
+        justifyContent: 'space-around'
     },
     Button: {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: 165,
-        height: 165,
+        width: 158,
+        height: 158,
         borderRadius: 15,
         backgroundColor: 'white',
-        margin: 10
+        margin: 15
     },
     buttonImage: {
         width: 90,

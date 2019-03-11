@@ -87,13 +87,6 @@ class LoginComponent extends Component {
                         checked={this.props.remember}
                     />
 
-                    {
-                        this.props.disabled ?
-                        <View style={{alignSelf: 'center'}}>
-                            <ActivityIndicator size="large" color='#941b1b' />
-                        </View> : null
-                    }
-
                     <View style={styles.enterContainer}>
                         <TouchableOpacity onPress={() => {
                             Keyboard.dismiss()
@@ -105,6 +98,13 @@ class LoginComponent extends Component {
                         </TouchableOpacity>
 
                     </View>
+                    
+                    {
+                        this.props.disabled ?
+                        <View style={{alignSelf: 'center'}}>
+                            <ActivityIndicator size="large" color='#941b1b' />
+                        </View> : null
+                    }
                 </View>
             </View>
             </ImageBackground>

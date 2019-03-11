@@ -18,21 +18,21 @@ export default class TicketScreen extends Component {
   render () {
     const minDate = new Date()
     const maxDate = new Date()
-    
+
     switch(this.props.ticketType){
       case 'CAR':
           parkings = this.props.carParkings;
+          parkingsByIndex = parkings.map(parking => {return parking.name})
+          idByIndex = parkings.map(parking => {return parking.id})
           break;
-      case 'GOODS_ARRIVE':
+      case 'GOODS_ARRIVE' || 'GOODS_LEAVE':
           parkings = this.props.goodsParkings;
-          break;
-      case 'GOODS_LEAVE':
-          parkings = this.props.goodsParkings;
+          parkingsByIndex = parkings.map(parking => {return parking.name})
+          idByIndex = parkings.map(parking => {return parking.id})
           break;
     }
 
-    const parkingsByIndex = parkings.map(parking => {return parking.name})
-    const idByIndex = parkings.map(parking => {return parking.id})
+
     minDate.setFullYear(minDate.getFullYear()-1)
     maxDate.setFullYear(minDate.getFullYear()+2)
     pickerFormat = this.state.selectedParking == 'Гостевая' ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD"
@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
    pickerText:{
      fontSize: 18,
      alignSelf: 'center',
+     margin: 8,
      color: '#53565A'
    }
 })
