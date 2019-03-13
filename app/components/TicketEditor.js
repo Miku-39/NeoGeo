@@ -12,7 +12,8 @@ export default class TicketScreen extends Component {
      super(props);
      this.state = {
        selectedValue: null,
-       selectedParking: this.props.initialParking
+       selectedParking: this.props.initialParking,
+       visitDate: this.props.ticket.visitDate
      }
   }
   render () {
@@ -25,18 +26,23 @@ export default class TicketScreen extends Component {
           parkingsByIndex = parkings.map(parking => {return parking.name})
           idByIndex = parkings.map(parking => {return parking.id})
           break;
-      case 'GOODS_ARRIVE' || 'GOODS_LEAVE':
+      case 'GOODS_ARRIVE':
+          parkings = this.props.goodsParkings;
+          parkingsByIndex = parkings.map(parking => {return parking.name})
+          idByIndex = parkings.map(parking => {return parking.id})
+          break;
+      case 'GOODS_LEAVE':
           parkings = this.props.goodsParkings;
           parkingsByIndex = parkings.map(parking => {return parking.name})
           idByIndex = parkings.map(parking => {return parking.id})
           break;
     }
 
-
     minDate.setFullYear(minDate.getFullYear()-1)
     maxDate.setFullYear(minDate.getFullYear()+2)
     pickerFormat = this.state.selectedParking == 'Гостевая' ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD"
     pickerMode = this.state.selectedParking == 'Гостевая' ? "datetime" : "date"
+    
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>

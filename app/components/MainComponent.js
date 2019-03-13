@@ -42,7 +42,7 @@ export default MainComponent = (props) => {
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => {Alert.alert('В разработке')}}>
+                    <TouchableOpacity onPress={() => { props.addServiceTicket() }}>
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.wrench} style={styles.buttonImage} />
                             <Text style={styles.buttonLabel}>Новая заявка</Text>

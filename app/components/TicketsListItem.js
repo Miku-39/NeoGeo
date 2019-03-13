@@ -66,7 +66,7 @@ export default class TicketsListItem extends React.PureComponent {
                       </View>
 
                       <View style={{flexDirection: 'row'}}>
-                        <Text style={{fontSize: 16, color: '#767878'}}>{item.parking ? item.parking.name : ' '}</Text>
+                        <Text style={{fontSize: 16, color: '#767878'}}>{item.parking ? item.parking.name : '-'}</Text>
                       </View>
 
                       {ticketInfo()}
@@ -87,7 +87,7 @@ export default class TicketsListItem extends React.PureComponent {
                       {header()}
 
                       <View style={{flexDirection: 'row'}}>
-                        <Text style={{fontSize: 18, color: 'black'}}>{item.visitorFullName}</Text>
+                        <Text style={{fontSize: 18, color: 'black'}}>{item.visitorFullName && item.visitorFullName ||  'ФИО не указано'}</Text>
                       </View>
 
                       {ticketInfo()}
@@ -120,6 +120,10 @@ export default class TicketsListItem extends React.PureComponent {
                     </View>
                   )
                   break;
+
+                  default:
+                  return(null);
+                  break;
            }
 }
 }
@@ -134,6 +138,7 @@ const status2colors = {
     '2804833189000': '#d12424',// Повторная
     '4285216000': '#808080',   // Закрыта
     '3367462500000': '#fd9419', //Согласовано УК
+    '2804833187000': '#000099' //Выдан пропуск
 }
 
 const styles = StyleSheet.create({

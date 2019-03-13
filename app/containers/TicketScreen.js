@@ -51,10 +51,10 @@ export default class TicketScreen extends Component {
               headerTitle = ' Авто'
               break;
           case 'GOODS_ARRIVE':
-              headerTitle = 'Внос имущества'
+              headerTitle = 'Внос'
               break;
           case 'GOODS_LEAVE':
-              headerTitle = 'Вынос имущества'
+              headerTitle = 'Вынос'
               break;
           case 'SERVICE':
               headerTitle = 'Сервис'
@@ -156,14 +156,19 @@ export default class TicketScreen extends Component {
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
-        if(ticketType == 'CAR' || ticketType == 'GOODS_ARRIVE' || ticketType == 'GOODS_LEAVE'){
-          if(ticket.visitorFullName != '' && ticket.carModelText != '' && ticket.carNumber != ''){
-            this.props.addTicket(ticket)
-          } else {
-            Alert.alert( 'Внимание', 'Не заполнены обязательные поля',[{text: 'Закрыть', onPress: () => { }}])
-          }
+        
+        if(ticketType != 'CAR' && ticketType != 'SERVICE' && ticket.visitorFullName == ''){
+          Alert.alert( 'Внимание', 'Не заполнены данные о посетителе',[{text: 'Закрыть', onPress: () => { }}])
         }else{
-          this.props.addTicket(ticket)
+          if((ticketType == 'CAR' || ticketType == 'GOODS_ARRIVE' || ticketType == 'GOODS_LEAVE') && ticket.carNumber == '' && ticket.carModelText == ''){
+            Alert.alert( 'Внимание', 'Не заполнены данные о авто',[{text: 'Закрыть', onPress: () => { }}])
+          }else{
+            if((ticketType == 'GOODS_ARRIVE' || ticketType == 'GOODS_LEAVE') && ticket.materialValuesData == ''){
+              Alert.alert( 'Внимание', 'Не заполнены данные о грузе',[{text: 'Закрыть', onPress: () => { }}])
+            }else{
+              this.props.addTicket(ticket)
+            }
+          }
         }
 
     }
@@ -211,7 +216,8 @@ export default class TicketScreen extends Component {
         const { ticket } = this.state
         ticket.visitDate = date
         if ( ticket.parking == 3588462098000 ) {
-          minutes = date.substr(14,2)
+          minutes = parseInt(date.substr(14,2))
+          minutes = toString(minutes + 5 - minutes % 5)
           hours = date.substr(11,2)
           ticket.time = timeId(minutes)
           ticket.hour = hourId(hours)
