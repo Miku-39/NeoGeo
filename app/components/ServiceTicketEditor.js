@@ -25,6 +25,7 @@ export default class ServiceTicketScreen extends Component {
     const { services } = this.props
     idByIndex = services.map(service => {return service.id})
     servicesByIndex = services.map(service => {return service.name})
+    androidMargin = Platform.OS === 'android' ? 7 : 0
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
@@ -55,7 +56,7 @@ export default class ServiceTicketScreen extends Component {
                         <ReactNativePickerModule
                                         pickerRef={e => pickerRef = e}
                                         value={this.state.selectedValue}
-                                        title={this.state.selectedService}
+                                        title='Сервис'
                                         cancelButton='Отмена'
                                         confirmButton='Выбрать'
                                         items={services.map(service => {return service.name})}
@@ -80,7 +81,7 @@ export default class ServiceTicketScreen extends Component {
                      height: 64}}>
 
                     <CheckBox
-                      title='МОП'
+                      title='Место общего пользования'
                       containerStyle={styles.checkboxContainer}
                       textStyle={styles.checkboxText}
                       checked={this.state.mop}
@@ -97,7 +98,7 @@ export default class ServiceTicketScreen extends Component {
                             iconName={'room'}
                             iconColor={'#53565A'}
                             iconSize={20}
-                            inputStyle={{ color: '#53565A' }}
+                            inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
                             onChangeText={this.props.updateRoom}
                             inputPadding={16}
                         />
@@ -105,7 +106,7 @@ export default class ServiceTicketScreen extends Component {
                       }
 
                       <TextInput
-                        placeholder="Что случилось"
+                        placeholder="Что сделать"
                         underlineColorAndroid='transparent'
                         style={styles.textInputStyle}
                         multiline={true}

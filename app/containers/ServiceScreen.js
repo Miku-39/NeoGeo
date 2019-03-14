@@ -41,7 +41,7 @@ const headerButtonsHandler = { save: () => null }
 export default class ServiceScreen extends Component {
     static navigationOptions = ({navigation}) => {
         return ({
-            title: 'Сервисная заявка',
+            title: 'Обслуживание',
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
                     <TouchableOpacity onPress={() => headerButtonsHandler.save()}>
@@ -64,7 +64,9 @@ export default class ServiceScreen extends Component {
             status: NEW_TICKET_STATUS_ID,
             type: SERVICE_TICKET_TYPE,
             client: companyId,
-            isCommonAreas: false
+            isCommonAreas: false,
+            WhatHappened: '',
+           room: ''
         }
 
         this.setState({ticket: ticket,
@@ -94,20 +96,26 @@ export default class ServiceScreen extends Component {
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
-        this.props.addTicket(ticket)
+        if(ticket.WhatHappened == ''){
+          Alert.alert( 'Внимание', 'Не заполнено поле "Что сделать"',[{text: 'Закрыть', onPress: () => { }}])
+        }else{
+        if(!ticket.isCommonAreas && ticket.room == ''){
+          Alert.alert( 'Внимание', 'Не заполнены данные о помещении',[{text: 'Закрыть', onPress: () => { }}])
+        }else{
+          this.props.addTicket(ticket)
+        }}
+
     }
 
     updateService = (name, id) => {
         const { ticket } = this.state
         ticket.service = id
-        console.log(ticket)
         this.setState({ticket})
     }
     updateMOP = check => {
         const { ticket } = this.state
         ticket.room = check ? null : ticket.room
         ticket.isCommonAreas = check
-        console.log(ticket)
         this.setState({ticket})
     }
     updateRoom = room => {
@@ -119,8 +127,7 @@ export default class ServiceScreen extends Component {
 
     updateWhatHappened = text => {
       const { ticket } = this.state
-      ticket.whatHappened = text
-      console.log(ticket)
+      ticket.WhatHappened = text
       this.setState({ticket})
     }
 

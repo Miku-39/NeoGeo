@@ -46,7 +46,7 @@ export default MainComponent = (props) => {
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.wrench} style={styles.buttonImage} />
                             <Text style={styles.buttonLabel}>Новая заявка</Text>
-                            <Text style={styles.buttonLabel}>в сервис</Text>
+                            <Text style={styles.buttonLabel}>на обслуживание</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

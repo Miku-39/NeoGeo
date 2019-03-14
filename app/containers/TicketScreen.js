@@ -121,7 +121,9 @@ export default class TicketScreen extends Component {
             client: companyId,
             nonstandardCarNumber: true,
             parkingType: ticketParkingType,
-            parking: ticketParking
+            parking: ticketParking,
+            materialValuesData: '',
+            lift: false
         }
 
         this.setState({ticket: ticket, showCarFields: showCarFields,
@@ -156,7 +158,7 @@ export default class TicketScreen extends Component {
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
-        
+
         if(ticketType != 'CAR' && ticketType != 'SERVICE' && ticket.visitorFullName == ''){
           Alert.alert( 'Внимание', 'Не заполнены данные о посетителе',[{text: 'Закрыть', onPress: () => { }}])
         }else{
@@ -166,6 +168,7 @@ export default class TicketScreen extends Component {
             if((ticketType == 'GOODS_ARRIVE' || ticketType == 'GOODS_LEAVE') && ticket.materialValuesData == ''){
               Alert.alert( 'Внимание', 'Не заполнены данные о грузе',[{text: 'Закрыть', onPress: () => { }}])
             }else{
+              console.log(ticket)
               this.props.addTicket(ticket)
             }
           }
@@ -193,7 +196,7 @@ export default class TicketScreen extends Component {
 
     updateGoods = text => {
         const { ticket } = this.state
-        ticket.MaterialValuesData = text
+        ticket.materialValuesData = text
         this.setState({ticket})
     }
 
@@ -212,12 +215,20 @@ export default class TicketScreen extends Component {
       this.setState({ticket})
     }
 
+    updateLift = check => {
+        const { ticket } = this.state
+        ticket.lift = check
+        console.log(ticket)
+        this.setState({ticket})
+    }
+
     updateVisitDate = date => {
         const { ticket } = this.state
         ticket.visitDate = date
         if ( ticket.parking == 3588462098000 ) {
           minutes = parseInt(date.substr(14,2))
-          minutes = toString(minutes + 5 - minutes % 5)
+          minutes = (minutes % 5 != 0) ? (minutes + 5 - minutes % 5) : minutes
+          minutes = (minutes<10?'0':'') + minutes
           hours = date.substr(11,2)
           ticket.time = timeId(minutes)
           ticket.hour = hourId(hours)
@@ -243,6 +254,7 @@ export default class TicketScreen extends Component {
                     updateVisitDate={this.updateVisitDate}
                     updateParkingPlace={this.updateParkingPlace}
                     updateParking={this.updateParking}
+                    updateLift={this.updateLift}
                     updateGoods={this.updateGoods}
 
                     showCarFields={showCarFields}

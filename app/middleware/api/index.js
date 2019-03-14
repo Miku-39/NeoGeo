@@ -28,7 +28,6 @@ const onError = (error) => {
   } else {
     console.warn('Error', error.message)
   }
-  console.log(error.config)
 }
 
 

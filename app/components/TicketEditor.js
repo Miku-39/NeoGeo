@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Fumi } from 'react-native-textinput-effects'
 import DatePicker from 'react-native-datepicker'
 import ReactNativePickerModule from 'react-native-picker-module'
+import { CheckBox } from 'react-native-elements'
 
 import { Images, Colors } from '../theme'
 
@@ -13,9 +14,16 @@ export default class TicketScreen extends Component {
      this.state = {
        selectedValue: null,
        selectedParking: this.props.initialParking,
-       visitDate: this.props.ticket.visitDate
+       visitDate: this.props.ticket.visitDate,
+       lift: false
      }
   }
+
+  updateLift = () =>{
+    this.setState({lift: !this.state.lift})
+    this.props.updateLift(!this.state.lift)
+  }
+
   render () {
     const minDate = new Date()
     const maxDate = new Date()
@@ -42,19 +50,19 @@ export default class TicketScreen extends Component {
     maxDate.setFullYear(minDate.getFullYear()+2)
     pickerFormat = this.state.selectedParking == 'Гостевая' ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD"
     pickerMode = this.state.selectedParking == 'Гостевая' ? "datetime" : "date"
-    
+    androidMargin = Platform.OS === 'android' ? 7 : 0
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
               {
-                this.props.ticketType != 'SERVICE' &&
+                this.props.ticketType != 'CAR' &&
                   <Fumi
                       label={'ФИО посетителя'}
                       iconClass={Icon}
                       iconName={'person'}
                       iconColor={'#53565A'}
                       iconSize={20}
-                      inputStyle={{ color: '#53565A' }}
+                      inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
                       onChangeText={this.props.updateVisitor}
                   />
                 }
@@ -67,7 +75,7 @@ export default class TicketScreen extends Component {
                         iconName={'directions-car'}
                         iconColor={'#53565A'}
                         iconSize={20}
-                        inputStyle={{ color: '#53565A' }}
+                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
                         onChangeText={this.props.updateCarModel}
                     />
 
@@ -77,7 +85,7 @@ export default class TicketScreen extends Component {
                         iconName={'directions-car'}
                         iconColor={'#53565A'}
                         iconSize={20}
-                        inputStyle={{ color: '#53565A' }}
+                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
                         onChangeText={this.props.updateCarNumber}
                     />
 
@@ -88,20 +96,34 @@ export default class TicketScreen extends Component {
                         iconName={'directions-car'}
                         iconColor={'#53565A'}
                         iconSize={20}
-                        inputStyle={{ color: '#53565A' }}
+                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
                         onChangeText={this.props.updateParkingPlace}
                     />
                   }
                   {(this.props.ticketType == 'GOODS_LEAVE' || this.props.ticketType == 'GOODS_ARRIVE') &&
+                  <View>
                     <Fumi
                         label={'Информация о грузе'}
                         iconClass={Icon}
                         iconName={'directions-car'}
                         iconColor={'#53565A'}
                         iconSize={20}
-                        inputStyle={{ color: '#53565A' }}
+                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
                         onChangeText={this.props.updateGoods}
                     />
+                    <View style={{
+                     backgroundColor: '#FFF',
+                     flexDirection: 'column',
+                     height: 64}}>
+                      <CheckBox
+                        title='Лифт'
+                        containerStyle={styles.checkboxContainer}
+                        textStyle={styles.checkboxText}
+                        checked={this.state.lift}
+                        onPress={this.updateLift}
+                      />
+                    </View>
+                  </View>
                   }
 
                     {
@@ -131,7 +153,7 @@ export default class TicketScreen extends Component {
                           <ReactNativePickerModule
                                           pickerRef={e => pickerRef = e}
                                           value={this.state.selectedValue}
-                                          title={this.state.selectedParking}
+                                          title='Парковка'
                                           cancelButton='Отмена'
                                           confirmButton='Выбрать'
                                           items={parkings.map(parking => {return parking.name})}
@@ -179,6 +201,14 @@ export default class TicketScreen extends Component {
                         onDateChange={this.props.updateVisitDate}
                     />
                 </View>
+                <View style={{margin: 30, alignItems: 'center', alignSelf: 'center' }}>
+                { this.state.selectedParking == 'Гостевая' &&
+                     <Text style={styles.pickerLabel}>Разрешенный период гостевой парковки - не более 2 часов</Text>
+                }
+                { this.state.selectedParking == 'Курьерская' &&
+                     <Text style={styles.pickerLabel}>Разрешенный период курьерской парковки - не более 20 минут</Text>
+                }
+                </View>
             </ScrollView>
         </View>
     )
@@ -204,12 +234,24 @@ const styles = StyleSheet.create({
      fontWeight: 'bold',
      color: '#53565A',
      fontSize: 16,
-     alignSelf: 'center'
+     alignSelf: 'center',
+     textAlign: 'center'
    },
    pickerText:{
      fontSize: 18,
      alignSelf: 'center',
      margin: 8,
+     color: '#53565A'
+    },
+   checkboxContainer: {
+     marginTop: 10,
+     backgroundColor: '#FFF',
+     borderRadius: 10,
+     borderWidth: 0
+   },
+   checkboxText: {
+     fontSize: 16,
+     fontWeight: 'bold',
      color: '#53565A'
    }
 })
