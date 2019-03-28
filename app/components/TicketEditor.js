@@ -15,7 +15,8 @@ export default class TicketScreen extends Component {
        selectedValue: null,
        selectedParking: this.props.initialParking,
        visitDate: this.props.ticket.visitDate,
-       lift: false
+       lift: false,
+       multipleEntry: false
      }
   }
 
@@ -124,6 +125,20 @@ export default class TicketScreen extends Component {
                       />
                     </View>
                   </View>
+                  }
+                  {(this.props.ticketType == 'VISITOR') &&
+                    <View style={{
+                     backgroundColor: '#FFF',
+                     flexDirection: 'column',
+                     height: 64}}>
+                      <CheckBox
+                        title='Лифт'
+                        containerStyle={styles.checkboxContainer}
+                        textStyle={styles.checkboxText}
+                        checked={this.state.lift}
+                        onPress={this.updateLift}
+                      />
+                    </View>
                   }
 
                     {

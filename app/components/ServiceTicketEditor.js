@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Fumi } from 'react-native-textinput-effects'
 import ReactNativePickerModule from 'react-native-picker-module'
 import { CheckBox } from 'react-native-elements'
-
+import ImagePickerComponent from '../components/ImagePicker'
 import { Images, Colors } from '../theme'
 
 export default class ServiceTicketScreen extends Component {
@@ -113,6 +113,8 @@ export default class ServiceTicketScreen extends Component {
                         scrollEnabled={true}
                         onChangeText={this.props.updateWhatHappened}
                         />
+
+                        <ImagePickerComponent/>
 
             </ScrollView>
         </View>

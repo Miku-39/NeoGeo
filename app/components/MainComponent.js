@@ -26,8 +26,7 @@ export default MainComponent = (props) => {
                     <TouchableOpacity onPress={() => { props.addVisitTicket() }}>
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.businessman} style={styles.buttonImage} />
-                            <Text style={styles.buttonLabel}>Новая заявка</Text>
-                            <Text style={styles.buttonLabel}>на посещение</Text>
+                            <Text style={styles.buttonLabel}>Новая заявка{"\n"}на посещение</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -37,16 +36,14 @@ export default MainComponent = (props) => {
                     <TouchableOpacity onPress={() => { props.addCarTicket() }}>
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.car} style={styles.buttonImage} />
-                            <Text style={styles.buttonLabel}>Новая заявка</Text>
-                            <Text style={styles.buttonLabel}>на въезд авто</Text>
+                            <Text style={styles.buttonLabel}>Новая заявка{"\n"}на въезд авто</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { props.addServiceTicket() }}>
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.wrench} style={styles.buttonImage} />
-                            <Text style={styles.buttonLabel}>Новая заявка</Text>
-                            <Text style={styles.buttonLabel}>на обслуживание</Text>
+                            <Text style={styles.buttonLabel}>Новая заявка{"\n"}на обслуживание</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -56,16 +53,14 @@ export default MainComponent = (props) => {
                     <TouchableOpacity onPress={() => { props.addGoodsArriveTicket() }}>
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.box} style={styles.buttonImage} />
-                            <Text style={styles.buttonLabel}>Новая заявка на</Text>
-                            <Text style={styles.buttonLabel}>внос имущества</Text>
+                            <Text style={styles.buttonLabel}>Новая заявка на{"\n"}внос имущества</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { props.addGoodsLeaveTicket() }}>
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.box} style={styles.buttonImage} />
-                            <Text style={styles.buttonLabel}>Новая заявка на</Text>
-                            <Text style={styles.buttonLabel}>вынос имущества</Text>
+                            <Text style={styles.buttonLabel}>Новая заявка на{"\n"}вынос имущества</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -125,19 +120,21 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: 158,
-        height: 158,
+        width: 166,
+        height: 166,
         borderRadius: 15,
         backgroundColor: 'white',
         margin: 15
     },
     buttonImage: {
-        width: 90,
-        height: 90,
-        margin: 10
+        width: 85,
+        height: 85,
+        margin: 5
     },
     buttonLabel: {
-        fontSize: 14
+        fontSize: 14,
+        margin: 5,
+        textAlign: 'center'
     },
     touchableContainer: {
         height: 40,

@@ -159,10 +159,10 @@ export default class TicketScreen extends Component {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
 
-        if(ticketType != 'CAR' && ticketType != 'SERVICE' && ticket.visitorFullName == ''){
+        if(ticketType == 'VISITOR' && ticket.visitorFullName == ''){
           Alert.alert( 'Внимание', 'Не заполнены данные о посетителе',[{text: 'Закрыть', onPress: () => { }}])
         }else{
-          if((ticketType == 'CAR' || ticketType == 'GOODS_ARRIVE' || ticketType == 'GOODS_LEAVE') && ticket.carNumber == '' && ticket.carModelText == ''){
+          if((ticketType == 'CAR') && ticket.carNumber == '' && ticket.carModelText == ''){
             Alert.alert( 'Внимание', 'Не заполнены данные о авто',[{text: 'Закрыть', onPress: () => { }}])
           }else{
             if((ticketType == 'GOODS_ARRIVE' || ticketType == 'GOODS_LEAVE') && ticket.materialValuesData == ''){
@@ -222,6 +222,13 @@ export default class TicketScreen extends Component {
         this.setState({ticket})
     }
 
+    updateMultipleEntry = check => {
+      const { ticket } = this.state
+      ticket.multipleEntry = check
+      console.log(ticket)
+      this.setState({ticket})
+    }
+
     updateVisitDate = date => {
         const { ticket } = this.state
         ticket.visitDate = date
@@ -255,6 +262,7 @@ export default class TicketScreen extends Component {
                     updateParkingPlace={this.updateParkingPlace}
                     updateParking={this.updateParking}
                     updateLift={this.updateLift}
+                    updateMultipleEntry={this.updateMultipleEntry}
                     updateGoods={this.updateGoods}
 
                     showCarFields={showCarFields}
