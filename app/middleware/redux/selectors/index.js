@@ -10,6 +10,12 @@ export const getEmployeeId = store => store.session.get('userId')
 
 export const getIsTicketAdding = store => store.ticket.get('isAdding')
 
+export const getIsFileAdding = store => store.ticket.get('fileIsAdding')
+
 export const getIsTicketAdded = store => store.ticket.get('added')
 
+export const getIsFileAdded = store => store.ticket.get('fileAdded')
+
 export const getIsTicketAddingFailed = store => store.ticket.get('error')
+
+export const getIsFileAddingFailed = store => store.ticket.get('error')

@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 import ServiceTicketEditor from '../components/ServiceTicketEditor'
 import Loader from '../components/Loader'
 import * as selectors from '../middleware/redux/selectors'
-import { add, dismiss } from '../middleware/redux/actions/Ticket'
+import { add, addFile, dismiss } from '../middleware/redux/actions/Ticket'
 
 import { getSession } from '../middleware/redux/selectors'
 import { storeCredentials, loadCredentials } from '../middleware/utils/AsyncStorage'
@@ -28,20 +28,31 @@ const headerButtonsHandler = { save: () => null }
         employeeId: selectors.getEmployeeId(store),
         companyId: selectors.getCompanyId(store),
         isAdding: selectors.getIsTicketAdding(store),
+        fileIsAdding: selectors.getIsFileAdding(store),
         added: selectors.getIsTicketAdded(store),
+        fileAdded: selectors.getIsFileAdded(store),
         error: selectors.getIsTicketAddingFailed(store),
         session: getSession(store)
     }),
     dispatch => ({
         addTicket: (ticket) => dispatch(add(ticket)),
+        addFile: (file) => dispatch(addFile(file)),
         dismiss: () => dispatch(dismiss())
     })
 )
 
 export default class ServiceScreen extends Component {
     static navigationOptions = ({navigation}) => {
+      switch(navigation.state.params.ticketType){
+        case 'SERVICE':
+            headerTitle = 'Обслуживание'
+            break;
+        case 'ALT_SERVICE':
+            headerTitle = 'Дополнительное'
+            break;
+      }
         return ({
-            title: 'Обслуживание',
+            title: headerTitle,
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
                     <TouchableOpacity onPress={() => headerButtonsHandler.save()}>
@@ -66,7 +77,9 @@ export default class ServiceScreen extends Component {
             client: companyId,
             isCommonAreas: false,
             WhatHappened: '',
-           room: ''
+            room: '',
+            service: session.services[0].id,
+            isAdditionalService: ticketType == 'ALT_SERVICE'
         }
 
         this.setState({ticket: ticket,
@@ -78,7 +91,7 @@ export default class ServiceScreen extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        const { added, error } = newProps
+        const { added, error, fileAdded } = newProps
         const { goBack } = this.props.navigation
 
         if (added){
@@ -88,14 +101,21 @@ export default class ServiceScreen extends Component {
         }
 
         if (error) {
-            Alert.alert( 'Ошибка', 'При сохранении заявки возникла ошибка.',
+            Alert.alert( 'Ошибка', 'При сохранении возникла ошибка.',
             [{text: 'Закрыть', onPress: () => { }}])
+        }
+
+        if (fileAdded){
+            Alert.alert( '', 'Файл добавлен успешно',
+            [{text: 'Закрыть', onPress: () => { goBack() }}])
+            this.props.dismiss()
         }
     }
 
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
+        console.log(ticket)
         if(ticket.WhatHappened == ''){
           Alert.alert( 'Внимание', 'Не заполнено поле "Что сделать"',[{text: 'Закрыть', onPress: () => { }}])
         }else{
@@ -107,9 +127,16 @@ export default class ServiceScreen extends Component {
 
     }
 
+    saveFile = (file) => {
+        console.log('saveFile')
+        console.log(file)
+        this.props.addFile(file)
+    }
+
     updateService = (name, id) => {
         const { ticket } = this.state
         ticket.service = id
+        console.log(ticket)
         this.setState({ticket})
     }
     updateMOP = check => {
@@ -121,7 +148,12 @@ export default class ServiceScreen extends Component {
     updateRoom = room => {
       const { ticket } = this.state
       ticket.room = room
-      console.log(ticket)
+      this.setState({ticket})
+    }
+
+    updateMaterialSupplier = text => {
+      const { ticket } = this.state
+      ticket.materialSupplier = text
       this.setState({ticket})
     }
 
@@ -134,7 +166,8 @@ export default class ServiceScreen extends Component {
     render = () => {
         const { ticket, ticketType, session} = this.state
         const { isAdding } = this.props
-
+        Text.defaultProps = Text.defaultProps || {};
+        Text.defaultProps.allowFontScaling = false;
         return (
             <Loader message='Сохранение' isLoading={isAdding}>
                 <ServiceTicketEditor
@@ -143,7 +176,8 @@ export default class ServiceScreen extends Component {
                     updateMOP={this.updateMOP}
                     updateRoom={this.updateRoom}
                     updateWhatHappened={this.updateWhatHappened}
-
+                    updateMaterialSupplier={this.updateMaterialSupplier}
+                    saveFile={this.saveFile}
                     ticketType={ticketType}
 
                     initialService={session.services[0].name}

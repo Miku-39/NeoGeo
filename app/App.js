@@ -12,6 +12,7 @@ import MainScreen from './containers/MainScreen'
 import TicketScreen from './containers/TicketScreen'
 import TicketsScreen from './containers/TicketsScreen'
 import ServiceScreen from './containers/ServiceScreen'
+import VisitorScreen from './containers/VisitorScreen'
 
 import api from './middleware/api'
 import { Metrics } from './theme'
@@ -29,6 +30,7 @@ const Navigation = StackNavigator({
     Main: { screen: MainScreen },
     Ticket: { screen: TicketScreen },
     Service: { screen: ServiceScreen },
+    Visitor: { screen: VisitorScreen },
     Tickets: { screen: TicketsScreen },
 }, {
     initialRouteName: 'Login',

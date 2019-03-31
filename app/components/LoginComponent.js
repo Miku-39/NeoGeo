@@ -98,7 +98,7 @@ class LoginComponent extends Component {
                         </TouchableOpacity>
 
                     </View>
-                    
+
                     {
                         this.props.disabled ?
                         <View style={{alignSelf: 'center'}}>

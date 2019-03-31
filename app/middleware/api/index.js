@@ -1,7 +1,6 @@
 import axios from 'axios'
 import querystring from 'querystring'
 
-
 export const API_SERVER_URL = 'http://213.251.249.30:8090'
 //export const FILE_SERVER_URL = 'https://saas.claris.su/UserSettings/9323/Docs/'
 
@@ -38,6 +37,13 @@ const login = (user, password) =>  {
   return instance.post('/token', body, conf).catch(onError)
 }
 
+const addFile = (file) =>  {
+  const conf = { headers: { 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryfYmc9zCbpTtmSCuM',
+                            'Accept': 'application/json'}}
+  const body = `${file}`
+  return instance.post('/vNext/v1/files', body, conf).catch(onError)
+}
+
 const authorize = () => instance.get('/vNext/v1/users/current')
 const setAuthHeader = (token) => instance.defaults.headers.authorization = `Bearer ${token}`
 
@@ -63,5 +69,6 @@ const updateTicketStatus = (ticket) => instance.patch(`/vnext/v1/requests/${tick
 
 const addTicket = (ticket) => instance.post('/vNext/v1/requests', ticket).catch(onError)
 
-
-export default { login, authorize, setAuthHeader, fetchTicketsForCheckpoint, fetchTicketsForSecurityChief, fetchParkingsForCars, fetchParkingsForGoods, fetchServices, fetchAllTickets, updateTicketStatus, addTicket }
+export default { login, authorize, setAuthHeader, fetchTicketsForCheckpoint, fetchTicketsForSecurityChief,
+                 fetchParkingsForCars, fetchParkingsForGoods, fetchServices, fetchAllTickets, updateTicketStatus,
+                 addTicket, addFile }

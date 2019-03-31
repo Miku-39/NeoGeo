@@ -5,6 +5,8 @@ import { Metrics } from '../theme'
 
 export default class Loader extends Component {
     render () {
+      Text.defaultProps = Text.defaultProps || {};
+      Text.defaultProps.allowFontScaling = false;
         return (
             <View style={{flex: 1}}>
                 { this.props.children }
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        width: 250, 
+        width: 210,
         height: 50,
         backgroundColor: '#941b1b',
         borderRadius: 30,

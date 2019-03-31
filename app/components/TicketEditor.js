@@ -52,24 +52,15 @@ export default class TicketScreen extends Component {
     pickerFormat = this.state.selectedParking == 'Гостевая' ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD"
     pickerMode = this.state.selectedParking == 'Гостевая' ? "datetime" : "date"
     androidMargin = Platform.OS === 'android' ? 7 : 0
+    Text.defaultProps = Text.defaultProps || {};
+    Text.defaultProps.allowFontScaling = true;
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
-              {
-                this.props.ticketType != 'CAR' &&
-                  <Fumi
-                      label={'ФИО посетителя'}
-                      iconClass={Icon}
-                      iconName={'person'}
-                      iconColor={'#53565A'}
-                      iconSize={20}
-                      inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
-                      onChangeText={this.props.updateVisitor}
-                  />
-                }
-                {
-                    this.props.showCarFields &&
-                    <View>
+              <View style={{
+               backgroundColor: '#FFF',
+               borderRadius: 10,
+               flexDirection: 'column'}}>
                     <Fumi
                         label={'Марка автомобиля'}
                         iconClass={Icon}
@@ -79,7 +70,6 @@ export default class TicketScreen extends Component {
                         inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
                         onChangeText={this.props.updateCarModel}
                     />
-
                     <Fumi
                         label={'Номер автомобиля'}
                         iconClass={Icon}
@@ -90,7 +80,7 @@ export default class TicketScreen extends Component {
                         onChangeText={this.props.updateCarNumber}
                     />
 
-                  { this.state.selectedParking != 'Гостевая' && this.props.ticketType == 'CAR' &&
+                  { (this.state.selectedParking != 'Гостевая' && this.props.ticketType == 'CAR' && this.state.selectedParking != 'Курьерская') &&
                     <Fumi
                         label={'Место на парковке'}
                         iconClass={Icon}
@@ -101,46 +91,48 @@ export default class TicketScreen extends Component {
                         onChangeText={this.props.updateParkingPlace}
                     />
                   }
-                  {(this.props.ticketType == 'GOODS_LEAVE' || this.props.ticketType == 'GOODS_ARRIVE') &&
+
+                  {this.props.ticketType != 'CAR' &&
                   <View>
                     <Fumi
-                        label={'Информация о грузе'}
+                        label={'Данные о грузе'}
                         iconClass={Icon}
-                        iconName={'directions-car'}
+                        iconName={'receipt'}
                         iconColor={'#53565A'}
                         iconSize={20}
                         inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
                         onChangeText={this.props.updateGoods}
                     />
-                    <View style={{
-                     backgroundColor: '#FFF',
-                     flexDirection: 'column',
-                     height: 64}}>
-                      <CheckBox
-                        title='Лифт'
-                        containerStyle={styles.checkboxContainer}
-                        textStyle={styles.checkboxText}
-                        checked={this.state.lift}
-                        onPress={this.updateLift}
-                      />
-                    </View>
+                    <Fumi
+                        label={'ФИО грузчиков'}
+                        iconClass={Icon}
+                        iconName={'person'}
+                        iconColor={'#53565A'}
+                        iconSize={20}
+                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
+                        onChangeText={this.props.updateVisitor}
+                    />
                   </View>
-                  }
-                  {(this.props.ticketType == 'VISITOR') &&
-                    <View style={{
-                     backgroundColor: '#FFF',
-                     flexDirection: 'column',
-                     height: 64}}>
-                      <CheckBox
-                        title='Лифт'
-                        containerStyle={styles.checkboxContainer}
-                        textStyle={styles.checkboxText}
-                        checked={this.state.lift}
-                        onPress={this.updateLift}
-                      />
-                    </View>
-                  }
+                }
+              </View>
 
+
+                {this.props.ticketType != 'CAR' &&
+                  <View style={{
+                   marginTop: 10,
+                   backgroundColor: '#FFF',
+                   borderRadius: 10,
+                   flexDirection: 'column',
+                   height: 64}}>
+                    <CheckBox
+                      title='Лифт'
+                      containerStyle={styles.checkboxContainer}
+                      textStyle={styles.checkboxText}
+                      checked={this.state.lift}
+                      onPress={this.updateLift}
+                    />
+                  </View>
+                }
                     {
                       Platform.OS === 'android' &&
                       <View style={{marginTop: 10}}>
@@ -184,8 +176,6 @@ export default class TicketScreen extends Component {
 
                         </View>
                       }
-                  </View>
-                }
 
                 <View style={{marginTop: 10}}>
                     <Text style={styles.pickerLabel}>{this.state.selectedParking == 'Гостевая' ? 'Дата и время посещения' : 'Дата посещения'}</Text>
@@ -218,10 +208,10 @@ export default class TicketScreen extends Component {
                 </View>
                 <View style={{margin: 30, alignItems: 'center', alignSelf: 'center' }}>
                 { this.state.selectedParking == 'Гостевая' &&
-                     <Text style={styles.pickerLabel}>Разрешенный период гостевой парковки - не более 2 часов</Text>
+                     <Text style={styles.pickerLabel}>Разрешенный период гостевой парковки - не более 2 часов.{"\n"}Обязательно проверьте статус заявки</Text>
                 }
                 { this.state.selectedParking == 'Курьерская' &&
-                     <Text style={styles.pickerLabel}>Разрешенный период курьерской парковки - не более 20 минут</Text>
+                     <Text style={styles.pickerLabel}>Разрешенный период курьерской парковки - не более 20 минут.{"\n"}Обязательно проверьте статус заявки</Text>
                 }
                 </View>
             </ScrollView>
@@ -259,7 +249,7 @@ const styles = StyleSheet.create({
      color: '#53565A'
     },
    checkboxContainer: {
-     marginTop: 10,
+     marginTop: 8,
      backgroundColor: '#FFF',
      borderRadius: 10,
      borderWidth: 0

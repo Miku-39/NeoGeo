@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, Button, Alert, TouchableHighlight, YellowBox, StyleSheet } from 'react-native'
 import { Images, Colors } from '../theme'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
@@ -15,6 +16,7 @@ export default class TicketsListItem extends React.PureComponent {
             + 'Водитель: ' + item.visitorFullName + "\n"
             + 'Груз: ' + item.materialValuesData + "\n"
             + `${item.materialValuesSize == null ? '' : 'Габариты груза: '+ item.materialValuesSize}`
+            + 'Лифт: ' + `${item.lift && item.lift ? 'да' : 'нет'}`
             + `${item.rejectionReason && ('\n' + 'Причина отклонения: ' + item.rejectionReason) || ''}`,
            )}
 
@@ -33,6 +35,11 @@ export default class TicketsListItem extends React.PureComponent {
                  <Text style={{fontSize: 14, color: 'black', fontStyle: 'italic', marginRight: 5}}>
                  { arrivalDate }
                  </Text>
+                 {(item.type.shortName == 'Внос' || item.type.shortName == 'Внос' || item.rejectionReason != null) &&
+                 <Icon
+                  name='receipt'
+                  color='#941b1b'/>
+                 }
                </View>
              )
            }
@@ -49,14 +56,13 @@ export default class TicketsListItem extends React.PureComponent {
                </View>
              )
            }
-
            switch(item.type.shortName){
              case 'Внос' || 'Вынос':
              return (
                       <View style={{width: '100%'}}>
                       <TouchableHighlight onPress={showAlert} underlayColor="#909090">
-                      <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', margin: 1, borderRadius: 5}}>
-                      <View style={{width: 6, marginBottom: 4, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
+                      <View style={{flexDirection: 'row', backgroundColor: 'white', margin: 1, borderRadius: 5}}>
+                      <View style={{width: 6, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
                       <View style={{flexDirection: 'column', marginLeft: 8, marginBottom: 1 }}>
 
                       {header()}
@@ -81,7 +87,7 @@ export default class TicketsListItem extends React.PureComponent {
                   case 'Гость':
                   return (
                     <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', margin: 1, borderRadius: 5}}>
-                    <View style={{width: 6, marginBottom: 4, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
+                    <View style={{width: 6, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
                       <View style={{flexDirection: 'column', marginLeft: 8, marginBottom: 1 }}>
 
                       {header()}
@@ -100,7 +106,7 @@ export default class TicketsListItem extends React.PureComponent {
                   case 'Авто':
                   return (
                     <View style={{flexDirection: 'row', width: '100%', backgroundColor: 'white', margin: 1, borderRadius: 5}}>
-                    <View style={{width: 6, marginBottom: 4, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
+                    <View style={{width: 6, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
                       <View style={{flexDirection: 'column', marginLeft: 8, marginBottom: 1 }}>
 
                       {header()}

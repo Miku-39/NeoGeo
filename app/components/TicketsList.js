@@ -28,6 +28,8 @@ const status2colors = {
 
 export default class TicketsList extends React.PureComponent {
     renderItem = ({item}) => {
+              Text.defaultProps = Text.defaultProps || {};
+              Text.defaultProps.allowFontScaling = true;
               const showDeclineReason = () => {
               Alert.alert(
                 "Причина отклонения",

@@ -12,17 +12,17 @@ export default class MainScreenContainer extends Component {
 
     render = () => {
         const { navigate } = this.props.navigation
-
         return (
+
           <MainComponent
-              addVisitTicket={() => navigate('Ticket', {showCarFields: false, showGoodsFields: false, ticketType: 'VISITOR'})}
+              addVisitTicket={() => navigate('Visitor', {ticketType: 'VISITOR'})}
+              addCardTicket={() => Alert.alert('В разработке', 'Функция добавления файла в разработке.')}
               addCarTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: false, ticketType: 'CAR'})}
               addGoodsArriveTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: true, ticketType: 'GOODS_ARRIVE'})}
               addGoodsLeaveTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: true, ticketType: 'GOODS_LEAVE'})}
               addServiceTicket={() => navigate('Service', {ticketType: 'SERVICE'})}
               addAltServiceTicket={() => navigate('Service', {ticketType: 'ALT_SERVICE'})}
               openTickets={() => navigate('Tickets')}
-              openEvents={() => Alert.alert( 'Внимание', 'Функционал событий находится на стадии разработки', [ {text: 'Закрыть', onPress: () => { }} ])}
           />
         )
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Text, StyleSheet,
+import { View, ScrollView, Text, StyleSheet, Image,
         Picker, TouchableOpacity, Platform, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Fumi } from 'react-native-textinput-effects'
@@ -21,11 +21,17 @@ export default class ServiceTicketScreen extends Component {
     this.setState({mop: !this.state.mop})
     this.props.updateMOP(!this.state.mop)
   }
+  updateImage = (uri) => {
+    this.props.saveFile(uri)
+    this.setState({image: uri})
+  }
   render () {
     const { services } = this.props
     idByIndex = services.map(service => {return service.id})
     servicesByIndex = services.map(service => {return service.name})
     androidMargin = Platform.OS === 'android' ? 7 : 0
+    Text.defaultProps = Text.defaultProps || {};
+    Text.defaultProps.allowFontScaling = true;
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
@@ -104,6 +110,21 @@ export default class ServiceTicketScreen extends Component {
                         />
 
                       }
+                      {
+                        this.props.ticketType == 'ALT_SERVICE' &&
+                          <Fumi
+                              style={styles.fumiInput}
+                              label={'Поставщик материалов'}
+                              iconClass={Icon}
+                              iconName={'room'}
+                              iconColor={'#53565A'}
+                              iconSize={20}
+                              inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
+                              onChangeText={this.props.updateMaterialSupplier}
+                              inputPadding={16}
+                          />
+
+                        }
 
                       <TextInput
                         placeholder="Что сделать"
@@ -113,9 +134,6 @@ export default class ServiceTicketScreen extends Component {
                         scrollEnabled={true}
                         onChangeText={this.props.updateWhatHappened}
                         />
-
-                        <ImagePickerComponent/>
-
             </ScrollView>
         </View>
     )
@@ -173,5 +191,14 @@ const styles = StyleSheet.create({
   fumiInput:{
     marginTop: 10,
     borderRadius: 10
-    }
+  },
+  image:{
+    margin: 10,
+    width: 200,
+    height: 200,
+    borderRadius: 15,
+    borderColor: '#53565A',
+    borderWidth: 3,
+    alignSelf: 'center'
+  }
 })

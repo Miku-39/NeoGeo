@@ -1,20 +1,24 @@
 import React from 'react';
-import { TouchableOpacity, Image, View, StyleSheet, Text, StatusBar } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, Text, StatusBar } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
 
 export default class ImagePickerComponent extends React.Component {
-  state = {
-    image: null,
-  };
+  constructor(props) {
+     super(props);
+     this.state = {
+       image: null
+     }
+  }
 
   _pickImage = async () => {
     await this._askPermissionsAsync();
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true
     });
-    
+
     if (!result.cancelled) {
       this.setState({ image: result.uri });
+      this.props.onChoose(result.uri)
     }
   };
 
@@ -26,6 +30,7 @@ export default class ImagePickerComponent extends React.Component {
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
+      this.props.onChoose(result.uri)
     }
   }
 
@@ -52,9 +57,6 @@ export default class ImagePickerComponent extends React.Component {
         <View style={{flexDirection: 'column', alignItems: 'center'}}>
         <Text style={styles.pickerText}>Сделать снимок</Text>
         </View></TouchableOpacity>
-
-        {image &&
-          <Image source={{ uri: image }} style={{ width: 200, height: 200, borderRadius: 15, borderWidth: 3 }} />}
       </View>
     );
   }
