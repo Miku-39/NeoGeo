@@ -78,7 +78,7 @@ export default class ServiceTicketScreen extends Component {
 
                       </View>
                     }
-
+                    {this.props.ticketType == 'SERVICE' &&
                     <View style={{
                      marginTop: 10,
                      backgroundColor: '#FFF',
@@ -94,7 +94,7 @@ export default class ServiceTicketScreen extends Component {
                       onPress={this.updateMOP}
                     />
                     </View>
-
+                  }
                     {
                       !this.state.mop &&
                         <Fumi
@@ -134,6 +134,9 @@ export default class ServiceTicketScreen extends Component {
                         scrollEnabled={true}
                         onChangeText={this.props.updateWhatHappened}
                         />
+
+                        <ImagePickerComponent
+                          onChoose={this.updateImage}/>
             </ScrollView>
         </View>
     )

@@ -37,11 +37,18 @@ const login = (user, password) =>  {
   return instance.post('/token', body, conf).catch(onError)
 }
 
-const addFile = (file) =>  {
-  const conf = { headers: { 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryfYmc9zCbpTtmSCuM',
-                            'Accept': 'application/json'}}
-  const body = `${file}`
-  return instance.post('/vNext/v1/files', body, conf).catch(onError)
+const addFile = (uri) =>  {
+//  const conf = { headers: { 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryfYmc9zCbpTtmSCuM',
+//                            'Accept': 'application/json'}}
+//  const body = `${file}`
+//  return instance.post('/vNext/v1/files', body, conf).catch(onError)
+    let bodyFormData = new FormData()
+    bodyFormData.append("file", {
+      uri: uri,
+      type: "image/jpeg", // or photo.type
+      name: "NeoGeoMobile.jpg"
+    });
+    return instance.post("/vNext/v1/files", bodyFormData, { headers: {'Content-Type': 'multipart/form-data' }} );
 }
 
 const authorize = () => instance.get('/vNext/v1/users/current')

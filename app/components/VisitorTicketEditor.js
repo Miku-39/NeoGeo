@@ -52,22 +52,6 @@ export default class VisitorScreen extends Component {
                       inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
                       onChangeText={this.props.updateVisitor}
                   />
-                  {this.props.ticketType == 'VISITOR' &&
-                  <View style={{
-                   marginTop: 10,
-                   backgroundColor: '#FFF',
-                   borderRadius: 10,
-                   flexDirection: 'column',
-                   height: 64}}>
-                    <CheckBox
-                      title='Многократный вход'
-                      containerStyle={styles.checkboxContainer}
-                      textStyle={styles.checkboxText}
-                      checked={this.state.multipleEntry}
-                      onPress={this.updateMultipleEntry}
-                    />
-                  </View>
-                }
 
                 {this.props.ticketType == 'VISITOR' &&
                 <View style={{marginTop: 10}}>

@@ -208,10 +208,10 @@ export default class TicketScreen extends Component {
                 </View>
                 <View style={{margin: 30, alignItems: 'center', alignSelf: 'center' }}>
                 { this.state.selectedParking == 'Гостевая' &&
-                     <Text style={styles.pickerLabel}>Разрешенный период гостевой парковки - не более 2 часов.{"\n"}Обязательно проверьте статус заявки</Text>
+                     <Text style={styles.pickerLabel}>Разрешенный период гостевой парковки - не более 2 часов.{"\n\n"}Обязательно проверьте статус заявки</Text>
                 }
                 { this.state.selectedParking == 'Курьерская' &&
-                     <Text style={styles.pickerLabel}>Разрешенный период курьерской парковки - не более 20 минут.{"\n"}Обязательно проверьте статус заявки</Text>
+                     <Text style={styles.pickerLabel}>Разрешенный период курьерской парковки - не более 20 минут.{"\n\n"}Обязательно проверьте статус заявки</Text>
                 }
                 </View>
             </ScrollView>

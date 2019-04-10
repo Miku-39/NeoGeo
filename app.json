@@ -3,16 +3,16 @@
     "sdkVersion": "28.0.0",
     "name": "Claris. NeoGeo",
     "icon": "./app/theme/images/claris_service_desk-logo.png",
-    "version": "2.3",
+    "version": "2.4",
     "slug": "claris-neogeo",
     "ios": {
       "bundleIdentifier": "ru.altsoft.saas.neogeo",
       "icon": "./app/theme/images/appstorelogo2.png",
-      "buildNumber": "2.3"
+      "buildNumber": "2.4"
     },
     "android": {
       "package": "ru.altsoft.saas.neogeo",
-      "versionCode": 9,
+      "versionCode": 8,
       "permissions": [
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",

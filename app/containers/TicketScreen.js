@@ -7,6 +7,7 @@ import { View,
   Text
 } from 'react-native'
 import { connect } from 'react-redux'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import TicketEditor from '../components/TicketEditor'
 import Loader from '../components/Loader'
@@ -58,7 +59,7 @@ export default class TicketScreen extends Component {
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
                     <TouchableOpacity onPress={() => headerButtonsHandler.save()}>
-                        <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>Сохранить</Text>
+                      <Icon name='check' color='#FFF' size={30}/>
                     </TouchableOpacity>
                 </View>
             )

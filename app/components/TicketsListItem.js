@@ -27,8 +27,9 @@ export default class TicketsListItem extends React.PureComponent {
                    arrivalDate = ' ' }else{ arrivalDate = item.visitDate.substr(0,10) }
                }else{ arrivalDate = item.visitDate.substr(0,10) }
              }
+
              return(
-               <View style={{flexDirection: 'row', marginTop: 5, marginBottom: 5}}>
+               <View style={{flexDirection: 'row'}}>
                  <Text style={{fontSize: 14, color: 'black', fontStyle: 'italic', marginRight: 5}}>
                  { item.type ? item.type.shortName : 'тип не указан' }
                  </Text>
@@ -72,7 +73,7 @@ export default class TicketsListItem extends React.PureComponent {
                       </View>
 
                       <View style={{flexDirection: 'row'}}>
-                        <Text style={{fontSize: 16, color: '#767878'}}>{(item.parking ? item.parking.name : 'Парковка не указана') + (item.parking.place && item.parking.place || '')}</Text>
+                        <Text style={{fontSize: 16, color: '#767878'}}>{(item.parking ? item.parking.name : 'Парковка не указана') + (item.parkingPlace && item.parkingPlace || '')}</Text>
                       </View>
 
                       {ticketInfo()}
@@ -117,7 +118,7 @@ export default class TicketsListItem extends React.PureComponent {
 
                       <View style={{flexDirection: 'row'}}>
                         <Text style={{fontSize: 16, color: '#767878'}}>
-                        {(item.parking ? item.parking.name : 'Парковка не указана') + (item.parking.place && item.parking.place || '')}</Text>
+                        {(item.parking ? item.parking.name : 'Парковка не указана') + ' ' + (item.parkingPlace ? item.parkingPlace : '-')}</Text>
                       </View>
 
                       {ticketInfo()}

@@ -16,7 +16,7 @@ export default class MainScreenContainer extends Component {
 
           <MainComponent
               addVisitTicket={() => navigate('Visitor', {ticketType: 'VISITOR'})}
-              addCardTicket={() => Alert.alert('В разработке', 'Функция добавления файла в разработке.')}
+              addCardTicket={() => Alert.alert('В разработке', 'Раздел в разработке.')}
               addCarTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: false, ticketType: 'CAR'})}
               addGoodsArriveTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: true, ticketType: 'GOODS_ARRIVE'})}
               addGoodsLeaveTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: true, ticketType: 'GOODS_LEAVE'})}
