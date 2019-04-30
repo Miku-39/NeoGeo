@@ -18,6 +18,13 @@ export default MainComponent = (props) => {
 
             <View style={styles.contentContainer}>
                 <View style={styles.ButtonsContainer}>
+                    <TouchableOpacity onPress={() => { props.openTickets() }}>
+                        <View style={styles.Button}>
+                            <Image resizeMode='contain' source={Images.list} style={styles.buttonImage}/>
+                            <Text style={styles.buttonLabel}>Наши заявки</Text>
+                        </View>
+                    </TouchableOpacity>
+
                     <TouchableOpacity onPress={() => { props.addVisitTicket() }}>
                       <View style={styles.Button}>
                         <Image resizeMode='contain' source={Images.businessman} style={styles.buttonImage} />
@@ -25,14 +32,27 @@ export default MainComponent = (props) => {
                       </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => { props.addCarTicket() }}>
+                </View>
+
+
+                <View style={styles.ButtonsContainer}>
+
+                      <TouchableOpacity onPress={() => { props.addCarTicket() }}>
+                          <View style={styles.Button}>
+                              <Image resizeMode='contain' source={Images.car} style={styles.buttonImage} />
+                              <Text style={styles.buttonLabel}>Заявка на{"\n"}въезд авто</Text>
+                          </View>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity onPress={() => { props.addCardTicket() }}>
                         <View style={styles.Button}>
-                            <Image resizeMode='contain' source={Images.car} style={styles.buttonImage} />
-                            <Text style={styles.buttonLabel}>Заявка на{"\n"}въезд авто</Text>
+                          <Image resizeMode='contain' source={Images.card} style={styles.buttonImage} />
+                          <Text style={styles.buttonLabel}>Заявка на{"\n"}пост. пропуск</Text>
                         </View>
-                    </TouchableOpacity>
+                      </TouchableOpacity>
 
                 </View>
+
 
                 <View style={styles.ButtonsContainer}>
 
@@ -52,6 +72,7 @@ export default MainComponent = (props) => {
 
                 </View>
 
+
                 <View style={styles.ButtonsContainer}>
 
                   <TouchableOpacity onPress={() => { props.addServiceTicket() }}>
@@ -67,23 +88,6 @@ export default MainComponent = (props) => {
                           <Text style={styles.buttonLabel}>Заявка на доп.{"\n"}обслуживание</Text>
                       </View>
                   </TouchableOpacity>
-
-                </View>
-
-                <View style={styles.ButtonsContainer}>
-
-                    <TouchableOpacity onPress={() => { props.openTickets() }}>
-                        <View style={styles.Button}>
-                            <Image resizeMode='contain' source={Images.list} style={styles.buttonImage}/>
-                            <Text style={styles.buttonLabel}>Наши заявки</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                      <View style={{width: 166,
-                                    height: 166,
-                                    borderRadius: 15,
-                                    backgroundColor: '#e6e6e6',
-                                    margin: 15}}/>
 
                 </View>
 

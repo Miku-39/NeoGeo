@@ -11,6 +11,7 @@ const initialState = Map({
     fileIsAdding: false,
     added: false,
     fileAdded: false,
+    fileId: null,
     error: null
 })
 
@@ -35,7 +36,6 @@ export default ticketReducer = (state = initialState, action) => {
             return initialState
 
         case ADD_TICKET_REQUEST:
-            console.log('redux reducers ADD_TICKET_REQUEST')
             return initialState
 
         case IS_ADDING:
@@ -51,7 +51,7 @@ export default ticketReducer = (state = initialState, action) => {
             return state.merge({ fileIsAdding: true })
 
         case FILE_ADDED:
-            return state.merge({ fileIsAdding: false, fileAdded: true })
+            return state.merge({ fileIsAdding: false, fileAdded: true, fileId: action.payload })
 
         case FILE_ADDING_FAILED:
             return state.merge({ fileIsAdding: false, error: action.payload })

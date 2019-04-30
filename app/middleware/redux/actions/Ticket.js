@@ -54,7 +54,6 @@ export const add = (ticket) => {
 }
 
 export const addFile = (file) => {
-  console.log('redux actions addFile')
   return {
       type: ADD_FILE_REQUEST,
       payload: file
@@ -69,7 +68,6 @@ export const isAdding = (isAdding) => {
 }
 
 export const fileIsAdding = (fileIsAdding) => {
-    console.log('file is adding')
     return {
         type: FILE_IS_ADDING,
         payload: fileIsAdding
@@ -82,9 +80,10 @@ export const added = () => {
     }
 }
 
-export const fileAdded = () => {
+export const fileAdded = (fileId) => {
     return {
-        type: FILE_ADDED
+        type: FILE_ADDED,
+        payload: fileId
     }
 }
 

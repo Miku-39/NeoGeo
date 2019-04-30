@@ -32,14 +32,11 @@ export function * addFileSaga(action){
   yield put(fileIsAdding())
 
   try {
-      console.log('redux saga addFileSaga')
       const response = yield call(api.addFile, action.payload)
-      console.log(response)
-      yield put(fileAdded())
+      const ticketId = response.data[0].id
+      yield put(fileAdded(ticketId))
   }
   catch(error) {
-      console.log('failed')
-      console.log(error)
       yield put(fileAddingFailed(error))
   }
 }

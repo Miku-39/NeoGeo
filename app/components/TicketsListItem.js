@@ -73,7 +73,8 @@ export default class TicketsListItem extends React.PureComponent {
                       </View>
 
                       <View style={{flexDirection: 'row'}}>
-                        <Text style={{fontSize: 16, color: '#767878'}}>{(item.parking ? item.parking.name : 'Парковка не указана') + (item.parkingPlace && item.parkingPlace || '')}</Text>
+                        <Text style={{fontSize: 16, color: '#767878'}}>{(item.parking ? item.parking.name : 'Парковка не указана')}</Text>
+                        <Text style={{fontSize: 16, fontWeight: 'bold', color: '#000000'}}>{' ' + (item.parkingPlace && item.parkingPlace || '')}</Text>
                       </View>
 
                       {ticketInfo()}
@@ -117,8 +118,8 @@ export default class TicketsListItem extends React.PureComponent {
                       </View>
 
                       <View style={{flexDirection: 'row'}}>
-                        <Text style={{fontSize: 16, color: '#767878'}}>
-                        {(item.parking ? item.parking.name : 'Парковка не указана') + ' ' + (item.parkingPlace ? item.parkingPlace : '-')}</Text>
+                        <Text style={{fontSize: 16, color: '#767878'}}>{(item.parking ? item.parking.name : 'Парковка не указана')}</Text>
+                        <Text style={{fontSize: 16, fontWeight: 'bold', color: '#000000'}}>{' ' + (item.parkingPlace && item.parkingPlace || '')}</Text>
                       </View>
 
                       {ticketInfo()}

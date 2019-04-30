@@ -32,6 +32,7 @@ const headerButtonsHandler = { save: () => null }
         fileIsAdding: selectors.getIsFileAdding(store),
         added: selectors.getIsTicketAdded(store),
         fileAdded: selectors.getIsFileAdded(store),
+        fileId: selectors.getFileId(store),
         error: selectors.getIsTicketAddingFailed(store),
         session: getSession(store)
     }),
@@ -92,7 +93,7 @@ export default class ServiceScreen extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        const { added, error, fileAdded } = newProps
+        const { added, error, fileAdded, fileId } = newProps
         const { goBack } = this.props.navigation
 
         if (added){
@@ -107,8 +108,9 @@ export default class ServiceScreen extends Component {
         }
 
         if (fileAdded){
+            this.addFileId(fileId)
             Alert.alert( '', 'Файл добавлен успешно',
-            [{text: 'Закрыть', onPress: () => { goBack() }}])
+            [{text: 'Закрыть', onPress: () => { }}])
             this.props.dismiss()
         }
     }
@@ -116,7 +118,6 @@ export default class ServiceScreen extends Component {
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
-        console.log(ticket)
         if(ticket.WhatHappened == ''){
           Alert.alert( 'Внимание', 'Не заполнено поле "Что сделать"',[{text: 'Закрыть', onPress: () => { }}])
         }else{
@@ -132,10 +133,15 @@ export default class ServiceScreen extends Component {
         this.props.addFile(file)
     }
 
+    addFileId = (fileId) => {
+      const { ticket } = this.state
+      ticket.file = fileId
+      this.setState({ticket})
+    }
+
     updateService = (name, id) => {
         const { ticket } = this.state
         ticket.service = id
-        console.log(ticket)
         this.setState({ticket})
     }
     updateMOP = check => {
@@ -164,11 +170,11 @@ export default class ServiceScreen extends Component {
 
     render = () => {
         const { ticket, ticketType, session} = this.state
-        const { isAdding } = this.props
+        const { isAdding, fileIsAdding } = this.props
         Text.defaultProps = Text.defaultProps || {};
         Text.defaultProps.allowFontScaling = false;
         return (
-            <Loader message='Сохранение' isLoading={isAdding}>
+            <Loader message='Сохранение' isLoading={isAdding || fileIsAdding}>
                 <ServiceTicketEditor
                     ticket={ticket}
                     updateService={this.updateService}

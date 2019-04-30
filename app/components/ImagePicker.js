@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, StyleSheet, Text, StatusBar } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, Text, Image, Platform } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
 
 export default class ImagePickerComponent extends React.Component {
@@ -13,11 +13,12 @@ export default class ImagePickerComponent extends React.Component {
   _pickImage = async () => {
     await this._askPermissionsAsync();
     let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true
+      allowsEditing: Platform.OS === 'android'
     });
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
+      console.log(result.uri)
       this.props.onChoose(result.uri)
     }
   };
@@ -25,7 +26,7 @@ export default class ImagePickerComponent extends React.Component {
   _launchCamera = async () => {
     await this._askPermissionsAsync();
     let result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true
+      allowsEditing: Platform.OS === 'android'
     });
 
     if (!result.cancelled) {
@@ -42,50 +43,67 @@ export default class ImagePickerComponent extends React.Component {
 
   render() {
     let { image } = this.state;
-
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <StatusBar backgroundColor="blue" barStyle="light-content" />
-        <TouchableOpacity
-          onPress={this._pickImage}
-          style={styles.picker}>
-        <Text style={styles.pickerText}>Из галереи</Text></TouchableOpacity>
+      <View style={{marginTop: 10, alignItems: 'center'}}>
+        <Text style={styles.pickerLabel}>Выберите фото</Text>
 
-        <TouchableOpacity
-          onPress={this._launchCamera}
-          style={styles.picker}>
-        <View style={{flexDirection: 'column', alignItems: 'center'}}>
-        <Text style={styles.pickerText}>Сделать снимок</Text>
-        </View></TouchableOpacity>
+        <View style={styles.pickerContainer}>
+          <TouchableOpacity
+            onPress={this._pickImage}
+            style={styles.picker}>
+            <Text style={styles.pickerText}>Из галереи</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={this._launchCamera}
+            style={styles.picker}>
+            <Text style={styles.pickerText}>Сделать снимок</Text>
+          </TouchableOpacity>
+        </View>
+
+        {image &&
+          <View style={styles.image, {margin: 15}}>
+            <Image resizeMode='cover' source={{ uri: image }} style={styles.image} />
+          </View>}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-   text: {
-      fontSize: 30,
-      alignSelf: 'center',
-      color: 'red'
+   pickerContainer: {
+     flex: 1,
+     borderRadius: 20,
+     margin: 10,
+     alignSelf: 'center',
+     alignItems: 'center',
+     backgroundColor: '#C9C8C7',
+     flexDirection: 'column'
    },
    picker: {
      borderRadius: 20,
-     marginTop: 5,
+     margin: 5,
      width: 200,
-     height: 40,
      alignSelf: 'center',
      alignItems: 'center',
      backgroundColor: '#C9C8C7',
      flexDirection: 'column'
    },
    pickerLabel: {
-     fontWeight: 'bold',
-     color: '#53565A',
      fontSize: 16,
+     color: '#53565A',
+     fontWeight: 'bold',
      textAlign: 'center'
    },
    pickerText:{
      fontSize: 18,
      color: '#53565A'
+    },
+    image: {
+      borderRadius: 20,
+      width: 300,
+      height: 300,
+      borderWidth: 5,
+      borderColor: '#C9C8C7'
     }
 })

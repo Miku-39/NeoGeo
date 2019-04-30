@@ -29,7 +29,10 @@ const headerButtonsHandler = { save: () => null }
         employeeId: selectors.getEmployeeId(store),
         companyId: selectors.getCompanyId(store),
         isAdding: selectors.getIsTicketAdding(store),
+        fileIsAdding: selectors.getIsFileAdding(store),
         added: selectors.getIsTicketAdded(store),
+        fileAdded: selectors.getIsFileAdded(store),
+        fileId: selectors.getFileId(store),
         error: selectors.getIsTicketAddingFailed(store),
         session: getSession(store)
     }),
@@ -92,7 +95,8 @@ export default class VisitorScreen extends Component {
             author: employeeId,
             status: NEW_TICKET_STATUS_ID,
             type: ticketTypeId,
-            client: companyId
+            client: companyId,
+            photo: null
         }
 
         this.setState({ticket: ticket,
@@ -104,40 +108,56 @@ export default class VisitorScreen extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        const { added, error } = newProps
-        const { goBack } = this.props.navigation
+      const { added, error, fileAdded, fileId } = newProps
+      const { goBack } = this.props.navigation
 
-        if (added){
-            Alert.alert( '', 'Добавлено успешно',
-            [
-                {text: 'Закрыть', onPress: () => { goBack() }}
-            ])
-            this.props.dismiss()
-        }
+      if (added){
+          Alert.alert( '', 'Заявка добавлена успешно',
+          [{text: 'Закрыть', onPress: () => { goBack() }}])
+          this.props.dismiss()
+      }
 
-        if (error) {
-            Alert.alert( 'Ошибка', 'При сохранении возникла ошибка.',
-            [
-                {text: 'Закрыть', onPress: () => { }}
-            ])
-        }
+      if (error) {
+          Alert.alert( 'Ошибка', 'При сохранении возникла ошибка.',
+          [{text: 'Закрыть', onPress: () => { }}])
+      }
+
+      if (fileAdded){
+          this.addFileId(fileId)
+          Alert.alert( '', 'Файл добавлен успешно',
+          [{text: 'Закрыть', onPress: () => { }}])
+          this.props.dismiss()
+      }
     }
 
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
 
-        if(ticketType == 'VISITOR' && ticket.visitorFullName == ''){
+        if(ticket.visitorFullName == ''){
           Alert.alert( 'Внимание', 'Не заполнены данные о посетителе',[{text: 'Закрыть', onPress: () => { }}])
         }else{
-          console.log(ticket)
-          this.props.addTicket(ticket)
+          if((ticket.visitorFullName.match(/ /g) || []).length != 2 && ticketType == 'VISITOR'){
+            Alert.alert( 'Внимание', 'Заполните ФИО по формату "Фамилия Имя Отчество"',[{text: 'Закрыть', onPress: () => { }}])
+          }else{
+            if(ticketType == 'CARD' && !ticket.photo){
+              Alert.alert( 'Внимание', 'Выберите фото',[{text: 'Закрыть', onPress: () => { }}])
+            } else {
+              this.props.addTicket(ticket)
+            }
+          }
         }
 
     }
 
     saveFile = (file) => {
         this.props.addFile(file)
+    }
+
+    addFileId = (fileId) => {
+      const { ticket } = this.state
+      ticket.photo = fileId
+      this.setState({ticket})
     }
 
     updateVisitor = text => {
@@ -161,11 +181,11 @@ export default class VisitorScreen extends Component {
     render = () => {
         const { ticket,
            ticketType, session} = this.state
-        const { isAdding } = this.props
+        const { isAdding, fileIsAdding } = this.props
         Text.defaultProps = Text.defaultProps || {};
         Text.defaultProps.allowFontScaling = false;
         return (
-            <Loader message='Сохранение' isLoading={isAdding}>
+            <Loader message='Сохранение' isLoading={isAdding || fileIsAdding}>
                 <VisitorTicketEditor
                     ticket={ticket}
                     updateVisitor={this.updateVisitor}

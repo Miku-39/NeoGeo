@@ -156,7 +156,6 @@ export default class TicketScreen extends Component {
             if((ticketType == 'GOODS_ARRIVE' || ticketType == 'GOODS_LEAVE') && ticket.materialValuesData == ''){
               Alert.alert( 'Внимание', 'Не заполнены данные о грузе',[{text: 'Закрыть', onPress: () => { }}])
             }else{
-              console.log(ticket)
               this.props.addTicket(ticket)
             }
           }

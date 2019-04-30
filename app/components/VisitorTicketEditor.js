@@ -24,7 +24,6 @@ export default class VisitorScreen extends Component {
     this.props.updateMultipleEntry(!this.state.multipleEntry)
   }
   updateImage = (uri) => {
-    console.log(uri)
     this.props.saveFile(uri)
     this.setState({image: uri})
   }
@@ -83,6 +82,10 @@ export default class VisitorScreen extends Component {
                         onDateChange={this.props.updateVisitDate}
                     />
                 </View>
+              }
+              { this.props.ticketType == 'CARD' &&
+                  <ImagePickerComponent
+                    onChoose={this.updateImage}/>
               }
             </ScrollView>
       </View>
