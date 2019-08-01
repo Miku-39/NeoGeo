@@ -51,7 +51,6 @@ export default class TicketScreen extends Component {
     maxDate.setFullYear(minDate.getFullYear()+2)
     pickerFormat = this.state.selectedParking == 'Гостевая' ? "YYYY-MM-DD HH:mm" : "YYYY-MM-DD"
     pickerMode = this.state.selectedParking == 'Гостевая' ? "datetime" : "date"
-    androidMargin = Platform.OS === 'android' ? 7 : 0
     Text.defaultProps = Text.defaultProps || {};
     Text.defaultProps.allowFontScaling = true;
     return (
@@ -67,7 +66,7 @@ export default class TicketScreen extends Component {
                         iconName={'directions-car'}
                         iconColor={'#53565A'}
                         iconSize={20}
-                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
+                        inputStyle={styles.fumiInput}
                         onChangeText={this.props.updateCarModel}
                     />
                     <Fumi
@@ -76,7 +75,7 @@ export default class TicketScreen extends Component {
                         iconName={'directions-car'}
                         iconColor={'#53565A'}
                         iconSize={20}
-                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
+                        inputStyle={styles.fumiInput}
                         onChangeText={this.props.updateCarNumber}
                     />
 
@@ -87,7 +86,7 @@ export default class TicketScreen extends Component {
                         iconName={'directions-car'}
                         iconColor={'#53565A'}
                         iconSize={20}
-                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
+                        inputStyle={styles.fumiInput}
                         onChangeText={this.props.updateParkingPlace}
                     />
                   }
@@ -100,7 +99,7 @@ export default class TicketScreen extends Component {
                         iconName={'receipt'}
                         iconColor={'#53565A'}
                         iconSize={20}
-                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
+                        inputStyle={styles.fumiInput}
                         onChangeText={this.props.updateGoods}
                     />
                     <Fumi
@@ -109,7 +108,7 @@ export default class TicketScreen extends Component {
                         iconName={'person'}
                         iconColor={'#53565A'}
                         iconSize={20}
-                        inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
+                        inputStyle={styles.fumiInput}
                         onChangeText={this.props.updateVisitor}
                     />
                   </View>
@@ -225,6 +224,10 @@ const styles = StyleSheet.create({
       fontSize: 30,
       alignSelf: 'center',
       color: 'red'
+   },
+   fumiInput: {
+     color: '#53565A',
+    marginBottom: Platform.OS === 'android' ? 7 : 0
    },
    picker: {
      borderRadius: 20,

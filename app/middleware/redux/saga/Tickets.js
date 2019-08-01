@@ -11,7 +11,7 @@ function * fetchTicketsSaga() {
     const session = getSession(store)
     var response
     try {
-        response = yield call(api.fetchAllTickets, session.companyId)
+        response = yield call(api.fetchAllTickets)
         yield put(fetched(response.data))
     }
     catch(error) {
