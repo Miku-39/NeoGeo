@@ -13,9 +13,8 @@ const conf = {
 const instance = axios.create(conf)
 
 const onError = (error) => {
+  console.log(error)
   if (error.response) {
-    console.warn('axios onError', error.response)
-
     if (error.response.status === 400) {
       throw Error('Не верный логин или пароль')
     } else if (error.response.status > 400) {

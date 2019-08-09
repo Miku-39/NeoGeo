@@ -1,8 +1,8 @@
 const colors = {
   backgroundColor: '#e6e6e6',
-  accentColor: '#217f90',
+  accentColor: '#941b1b',
   fieldsColor: '#FFFFFF',
-  textColor: '#53565A',
+  textColor: '#535353',
   buttonColor: '#C9C8C7'
 }
 

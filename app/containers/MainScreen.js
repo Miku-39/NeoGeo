@@ -6,7 +6,7 @@ import MainComponent from '../components/MainComponent'
 export default class MainScreenContainer extends Component {
     static navigationOptions = ({navigation}) => {
         return ({
-            title: 'Кларис'
+            title: 'Заявки'
         })
     }
 
@@ -16,12 +16,12 @@ export default class MainScreenContainer extends Component {
 
           <MainComponent
               addVisitTicket={() => navigate('Visitor', {ticketType: 'VISITOR'})}
-              addCardTicket={() => navigate('Visitor', {ticketType: 'CARD'})}
-              addCarTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: false, ticketType: 'CAR'})}
-              addGoodsArriveTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: true, ticketType: 'GOODS_ARRIVE'})}
-              addGoodsLeaveTicket={() => navigate('Ticket', {showCarFields: true, showGoodsFields: true, ticketType: 'GOODS_LEAVE'})}
+              addCarTicket={() => navigate('Visitor', {ticketType: 'CAR'})}
+              addCardTicket={() => navigate('Service', {ticketType: 'CARD'})}
+              addGoodsInTicket={() => navigate('Goods', {ticketType: 'GOODSIN'})}
+              addGoodsOutTicket={() => navigate('Goods', {ticketType: 'GOODSOUT'})}
               addServiceTicket={() => navigate('Service', {ticketType: 'SERVICE'})}
-              addAltServiceTicket={() => navigate('Service', {ticketType: 'ALT_SERVICE'})}
+              addAltServiceTicket={() => navigate('Service', {ticketType: 'ALTSERVICE'})}
               openTickets={() => navigate('Tickets')}
           />
         )
