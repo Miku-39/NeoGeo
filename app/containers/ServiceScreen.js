@@ -4,7 +4,10 @@ import { View,
   DatePickerIOS,
   Alert,
   TouchableOpacity,
-  Text
+  Text,
+  NativeModules,
+  LayoutAnimation,
+  Keyboard
 } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -16,10 +19,10 @@ import { add, addFile, dismiss } from '../middleware/redux/actions/Ticket'
 
 import { getSession } from '../middleware/redux/selectors'
 import { storeCredentials, loadCredentials } from '../middleware/utils/AsyncStorage'
+const NEW_TICKET_STATUS_ID = '4285215000';
 
-const NEW_TICKET_STATUS_ID = '2237224236000';
-
-const SERVICE_TICKET_TYPE = '3724900074000';
+const CARD_TICKET_TYPE = '437149164000';
+const SERVICE_TICKET_TYPE = '3724900074000'
 
 const headerButtonsHandler = { save: () => null }
 
@@ -42,50 +45,53 @@ const headerButtonsHandler = { save: () => null }
         dismiss: () => dispatch(dismiss())
     })
 )
-
 export default class ServiceScreen extends Component {
     static navigationOptions = ({navigation}) => {
-      switch(navigation.state.params.ticketType){
-        case 'SERVICE':
-            headerTitle = 'Обслуживание'
-            break;
-        case 'ALT_SERVICE':
-            headerTitle = 'Доп. Обслуживание'
-            break;
-      }
         return ({
-            title: headerTitle,
+            title: 'Новая заявка',
             headerRight: (
                 <View style={{flexDirection: 'row', paddingRight: 7}}>
                     <TouchableOpacity onPress={() => headerButtonsHandler.save()}>
-                      <Icon name='check' color='#FFF' size={30}/>
+                        <Icon name='check' color='#FFF' size={30}/>
                     </TouchableOpacity>
                 </View>
-            )
+            ),
+            headerLeft: (<Icon name='chevron-left' color='#FFF' size={40} onPress={ () => { navigation.goBack() } }/> )
+
         })
     }
 
 
     componentWillMount() {
-        const { showCarFields, showGoodsFields, ticketType } = this.props.navigation.state.params
+        const { ticketType } = this.props.navigation.state.params
         const { employeeId, companyId, session } = this.props
+        switch(ticketType) {
+          case 'SERVICE':
+              ticketTypeId = SERVICE_TICKET_TYPE;
+              break;
+          case 'ALTSERVICE':
+              ticketTypeId = SERVICE_TICKET_TYPE;
+              break;
+          case 'CARD':
+              ticketTypeId = CARD_TICKET_TYPE;
+              break;
+        }
 
         const ticket = {
+            visitorFullName: '',
             actualCreationDate: new Date(),
-            visitDate: new Date(),
             author: employeeId,
+            visitDate: new Date(),
             status: NEW_TICKET_STATUS_ID,
-            type: SERVICE_TICKET_TYPE,
+            type: ticketTypeId,
             client: companyId,
-            isCommonAreas: false,
-            WhatHappened: '',
-            room: '',
-            service: session.services[0].id,
-            isAdditionalService: ticketType == 'ALT_SERVICE'
+            passType: ticketType == 'CARD' ? '2194469501000' : null,
+            isAdditionalService: ticketType == 'ALTSERVICE' ? true : null,
+            photo: null
         }
 
         this.setState({ticket: ticket,
-           ticketType: ticketType, session: session})
+           ticketType: ticketType, session: session, fieldsHighlights: {}})
     }
 
     componentDidMount() {
@@ -93,101 +99,97 @@ export default class ServiceScreen extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        const { added, error, fileAdded, fileId } = newProps
-        const { goBack } = this.props.navigation
+      const { added, error, fileAdded, fileId } = newProps
+      const { goBack } = this.props.navigation
 
-        if (added){
-            Alert.alert( '', 'Заявка добавлена успешно',
-            [{text: 'Закрыть', onPress: () => { goBack() }}])
-            this.props.dismiss()
-        }
+      if (added){
+          Alert.alert( 'Заявка добавлена успешно', '',
+          [{text: 'Закрыть', onPress: () => { goBack() }}])
+          this.props.dismiss()
+      }
 
-        if (error) {
-            Alert.alert( 'Ошибка', 'При сохранении возникла ошибка.',
-            [{text: 'Закрыть', onPress: () => { }}])
-        }
+      if (error) {
+          console.log(error)
+          Alert.alert( 'Ошибка', 'При сохранении возникла ошибка.',
+          [{text: 'Закрыть', onPress: () => { }}])
+      }
 
-        if (fileAdded){
-            this.addFileId(fileId)
-            Alert.alert( '', 'Файл добавлен успешно',
-            [{text: 'Закрыть', onPress: () => { }}])
-            this.props.dismiss()
-        }
+      if (fileAdded){
+          this.addFileId(fileId, this.file)
+          Alert.alert( 'Файл добавлен успешно')
+      }
     }
 
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
-        if(ticket.WhatHappened == ''){
-          Alert.alert( 'Внимание', 'Не заполнено поле "Что сделать"',[{text: 'Закрыть', onPress: () => { }}])
-        }else{
-        if(!ticket.isCommonAreas && ticket.room == ''){
-          Alert.alert( 'Внимание', 'Не заполнены данные о помещении',[{text: 'Закрыть', onPress: () => { }}])
-        }else{
+
+        var fieldsHighlights = {
+          whatHappened: (ticketType != 'CARD' && !ticket.whatHappened),
+          photo: (ticketType == 'CARD' && !ticket.photo),
+          visitorFullName: (ticketType == 'CARD' && !ticket.visitorFullName),
+          issueReason: (ticketType == 'CARD' && !ticket.issueReason)
+        }
+
+        Keyboard.dismiss()
+        var passed = true;
+        for (var i in fieldsHighlights) {
+            if (fieldsHighlights[i] === true) {
+                passed = false;
+                break;
+            }}
+
+        console.log(ticket)
+        if(passed){
           this.props.addTicket(ticket)
-        }}
+        }else{
+          Alert.alert('Не заполнены обязательные поля')
+        }
+
+        LayoutAnimation.easeInEaseOut();
+        this.setState({'fieldsHighlights': fieldsHighlights})
 
     }
 
-    saveFile = (file) => {
+    saveFile = (file, name) => {
+        this.file = name
         this.props.addFile(file)
     }
 
-    addFileId = (fileId) => {
+    addFileId = (fileId, name) => {
       const { ticket } = this.state
-      ticket.file = fileId
+      ticket[name]= fileId
       this.setState({ticket})
     }
 
-    updateService = (name, id) => {
-        const { ticket } = this.state
-        ticket.service = id
-        this.setState({ticket})
-    }
-    updateMOP = check => {
-        const { ticket } = this.state
-        ticket.room = check ? null : ticket.room
-        ticket.isCommonAreas = check
-        this.setState({ticket})
-    }
-    updateRoom = room => {
+    updateField = (data, field) => {
       const { ticket } = this.state
-      ticket.room = room
-      this.setState({ticket})
-    }
-
-    updateMaterialSupplier = text => {
-      const { ticket } = this.state
-      ticket.materialSupplier = text
-      this.setState({ticket})
-    }
-
-    updateWhatHappened = text => {
-      const { ticket } = this.state
-      ticket.WhatHappened = text
+      ticket[field] = data == '' ? null : data
       this.setState({ticket})
     }
 
     render = () => {
-        const { ticket, ticketType, session} = this.state
+        const { ticket,
+           ticketType, session} = this.state
         const { isAdding, fileIsAdding } = this.props
         Text.defaultProps = Text.defaultProps || {};
         Text.defaultProps.allowFontScaling = false;
+        const cardReasons = [
+          { name: 'Новый', id: '2658836517000' },
+          { name: 'Утрата', id: '2658836521000' },
+          { name: 'Неисправность в работе', id: '2658836525000' },
+          { name: 'Изменение кат. доступа', id: '2658836526000' }
+        ]
         return (
             <Loader message='Сохранение' isLoading={isAdding || fileIsAdding}>
                 <ServiceTicketEditor
                     ticket={ticket}
-                    updateService={this.updateService}
-                    updateMOP={this.updateMOP}
-                    updateRoom={this.updateRoom}
-                    updateWhatHappened={this.updateWhatHappened}
-                    updateMaterialSupplier={this.updateMaterialSupplier}
+                    updateField={this.updateField}
                     saveFile={this.saveFile}
+                    fieldsHighlights={this.state.fieldsHighlights}
                     ticketType={ticketType}
-
-                    initialService={session.services[0].name}
                     services={session.services}
-
+                    cardReasons={cardReasons}
                 />
             </Loader>
         )

@@ -31,7 +31,7 @@ class LoginComponent extends Component {
                 </View>
 
                 <View style={styles.contentContainer}>
-                    <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={keyboardVerticalOffset} style={styles.inputsContainer}>
+                    <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={keyboardVerticalOffset} style={styles.inputsContainer} enabled>
                         <View style={styles.inputFieldContainer}>
 
                             <View style={styles.iconContainer}>
@@ -102,13 +102,12 @@ class LoginComponent extends Component {
                     {
                         this.props.disabled ?
                         <View style={{alignSelf: 'center'}}>
-                            <ActivityIndicator size="large" color='#941b1b' />
+                            <ActivityIndicator size="large" color={Colors.accentColor}/>
                         </View> : null
                     }
                 </View>
             </View>
             </ImageBackground>
-
         )
     }
 }
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({ // стили всех элементов
     width: '94%',
     height: 50,
     backgroundColor:'white',
-    borderRadius: 7,
+    borderRadius: 15,
     opacity: 0.9
   },
 
@@ -187,14 +186,16 @@ const styles = StyleSheet.create({ // стили всех элементов
   },
   enterContainer: {
     alignItems: 'center',
-    marginBottom: 50
+    margin: 10
   },
   enterButton: { // кнопка
     justifyContent: 'center',
-    backgroundColor: '#941b1b',
-    minWidth: 245,
-    minHeight: 45,
-    borderRadius: 30
+    flexDirection: 'column',
+    backgroundColor: Colors.accentColor,
+    width: 245,
+    height: 50,
+    borderRadius: 15,
+    opacity: 0.9
   },
   enterText: { // вводимый текст
     fontSize: 24,

@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, View, StyleSheet, Text, Image, Platform } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, Text, Image, Platform, LayoutAnimation } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
+import { Colors } from '../theme'
 
 export default class ImagePickerComponent extends React.Component {
   constructor(props) {
@@ -16,9 +17,9 @@ export default class ImagePickerComponent extends React.Component {
       allowsEditing: Platform.OS === 'android'
     });
 
+    LayoutAnimation.easeInEaseOut()
     if (!result.cancelled) {
       this.setState({ image: result.uri });
-      console.log(result.uri)
       this.props.onChoose(result.uri)
     }
   };
@@ -45,18 +46,18 @@ export default class ImagePickerComponent extends React.Component {
     let { image } = this.state;
     return (
       <View style={{marginTop: 10, alignItems: 'center'}}>
-        <Text style={styles.pickerLabel}>Выберите фото</Text>
+        <Text style={styles.pickerLabel}>{this.props.label}</Text>
 
-        <View style={styles.pickerContainer}>
+        <View style={[styles.pickerContainer, {borderColor: this.props.isHighlighted ? Colors.accentColor : Colors.buttonColor}]}>
           <TouchableOpacity
             onPress={this._pickImage}
-            style={styles.picker}>
+            style={[styles.picker, {width: this.props.isHighlighted ? 210 : 200, marginTop: this.props.isHighlighted ? 5 : 0}]}>
             <Text style={styles.pickerText}>Из галереи</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={this._launchCamera}
-            style={styles.picker}>
+            style={[styles.picker, {width: this.props.isHighlighted ? 210 : 200, marginBottom: this.props.isHighlighted ? 5 : 0}]}>
             <Text style={styles.pickerText}>Сделать снимок</Text>
           </TouchableOpacity>
         </View>
@@ -75,9 +76,11 @@ const styles = StyleSheet.create({
      flex: 1,
      borderRadius: 20,
      margin: 10,
+     borderWidth: 5,
+     borderColor: Colors.buttonColor,
      alignSelf: 'center',
      alignItems: 'center',
-     backgroundColor: '#C9C8C7',
+     backgroundColor: Colors.buttonColor,
      flexDirection: 'column'
    },
    picker: {
@@ -91,13 +94,13 @@ const styles = StyleSheet.create({
    },
    pickerLabel: {
      fontSize: 16,
-     color: '#53565A',
+     color: '#535353',
      fontWeight: 'bold',
      textAlign: 'center'
    },
    pickerText:{
      fontSize: 18,
-     color: '#53565A'
+     color: '#535353'
     },
     image: {
       borderRadius: 20,

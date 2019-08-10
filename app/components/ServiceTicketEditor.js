@@ -1,207 +1,216 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Text, StyleSheet, Image,
-        Picker, TouchableOpacity, Platform, TextInput } from 'react-native';
+import { View,
+  ScrollView,
+  TextInput,
+  StyleSheet,
+  Text,
+  Platform,
+  Image,
+  LayoutAnimation } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Fumi } from 'react-native-textinput-effects'
+import DatePicker from 'react-native-datepicker'
 import ReactNativePickerModule from 'react-native-picker-module'
 import { CheckBox } from 'react-native-elements'
 import ImagePickerComponent from '../components/ImagePicker'
-import { Images, Colors } from '../theme'
+import DatePickerComponent from '../components/DatePicker'
+import PickerComponent from '../components/PickerAlternate'
 
-export default class ServiceTicketScreen extends Component {
+import { Colors } from '../theme'
+
+export default class ServiceScreen extends Component {
   constructor(props) {
      super(props);
      this.state = {
-       selectedValue: null,
-       selectedService: this.props.initialService,
-       mop: false
+       visitDate: this.props.ticket.visitDate,
+       image: null
      }
   }
-  updateMOP = () =>{
-    this.setState({mop: !this.state.mop})
-    this.props.updateMOP(!this.state.mop)
+
+  setVisible = (field) => {
+    state = this.state
+    state[field] = !state[field]
+    if(field == 'isCommonAreas'){
+      this.props.updateField(state[field], field);
+    }
+    LayoutAnimation.easeInEaseOut();
+    this.setState(state)
   }
-  updateImage = (uri) => {
+
+  updateField = (data, field) => {
+    this.props.updateField(data, field);
+    LayoutAnimation.easeInEaseOut();
+
+    var fields = this.state
+    fields[field] = data
+
+    var fieldsVisible = {
+    }
+
+    fields['fieldsVisible'] = fieldsVisible
+    this.setState(fields);
+  }
+
+  updateFile = (uri) => {
     this.props.saveFile(uri)
-    this.setState({image: uri})
+    //this.setState({image: uri})
   }
+
   render () {
-    const { services } = this.props
-    idByIndex = services.map(service => {return service.id})
-    servicesByIndex = services.map(service => {return service.name})
-    androidMargin = Platform.OS === 'android' ? 7 : 0
     Text.defaultProps = Text.defaultProps || {};
     Text.defaultProps.allowFontScaling = true;
+    switch(this.props.ticketType){
+      case 'CARD':
+          label = 'На изготовление пропуска';
+          break;
+      case 'SERVICE':
+          label = 'Сервисная';
+          break;
+      case 'ALTSERVICE':
+          label = 'На дополнительное обслуживание';
+          break;
+      default:
+          label = 'Сервисная';
+          break;
+    }
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
-                  {
-                    Platform.OS === 'android' &&
-                    <View style={{marginTop: 10}}>
-                    <Text style={styles.pickerLabel}>Сервис</Text>
-                    <View style={styles.picker}>
-                    <Picker
-                        selectedValue={this.state.selectedService}
-                        style={{height: 40, width: 180}}
-                        onValueChange={(itemValue, itemIndex) =>
-                        {
-                        this.props.updateService(itemValue, idByIndex[itemIndex]);
-                        this.setState({selectedService: itemValue})
-                        }
-                        }>
-                        {services.map(service => {return <Picker.Item label={service.name} value={service.name}/>})}
-                    </Picker>
-                    </View>
-                    </View>
-                  }
+                <View style={styles.fieldsContainer}>
+                  <Text style={styles.field}>{label}</Text>
+                </View>
 
-                  {
-                      Platform.OS === 'ios' &&
-                      <View style={{marginTop: 10}}>
-                      <Text style={styles.pickerLabel}>Сервис</Text>
-                        <ReactNativePickerModule
-                                        pickerRef={e => pickerRef = e}
-                                        value={this.state.selectedValue}
-                                        title='Сервис'
-                                        cancelButton='Отмена'
-                                        confirmButton='Выбрать'
-                                        items={services.map(service => {return service.name})}
-                                        onValueChange={(value) => {
-                                             this.props.updateService(servicesByIndex[value], idByIndex[value]);
-                                             this.setState({selectedValue: value })
-                                             this.setState({selectedService: servicesByIndex[value]})
-                                        }}/>
+                {this.props.ticketType == 'CARD' &&
+                <View>
+                <View style={styles.fieldsContainer}>
+                <Fumi
+                    style={[styles.fumiStyle, {borderColor: this.props.fieldsHighlights.visitorFullName ? Colors.accentColor : '#FFF'}]}
+                    label={'ФИО сотрудника *'}
+                    iconClass={Icon}
+                    iconName={'person'}
+                    iconColor={Colors.textColor}
+                    iconSize={20}
+                    labelStyle={styles.fumiLabel}
+                    inputStyle={styles.fumiInput}
+                    onChangeText={(text) => {this.updateField(text, 'visitorFullName')}}/>
+                <PickerComponent
+                    isHighlighted={this.props.fieldsHighlights.issueReason}
+                    label="Причина"
+                    items={this.props.cardReasons}
+                    onUpdate={(text) => {this.updateField(text, 'issueReason')}}/>
+                </View>
+                <ImagePickerComponent
+                  label='Выберите логотип'
+                  isHighlighted={this.props.fieldsHighlights.logo}
+                  onChoose={(file) => {this.props.saveFile(file, 'file')}}/>
+                </View>
+              }
 
-                        <TouchableOpacity onPress={() => {pickerRef.show()}} style={styles.picker}>
-                          <Text style={styles.pickerText}>{this.state.selectedService}</Text>
-                        </TouchableOpacity>
+                {this.props.ticketType != 'CARD' &&
+                <View>
+                <View style={styles.fieldsContainer}>
+                <PickerComponent
+                    isHighlighted={this.props.fieldsHighlights.service}
+                    label="Сервис"
+                    items={this.props.services}
+                    onUpdate={(text) => {this.updateField(text, 'service')}}/>
 
-                      </View>
-                    }
-                    {this.props.ticketType == 'SERVICE' &&
-                    <View style={{
-                     marginTop: 10,
-                     backgroundColor: '#FFF',
-                     borderRadius: 10,
-                     flexDirection: 'column',
-                     height: 64}}>
+                {this.props.ticketType == 'SERVICE' &&
+                <CheckBox
+                    title='Место общего пользования'
+                    containerStyle={styles.checkboxContainer}
+                    textStyle={styles.checkboxText}
+                    checked={this.state.isCommonAreas}
+                    checkedColor={Colors.textColor}
+                    onPress={() => {this.setVisible('isCommonAreas')}}/>}
 
-                    <CheckBox
-                      title='Место общего пользования'
-                      containerStyle={styles.checkboxContainer}
-                      textStyle={styles.checkboxText}
-                      checked={this.state.mop}
-                      onPress={this.updateMOP}
-                    />
-                    </View>
-                  }
-                    {
-                      !this.state.mop &&
-                        <Fumi
-                            style={styles.fumiInput}
-                            label={'Помещение'}
-                            iconClass={Icon}
-                            iconName={'room'}
-                            iconColor={'#53565A'}
-                            iconSize={20}
-                            inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
-                            onChangeText={this.props.updateRoom}
-                            inputPadding={16}
-                        />
+                {this.props.ticketType == 'ALTSERVICE' &&
+                <Fumi
+                    style={styles.fumiStyle}
+                    label={'Поставщик материалов'}
+                    iconClass={Icon}
+                    iconName={'person'}
+                    iconColor={Colors.textColor}
+                    iconSize={20}
+                    labelStyle={styles.fumiLabel}
+                    inputStyle={styles.fumiInput}
+                    onChangeText={(text) => {this.updateField(text, 'materialSupplier')}}/>}
 
-                      }
-                      {
-                        this.props.ticketType == 'ALT_SERVICE' &&
-                          <Fumi
-                              style={styles.fumiInput}
-                              label={'Поставщик материалов'}
-                              iconClass={Icon}
-                              iconName={'room'}
-                              iconColor={'#53565A'}
-                              iconSize={20}
-                              inputStyle={{ color: '#53565A', marginBottom: androidMargin }}
-                              onChangeText={this.props.updateMaterialSupplier}
-                              inputPadding={16}
-                          />
+                {!this.state.isCommonAreas &&
+                <Fumi
+                    style={[styles.fumiStyle, {borderColor: this.props.fieldsHighlights.room ? Colors.accentColor : '#FFF'}]}
+                    label={'Помещение'}
+                    iconClass={Icon}
+                    iconName={'room'}
+                    iconColor={Colors.textColor}
+                    iconSize={20}
+                    inputStyle={styles.fumiInput}
+                    onChangeText={(text) => {this.props.updateField(text, 'room')}}
+                />}
+                </View>
 
-                        }
+                <TextInput
+                  placeholder="Что сделать *"
+                  underlineColorAndroid='transparent'
+                  style={[styles.textInputStyle, {borderColor: this.props.fieldsHighlights.whatHappened ? Colors.accentColor : '#FFF'}]}
+                  multiline={true}
+                  scrollEnabled={true}
+                  onChangeText={(text) => {this.props.updateField(text, 'whatHappened')}}
+                  />
 
-                      <TextInput
-                        placeholder="Что сделать"
-                        underlineColorAndroid='transparent'
-                        style={styles.textInputStyle}
-                        multiline={true}
-                        scrollEnabled={true}
-                        onChangeText={this.props.updateWhatHappened}
-                        />
+                </View>}
 
-                        <ImagePickerComponent
-                          onChoose={this.updateImage}/>
+                <ImagePickerComponent
+                  label='Выберите фото'
+                  isHighlighted={this.props.fieldsHighlights.photo}
+                  onChoose={(file) => {this.props.saveFile(file, 'photo')}}/>
+
             </ScrollView>
-        </View>
+      </View>
     )
   }
-}
-
-const styles = StyleSheet.create({
-   text: {
-      fontSize: 30,
-      alignSelf: 'center',
-      color: 'red'
+}const styles = StyleSheet.create({
+    fumiInput: {
+      color: Colors.textColor,
+      marginBottom: Platform.OS === 'android' ? 7 : 0
    },
-   picker: {
+   fumiStyle: {
      borderRadius: 20,
-     margin: 10,
-     width: 200,
-     height: 40,
-     alignSelf: 'center',
-     alignItems: 'center',
-     backgroundColor: '#C9C8C7'
-   },
-   pickerLabel: {
-     fontWeight: 'bold',
-     color: '#53565A',
-     fontSize: 16,
-     alignSelf: 'center'
-   },
-   pickerText:{
-     fontSize: 18,
-     alignSelf: 'center',
-     margin: 8,
-     color: '#53565A'
-   },
-   checkboxContainer: {
-     marginTop: 10,
-     backgroundColor: '#FFF',
-     borderRadius: 10,
-     borderWidth: 0
-   },
-   checkboxText: {
-     fontSize: 16,
-     fontWeight: 'bold',
-     color: '#53565A'
+     backgroundColor: Colors.fieldsColor,
+     borderWidth: 5,
+     borderColor: '#FFF'
    },
    textInputStyle:{
     height: 160,
-    borderRadius: 10,
+    borderRadius: 20,
+    borderWidth: 5,
+    borderColor: '#FFF',
     backgroundColor : "#FFF",
-    marginTop: 10,
     fontSize: 18,
-    color: '#53565A',
+    color: Colors.textColor,
     padding: 10,
     paddingTop: 10
   },
-  fumiInput:{
-    marginTop: 10,
-    borderRadius: 10
-  },
-  image:{
+  field: {
     margin: 10,
-    width: 200,
-    height: 200,
-    borderRadius: 15,
-    borderColor: '#53565A',
-    borderWidth: 3,
-    alignSelf: 'center'
+    color: Colors.textColor,
+    fontSize: 18,
+    fontWeight: '500'
+  },
+  checkboxContainer: {
+    marginTop: 8,
+    backgroundColor: Colors.fieldsColor,
+    borderRadius: 10,
+    borderWidth: 0
+  },
+  checkboxText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: Colors.textColor
+  },
+  fieldsContainer: {
+    backgroundColor: Colors.fieldsColor,
+    borderRadius: 20,
+    marginBottom: 10
   }
 })

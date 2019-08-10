@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, ActivityIndicator, StyleSheet, Text } from 'react-native'
 
-import { Metrics } from '../theme'
+import { Metrics, Colors } from '../theme'
 
 export default class Loader extends Component {
     render () {
@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        width: 210,
+        minWidth: 210,
         height: 50,
-        backgroundColor: '#941b1b',
+        backgroundColor: Colors.accentColor,
         borderRadius: 30,
     }
 })
