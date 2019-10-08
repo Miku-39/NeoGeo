@@ -9,7 +9,7 @@ import { View,
 } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-
+import dateFormat from 'dateformat'
 import GoodsTicketEditor from '../components/GoodsTicketEditor'
 import Loader from '../components/Loader'
 import * as selectors from '../middleware/redux/selectors'
@@ -114,7 +114,10 @@ export default class GoodsScreen extends Component {
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
-        if(!ticket.khimkiTime){ticket.khimkiTime = '4067716405000'}
+
+        var date = new Date(ticket.visitDate)
+        ticket.visitDate = dateFormat(date, 'yyyy-mm-dd') + 'T00:00:00.000Z'
+
         var fieldsHighlights = {
           materialValuesData: !ticket.materialValuesData,
           expirationDate: (ticket.longTerm && !ticket.expirationDate)

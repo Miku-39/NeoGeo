@@ -11,7 +11,7 @@ import { View,
 } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-
+import dateFormat from 'dateformat'
 import ServiceTicketEditor from '../components/ServiceTicketEditor'
 import Loader from '../components/Loader'
 import * as selectors from '../middleware/redux/selectors'
@@ -19,7 +19,7 @@ import { add, addFile, dismiss } from '../middleware/redux/actions/Ticket'
 
 import { getSession } from '../middleware/redux/selectors'
 import { storeCredentials, loadCredentials } from '../middleware/utils/AsyncStorage'
-const NEW_TICKET_STATUS_ID = '4285215000';
+const OPEN_TICKET_STATUS_ID = '2237224236000';
 
 const CARD_TICKET_TYPE = '437149164000';
 const SERVICE_TICKET_TYPE = '3724900074000'
@@ -82,7 +82,7 @@ export default class ServiceScreen extends Component {
             actualCreationDate: new Date(),
             author: employeeId,
             visitDate: new Date(),
-            status: NEW_TICKET_STATUS_ID,
+            status: OPEN_TICKET_STATUS_ID,
             type: ticketTypeId,
             client: companyId,
             passType: ticketType == 'CARD' ? '2194469501000' : null,
@@ -123,6 +123,9 @@ export default class ServiceScreen extends Component {
     save = () => {
         const { ticket } = this.state
         const { ticketType } = this.props.navigation.state.params
+
+        var date = new Date(ticket.visitDate)
+        ticket.visitDate = dateFormat(date, 'yyyy-mm-dd') + 'T00:00:00.000Z'
 
         var fieldsHighlights = {
           whatHappened: (ticketType != 'CARD' && !ticket.whatHappened),

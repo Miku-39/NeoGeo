@@ -1,9 +1,21 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Image, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { ScrollView,
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  NativeModules,
+  LayoutAnimation } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { Images, Colors, Metrics } from '../theme'
 
+const { UIManager } = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 export default MainComponent = (props) => {
   Text.defaultProps = Text.defaultProps || {};
@@ -15,8 +27,7 @@ export default MainComponent = (props) => {
                     <Image source={Images.zhukovHeader} style={styles.headerImage} />
                 </View>*/
             }
-            <View style={styles.contentContainer}>
-                <View style={styles.ButtonsContainer}>
+            <View style={styles.contentContainer} onLayout={() => {LayoutAnimation.easeInEaseOut();}}>
 
                     <TouchableOpacity onPress={() => { props.openTickets() }}>
                         <View style={styles.Button}>
@@ -32,9 +43,6 @@ export default MainComponent = (props) => {
                         </View>
                     </TouchableOpacity>
 
-                </View>
-
-                <View style={styles.ButtonsContainer}>
                     <TouchableOpacity onPress={() => { props.addCarTicket() }}>
                         <View style={styles.Button}>
                             <Image resizeMode='contain' source={Images.car} style={styles.buttonImage} />
@@ -48,9 +56,7 @@ export default MainComponent = (props) => {
                             <Text style={styles.buttonLabel}>На пост.{"\n"}пропуск</Text>
                         </View>
                     </TouchableOpacity>
-                </View>
 
-                <View style={styles.ButtonsContainer}>
                     <TouchableOpacity onPress={() => { props.addGoodsInTicket() }}>
                           <View style={styles.Button}>
                               <Image resizeMode='contain' source={Images.boxIn} style={styles.buttonImage} />
@@ -64,9 +70,7 @@ export default MainComponent = (props) => {
                               <Text style={styles.buttonLabel}>На вынос{"\n"}имущества</Text>
                           </View>
                     </TouchableOpacity>
-                </View>
 
-                <View style={styles.ButtonsContainer}>
                     <TouchableOpacity onPress={() => { props.addServiceTicket() }}>
                         <View style={styles.Button}>
                           <Image resizeMode='contain' source={Images.wrench} style={styles.buttonImage} />
@@ -80,7 +84,6 @@ export default MainComponent = (props) => {
                           <Text style={styles.buttonLabel}>На доп.{"\n"}обслуживание</Text>
                         </View>
                     </TouchableOpacity>
-                </View>
 
             </View>
         </ScrollView>
@@ -105,8 +108,9 @@ const styles = StyleSheet.create({
         resizeMode: 'stretch'
     },
     contentContainer: {
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        flexWrap: 'wrap'
     },
     header: {
         flexDirection: 'row',
@@ -115,19 +119,17 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 59
     },
-    ButtonsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around'
-    },
     Button: {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: 166,
-        height: 166,
+        width: 165,
+        height: 165,
         borderRadius: 15,
+        marginTop: 10,
+        marginBottom: 10,
+        margin: 5,
         backgroundColor: 'white',
-        margin: 15
     },
     buttonImage: {
         width: 85,
@@ -150,6 +152,8 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: Colors.fieldsColor,
       borderRadius: 15,
-      margin: 15
+      width: '90%',
+      marginBottom: 15,
+      marginTop: 15
     }
 })

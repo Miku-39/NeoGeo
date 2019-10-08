@@ -15,6 +15,7 @@ import { CheckBox } from 'react-native-elements'
 import ImagePickerComponent from '../components/ImagePicker'
 import DatePickerComponent from '../components/DatePicker'
 import PickerComponent from '../components/PickerAlternate'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { Colors } from '../theme'
 
@@ -75,7 +76,15 @@ export default class ServiceScreen extends Component {
     }
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-            <ScrollView>
+          <KeyboardAwareScrollView
+              enableOnAndroid={true}
+              extraHeight={130}
+              extraScrollHeight={130}>
+              <View style={{
+                flexDirection: 'column',
+                marginLeft: 5,
+                marginRight: 5}}>
+
                 <View style={styles.fieldsContainer}>
                   <Text style={styles.field}>{label}</Text>
                 </View>
@@ -164,8 +173,8 @@ export default class ServiceScreen extends Component {
                   label='Выберите фото'
                   isHighlighted={this.props.fieldsHighlights.photo}
                   onChoose={(file) => {this.props.saveFile(file, 'photo')}}/>
-
-            </ScrollView>
+            </View>
+            </KeyboardAwareScrollView>
       </View>
     )
   }

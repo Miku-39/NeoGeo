@@ -14,6 +14,7 @@ import { CheckBox } from 'react-native-elements'
 import { Colors } from '../theme'
 import DatePickerComponent from '../components/DatePicker'
 import PickerComponent from '../components/PickerAlternate'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
 export default class VisitorTicketEditor extends Component {
@@ -65,10 +66,14 @@ export default class VisitorTicketEditor extends Component {
     Text.defaultProps.allowFontScaling = true;
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-            <ScrollView>
+            <KeyboardAwareScrollView
+                enableOnAndroid={true}
+                extraHeight={130}
+                extraScrollHeight={130}>
                 <View style={{
                   flexDirection: 'column',
-                  marginBottom: 290}}>
+                  marginLeft: 5,
+                  marginRight: 5}}>
 
                   <View style={styles.fieldsContainer}>
                     <Text style={styles.field}>{this.props.ticketType == "VISITOR" ? 'На посещение' : 'На въезд автомобиля'}</Text>
@@ -176,7 +181,7 @@ export default class VisitorTicketEditor extends Component {
                   </View>
 
                 </View>
-            </ScrollView>
+            </KeyboardAwareScrollView>
         </View>
     )
   }

@@ -25,13 +25,14 @@ class LoginComponent extends Component {
         const keyboardVerticalOffset = Platform.OS === 'ios' ? 50 : 0
         return (
           <ImageBackground source={Images.Background} style={styles.backgroundImage}>
-            <View style={styles.screenContainer}>
+
+            <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={keyboardVerticalOffset} style={styles.screenContainer}>
+
                 <View style={styles.logoContainer}>
                     <Image source={Images.logo} resizeMode='contain' style={styles.logo} />
                 </View>
 
                 <View style={styles.contentContainer}>
-                    <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={keyboardVerticalOffset} style={styles.inputsContainer} enabled>
                         <View style={styles.inputFieldContainer}>
 
                             <View style={styles.iconContainer}>
@@ -76,7 +77,6 @@ class LoginComponent extends Component {
                                 underlineColorAndroid='transparent' />
 
                         </View>
-                    </KeyboardAvoidingView>
 
                     <CheckBox
                         title='Запомнить меня'
@@ -106,7 +106,7 @@ class LoginComponent extends Component {
                         </View> : null
                     }
                 </View>
-            </View>
+            </KeyboardAvoidingView>
             </ImageBackground>
         )
     }
