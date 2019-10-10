@@ -65,7 +65,7 @@ export default class Ticket extends Component {
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             <ScrollView>
-            <View style={{marginBottom: 150}}>
+            <View style={{marginBottom: 150, marginLeft: 5, marginRight: 5}}>
                 { fieldGroups }
             </View>
             </ScrollView>

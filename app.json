@@ -1,15 +1,15 @@
 {
   "expo": {
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "35.0.0",
     "name": "Neo Geo",
     "icon": "./app/theme/images/claris_service_desk-logo.png",
-    "version": "3.0",
+    "version": "3.1",
     "slug": "claris-neo-geo",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ru.altsoft.saas.neogeo",
       "icon": "./app/theme/images/appstorelogo2.png",
-      "buildNumber": "3.0.2",
+      "buildNumber": "3.1",
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Это нужно, чтобы вы могли выбрать готовое фото из галереи и добавить его в заявку.",
         "NSCameraUsageDescription": "Это нужно, чтобы вы могли сделать фото и добавить его в заявку, не выходя из приложения."
@@ -22,7 +22,7 @@
     },
     "android": {
       "package": "ru.altsoft.saas.neogeo",
-      "versionCode": 16,
+      "versionCode": 17,
       "permissions": [
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",

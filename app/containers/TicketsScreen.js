@@ -138,10 +138,10 @@ export default class TicketsScreen extends Component {
 
 
       return(
-      <View style={{width: '100%', marginBottom: 5}}>
+      <View style={{ margin: 5, marginTop: 0}}>
       <TouchableHighlight onPress={() => {navigation.navigate('Ticket', {ticket: item})}} underlayColor={Colors.accentColor} style={{borderRadius: 10}}>
       <View style={{flexDirection: 'row', backgroundColor: 'white', borderRadius: 10}}>
-          <View style={{width: 10, backgroundColor: status2colors[item.status && item.status.id], borderRadius: 5}}></View>
+          <View style={{width: 10, backgroundColor: status2colors[item.status && item.status.id], borderBottomLeftRadius: 10, borderTopLeftRadius: 10}}></View>
           <View style={{flexDirection: 'column', marginLeft: 5}}>
 
               <Text style={styles.ticketNumber}>{header}</Text>

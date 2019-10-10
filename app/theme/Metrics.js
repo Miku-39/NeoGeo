@@ -1,5 +1,4 @@
 import { Dimensions, Platform } from 'react-native'
-import { Constants } from 'expo'
 
 const { width, height } = Dimensions.get('window')
 
@@ -7,7 +6,6 @@ const metrics = {
   screenWidth: width < height ? width : height,
   screenHeight: width < height ? height : width,
   navBarHeight: 54,//(Platform.OS === 'ios') ? 64 : 54,
-  statusBarHeight: Constants.statusBarHeight,
   buttonRadius: 4,
   icons: {
     tiny: 15,

@@ -22,92 +22,98 @@ import { Colors, Images, Metrics } from '../theme'
 
 class LoginComponent extends Component {
     render() {
-        const keyboardVerticalOffset = Platform.OS === 'ios' ? 50 : 0
+        const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 0
+        const elements = (
+          <View style={{justifyContent: 'space-between', alignItems: 'center'}}>
+              <View style={styles.logoContainer}>
+                  <Image source={Images.logo} resizeMode='contain' style={styles.logo} />
+              </View>
+
+              <View style={styles.contentContainer}>
+                      <View style={styles.inputFieldContainer}>
+
+                          <View style={styles.iconContainer}>
+                              <MaterialIcons name='person' size={28} color='gray' />
+                          </View>
+
+                          <View style={styles.verticalDivider}></View>
+
+                          <TextInput
+                              style={styles.input}
+                              onChange={ (e) => this.props.changeUser(e.nativeEvent.text) }
+                              autoCapitalize='none'
+                              autoCorrect={false}
+                              spellCheck={false}
+                              placeholder='Введите имя пользователя'
+                              value={this.props.user}
+                              disabled={this.props.disabled}
+                              autoCorrect={false}
+                              underlineColorAndroid='transparent' />
+
+                      </View>
+
+                      <View style={styles.horizontalDivider}></View>
+
+                      <View style={styles.inputFieldContainer}>
+
+                          <View style={styles.iconContainer}>
+                              <MaterialIcons name='lock' size={26} color='gray' />
+                          </View>
+
+                          <View style={styles.verticalDivider}></View>
+
+                          <TextInput
+                              style={styles.input}
+                              onChange={ (e) => this.props.changePassword(e.nativeEvent.text) }
+                              autoCapitalize="none"
+                              placeholder="Введите пароль"
+                              autoCorrect={false}
+                              value={this.props.password}
+                              disabled={this.props.disabled}
+                              secureTextEntry={true}
+                              underlineColorAndroid='transparent' />
+
+                      </View>
+
+                  <CheckBox
+                      title='Запомнить меня'
+                      onPress={this.props.changeRemember}
+                      containerStyle={styles.checkboxContainer}
+                      textStyle={styles.checkboxText}
+                      checkedColor='white'
+                      checked={this.props.remember}
+                  />
+
+                      <TouchableOpacity onPress={() => {
+                          Keyboard.dismiss()
+                          this.props.logIn()
+                      }}>
+                          <View style={styles.enterButton}>
+                              <Text style={styles.enterText}>Войти</Text>
+                          </View>
+                      </TouchableOpacity>
+
+
+                  {
+                      this.props.disabled ?
+                      <View style={{alignSelf: 'center'}}>
+                          <ActivityIndicator size="large" color={Colors.accentColor}/>
+                      </View> : null
+                  }
+              </View>
+          </View>
+        )
         return (
           <ImageBackground source={Images.Background} style={styles.backgroundImage}>
 
-            <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={keyboardVerticalOffset} style={styles.screenContainer}>
-
-                <View style={styles.logoContainer}>
-                    <Image source={Images.logo} resizeMode='contain' style={styles.logo} />
-                </View>
-
-                <View style={styles.contentContainer}>
-                        <View style={styles.inputFieldContainer}>
-
-                            <View style={styles.iconContainer}>
-                                <MaterialIcons name='person' size={28} color='gray' />
-                            </View>
-
-                            <View style={styles.verticalDivider}></View>
-
-                            <TextInput
-                                style={styles.input}
-                                onChange={ (e) => this.props.changeUser(e.nativeEvent.text) }
-                                autoCapitalize='none'
-                                autoCorrect={false}
-                                spellCheck={false}
-                                placeholder='Введите имя пользователя'
-                                value={this.props.user}
-                                disabled={this.props.disabled}
-                                autoCorrect={false}
-                                underlineColorAndroid='transparent' />
-
-                        </View>
-
-                        <View style={styles.horizontalDivider}></View>
-
-                        <View style={styles.inputFieldContainer}>
-
-                            <View style={styles.iconContainer}>
-                                <MaterialIcons name='lock' size={26} color='gray' />
-                            </View>
-
-                            <View style={styles.verticalDivider}></View>
-
-                            <TextInput
-                                style={styles.input}
-                                onChange={ (e) => this.props.changePassword(e.nativeEvent.text) }
-                                autoCapitalize="none"
-                                placeholder="Введите пароль"
-                                autoCorrect={false}
-                                value={this.props.password}
-                                disabled={this.props.disabled}
-                                secureTextEntry={true}
-                                underlineColorAndroid='transparent' />
-
-                        </View>
-
-                    <CheckBox
-                        title='Запомнить меня'
-                        onPress={this.props.changeRemember}
-                        containerStyle={styles.checkboxContainer}
-                        textStyle={styles.checkboxText}
-                        checkedColor='white'
-                        checked={this.props.remember}
-                    />
-
-                    <View style={styles.enterContainer}>
-                        <TouchableOpacity onPress={() => {
-                            Keyboard.dismiss()
-                            this.props.logIn()
-                        }}>
-                            <View style={styles.enterButton}>
-                                <Text style={styles.enterText}>Войти</Text>
-                            </View>
-                        </TouchableOpacity>
-
-                    </View>
-
-                    {
-                        this.props.disabled ?
-                        <View style={{alignSelf: 'center'}}>
-                            <ActivityIndicator size="large" color={Colors.accentColor}/>
-                        </View> : null
-                    }
-                </View>
+          {Platform.OS == 'android' ?
+            <View style={styles.screenContainer}>
+            {elements}
+            </View> : <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={keyboardVerticalOffset} style={styles.screenContainer}>
+            {elements}
             </KeyboardAvoidingView>
-            </ImageBackground>
+          }
+          </ImageBackground>
         )
     }
 }
@@ -134,7 +140,7 @@ const styles = StyleSheet.create({ // стили всех элементов
     height: '50%',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 40
+    marginTop: 60
   },
   logo: { //логотип
     width: 200,
@@ -185,15 +191,15 @@ const styles = StyleSheet.create({ // стили всех элементов
     height: 5
   },
   enterContainer: {
-    alignItems: 'center',
-    margin: 10
+    alignItems: 'center'
   },
   enterButton: { // кнопка
     justifyContent: 'center',
     flexDirection: 'column',
     backgroundColor: Colors.accentColor,
-    width: 245,
+    width: '70%',
     height: 50,
+    alignSelf: 'center',
     borderRadius: 15,
     opacity: 0.9
   },
