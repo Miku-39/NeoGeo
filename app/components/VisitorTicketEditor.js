@@ -84,6 +84,7 @@ export default class VisitorTicketEditor extends Component {
                         date={this.props.ticket.visitDate}
                         onUpdate={(date) => {this.updateField(date, 'visitDate')}}
                         label="Дата *"
+                        max={this.props.ticketType == 'VISITOR'}
                         placeholder="Выберите дату"/>
                       {this.state.fieldsVisible.time &&
                       <View>
