@@ -9,7 +9,9 @@ const images = {
   wrenchAlt: require('./images/wrenchAlt.png'),
   boxIn: require('./images/boxIn.png'),
   boxOut: require('./images/boxOut.png'),
-  card: require('./images/card.png')
+  card: require('./images/card.png'),
+  block: require('./images/block.png'),
+  carTag: require('./images/carTag.png'),
 }
 
 export default images;

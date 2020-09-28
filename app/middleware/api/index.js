@@ -57,11 +57,14 @@ const fetchParkingsForCars = () => instance.get(`/vNext/v1/parkings?filterBy=Typ
 const fetchParkingsForGoods = () => instance.get(`/vNext/v1/parkings?filterBy=Type.Id="3590077188000"`)
 const fetchServices = () => instance.get(`/vNext/v1/services?filterBy=IsNeoGeo=true`)
 const fetchAllTickets = () => instance.get(`vNext/v1/requests?orderBy=number+desc,&filters=RequestsForTenant,NotClosedRequests`)
+const fetchIssueReasons = () => instance.get(`/vNext/v1/issueReasons?filterBy=Id!="2658836526000"`)
+const fetchBlockReasons = () => instance.get(`vNext/v1/blockReasons/?filters=TemporaryBlockingOrDeletePass`)
 
 const updateTicketStatus = (ticket) => instance.patch(`/vnext/v1/requests/${ticket.id}`, {status: ticket.status})
 
 const addTicket = (ticket) => instance.post('/vNext/v1/requests', ticket).catch(onError)
 
-export default { login, authorize, setAuthHeader,
-                 fetchParkingsForCars, fetchParkingsForGoods, fetchServices, fetchAllTickets, updateTicketStatus,
-                 addTicket, addFile }
+export default {  login, authorize, setAuthHeader,
+                  fetchParkingsForCars, fetchParkingsForGoods,
+                  fetchServices, fetchAllTickets, updateTicketStatus,
+                  addTicket, addFile, fetchIssueReasons, fetchBlockReasons }

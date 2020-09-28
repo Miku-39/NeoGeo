@@ -22,6 +22,8 @@ export default class MainScreenContainer extends Component {
               addGoodsOutTicket={() => navigate('Goods', {ticketType: 'GOODSOUT'})}
               addServiceTicket={() => navigate('Service', {ticketType: 'SERVICE'})}
               addAltServiceTicket={() => navigate('Service', {ticketType: 'ALTSERVICE'})}
+              addMakeCardTicket={() => navigate('MakeCard')}
+              addBlockCardTicket={() => navigate('BlockCard')}
               openTickets={() => navigate('Tickets')}
           />
         )

@@ -25,7 +25,11 @@ export default class PickerComponent extends React.Component {
 
   render() {
     return (
-      <View style={{margin: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+      <View style={[
+        {margin: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'},
+        {marginTop: this.props.isHighlighted ? 5 : 10, marginBottom: this.props.isHighlighted ? 5 : 10}
+      ]
+      }>
         <Text style={styles.pickerLabel}>{this.props.label}</Text>
         <View style={[styles.picker, {
         borderColor: this.props.isHighlighted ? Colors.accentColor : Colors.buttonColor,

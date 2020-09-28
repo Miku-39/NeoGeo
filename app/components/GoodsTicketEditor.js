@@ -74,6 +74,19 @@ export default class GoodsTicketEditor extends Component {
                   </View>
 
                   <View style={styles.fieldsContainer}>
+                    <DatePickerComponent
+                      date={this.props.ticket.visitDate}
+                      onUpdate={(date) => {this.updateField(date, 'visitDate')}}
+                      label="Дата *"
+                      placeholder="Выберите дату"/>
+                  </View>
+
+                  <View style={styles.fieldsContainer}>
+                      <PickerComponent
+                          isHighlighted={this.props.fieldsHighlights.parking}
+                          label="Зона разгрузки"
+                          items={this.props.carParkings}
+                          onUpdate={(text) => {this.updateField(text, 'parking')}}/>
                       <Fumi
                           style={[styles.fumiStyle, {borderColor: this.props.fieldsHighlights.carModelText ? Colors.accentColor : '#FFF'}]}
                           label={'Марка автомобиля'}
@@ -108,16 +121,6 @@ export default class GoodsTicketEditor extends Component {
                   </View>
 
                   <View style={styles.fieldsContainer}>
-                      <Fumi
-                        style={styles.fumiStyle}
-                        label={'ФИО грузчиков'}
-                        iconClass={Icon}
-                        iconName={'person'}
-                        iconColor={Colors.textColor}
-                        iconSize={20}
-                        labelStyle={styles.fumiLabel}
-                        inputStyle={styles.fumiInput}
-                        onChangeText={(text) => {this.updateField(text, 'visitorFullName')}}/>
                       <CheckBox
                         title='Лифт'
                         containerStyle={styles.checkboxContainer}
@@ -126,19 +129,6 @@ export default class GoodsTicketEditor extends Component {
                         checkedColor={Colors.textColor}
                         onPress={() => {this.setVisible('lift')}}/>
 
-                    </View>
-
-                    <View style={styles.fieldsContainer}>
-                        <PickerComponent
-                            isHighlighted={this.props.fieldsHighlights.parking}
-                            label="Парковка"
-                            items={this.props.carParkings}
-                            onUpdate={(text) => {this.updateField(text, 'parking')}}/>
-                        <DatePickerComponent
-                          date={this.props.ticket.visitDate}
-                          onUpdate={(date) => {this.updateField(date, 'visitDate')}}
-                          label="Дата *"
-                          placeholder="Выберите дату"/>
                     </View>
 
                     <View style={styles.fieldsContainer}>

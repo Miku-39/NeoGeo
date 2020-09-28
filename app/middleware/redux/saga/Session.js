@@ -18,6 +18,9 @@ function * loginSaga(action) {
         const carParkings = (yield call(api.fetchParkingsForCars)).data
         const goodsParkings = (yield call(api.fetchParkingsForGoods)).data
         const services = (yield call(api.fetchServices)).data
+        const issueReasons = (yield call(api.fetchIssueReasons)).data
+        const blockReasons = (yield call(api.fetchBlockReasons)).data
+
         const session = {
             token: access_token,
             userId: id,
@@ -28,7 +31,9 @@ function * loginSaga(action) {
             roles: roles,
             carParkings: carParkings,
             goodsParkings: goodsParkings,
-            services: services
+            services: services,
+            issueReasons: issueReasons,
+            blockReasons: blockReasons
         }
 
         //yield put(isLogging(false))

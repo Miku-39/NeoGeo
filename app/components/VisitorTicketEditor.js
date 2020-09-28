@@ -119,7 +119,12 @@ export default class VisitorTicketEditor extends Component {
                   {this.props.ticketType == 'CAR' &&
                   <View style={styles.fieldsContainer}>
 
-
+                  <PickerComponent
+                      isHighlighted={this.props.fieldsHighlights.parking}
+                      label="Парковка *"
+                      items={this.props.carParkings}
+                      onUpdate={(text) => {this.updateField(text, 'parking')}}/>
+                      
                       <Fumi
                           style={[styles.fumiStyle, {borderColor: this.props.fieldsHighlights.carModelText ? Colors.accentColor : '#FFF'}]}
                           label={'Марка автомобиля *'}
@@ -141,11 +146,6 @@ export default class VisitorTicketEditor extends Component {
                           inputStyle={styles.fumiInput}
                           onChangeText={(text) => {this.updateField(text, 'carNumber')}}/>
 
-                          <PickerComponent
-                              isHighlighted={this.props.fieldsHighlights.parking}
-                              label="Парковка *"
-                              items={this.props.carParkings}
-                              onUpdate={(text) => {this.updateField(text, 'parking')}}/>
 
                           {this.state.fieldsVisible.carrierWarning &&
                           <View style={[styles.fieldsContainer, {borderColor: Colors.buttonColor, marginBottom: 0, borderWidth: 5}]}>

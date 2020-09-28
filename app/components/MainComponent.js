@@ -56,6 +56,20 @@ export default MainComponent = (props) => {
                             <Text style={styles.buttonLabel}>На пост.{"\n"}пропуск</Text>
                         </View>
                     </TouchableOpacity>
+                    
+                    <TouchableOpacity onPress={() => { props.addMakeCardTicket() }}>
+                        <View style={styles.Button}>
+                            <Image resizeMode='contain' source={Images.carTag} style={styles.buttonImage} />
+                            <Text style={styles.buttonLabel}>На изготовление{"\n"}метки</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => { props.addBlockCardTicket() }}>
+                        <View style={styles.Button}>
+                            <Image resizeMode='contain' source={Images.block} style={styles.buttonImage} />
+                            <Text style={styles.buttonLabel}>На блокировку{"\n"}карты</Text>
+                        </View>
+                    </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => { props.addGoodsInTicket() }}>
                           <View style={styles.Button}>
