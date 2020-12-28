@@ -11,11 +11,10 @@ export default class DatePickerComponent extends React.Component {
   render() {
     const minDate = new Date()
     const maxDate = new Date()
-    maxDate.setYear(minDate.getFullYear()+1)
-    if(this.props.max){
-      maxDate.setYear(minDate.getFullYear())
-      maxDate.setMonth(minDate.getMonth()+1)
-    }
+    maxDate.setMonth(minDate.getMonth()+1)
+    console.log("minmax")
+    console.log(minDate)
+    console.log(maxDate)
 
     return (
       <View style={{margin: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>

@@ -16,7 +16,8 @@ const fieldsProperties = [
   carNumber:          { name: 'Номер авто', type: 'text' },
   carModelText:       { name: 'Модель авто', type: 'text' },
   parkingPlace:       { name: 'Место на парковке', type: 'text' },
-  parking:            { name: 'Парковка', type: 'list' }
+  parking:            { name: 'Парковка', type: 'list' },
+  plannedEntryDate:   { name: 'Расчетное время въезда', type: 'date'}
 }, {
   companyName:        { name: 'Компания-поставщик', type: 'text' },
   materialValuesData: { name: 'Данные материальных ценностей', type: 'text' },

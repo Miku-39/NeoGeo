@@ -87,7 +87,8 @@ export default class ServiceScreen extends Component {
             client: companyId,
             passType: ticketType == 'CARD' ? '2194469501000' : null,
             isAdditionalService: ticketType == 'ALTSERVICE' ? true : null,
-            photo: null
+            photo: null,
+            file: null
         }
 
         this.setState({ticket: ticket,
@@ -160,8 +161,18 @@ export default class ServiceScreen extends Component {
     }
 
     addFileId = (fileId, name) => {
-      const { ticket } = this.state
-      ticket[name]= fileId
+      const { ticket, ticketType } = this.state
+      switch(ticketType) {
+        case 'SERVICE':
+            ticket.file= fileId;
+            break;
+        case 'ALTSERVICE':
+            ticket.file = fileId;
+            break;
+        case 'CARD':
+            ticket[name] = fileId;
+            break;
+      }
       this.setState({ticket})
     }
 
